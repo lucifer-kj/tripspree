@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { useVapi } from "@/lib/use-vapi";
 import { useTripSpreeStore } from "@/lib/store";
 import { Phone, PhoneOff, Mic, MicOff, Sparkles, ChevronUp, ChevronDown } from "lucide-react";
@@ -13,6 +14,7 @@ function formatDuration(seconds: number): string {
 }
 
 export function FloatingVoicePill() {
+  const pathname = usePathname();
   const { isAuthenticated, currentUser, login } = useTripSpreeStore();
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -26,6 +28,12 @@ export function FloatingVoicePill() {
     endCall,
     toggleMute,
   } = useVapi();
+
+  // Gated voice: Never show floating component on public marketing routes or when unauthenticated
+  const isMarketingRoute = pathname === "/" || pathname?.startsWith("/journal") || pathname?.startsWith("/taste-quiz");
+  if (isMarketingRoute || !isAuthenticated) {
+    return null;
+  }
 
   const handleToggleCall = () => {
     // If not signed in, prompt signing in as patron

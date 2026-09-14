@@ -14,6 +14,8 @@ import {
   Clock,
   Compass,
   Check,
+  Sparkles,
+  X,
 } from "lucide-react";
 
 export default function TripDesignerPage() {
@@ -21,6 +23,21 @@ export default function TripDesignerPage() {
   const [swapTargetDayId, setSwapTargetDayId] = useState<string | null>(null);
   const [isSwapDrawerOpen, setIsSwapDrawerOpen] = useState(false);
   const [shareToast, setShareToast] = useState(false);
+  const [draftSession, setDraftSession] = useState<{
+    prompt?: string;
+    destination?: string;
+    sanctuaryName?: string;
+  } | null>(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const stored = localStorage.getItem("tripspree_draft_session");
+        if (stored) return JSON.parse(stored);
+      } catch {
+        // ignore
+      }
+    }
+    return null;
+  });
 
   // Map store trip days to day card format
   const displayDays: ItineraryDay[] = currentTrip.days.map((d) => ({
@@ -179,6 +196,43 @@ export default function TripDesignerPage() {
         <div className="flex-1 flex overflow-hidden p-4 md:p-6 gap-6">
           {/* Middle Column: Day-by-Day Canvas */}
           <div className="flex-1 flex flex-col overflow-y-auto pr-1 space-y-6">
+            {/* Draft Transferred from Prototype Callout */}
+            {draftSession && (
+              <div className="rounded-2xl border border-primary/30 bg-primary/10 p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm animate-fade-in">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-primary-foreground shrink-0 shadow-xs">
+                    <Sparkles className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-[10px] uppercase text-primary font-semibold tracking-wider">
+                        Draft Transferred from Homepage Prototype
+                      </span>
+                      <span className="h-1.5 w-1.5 rounded-full bg-chart-1 animate-pulse" />
+                    </div>
+                    <p className="font-sans text-xs text-foreground font-medium mt-0.5">
+                      &ldquo;{draftSession.prompt || draftSession.destination}&rdquo;
+                    </p>
+                    <span className="font-mono text-[11px] text-muted-foreground">
+                      Destination: {draftSession.destination || "Custom"} • DIA has pre-briefed your specialist
+                    </span>
+                  </div>
+                </div>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => {
+                    localStorage.removeItem("tripspree_draft_session");
+                    setDraftSession(null);
+                  }}
+                  className="text-xs font-mono rounded-xl border-border bg-background hover:bg-muted shrink-0 cursor-pointer"
+                >
+                  <X className="h-3.5 w-3.5 mr-1" />
+                  Dismiss
+                </Button>
+              </div>
+            )}
+
             {/* Boarding-Pass Master Header Card */}
             <div className="rounded-2xl border border-border bg-card p-6 md:p-8 shadow-sm">
               <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-border">

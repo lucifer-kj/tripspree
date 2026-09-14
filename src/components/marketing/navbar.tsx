@@ -53,10 +53,22 @@ export function Navbar({}: NavbarProps = {}) {
 
         {/* Desktop Navigation Links */}
         <nav
-          className={`hidden md:flex items-center space-x-8 text-sm tracking-wide transition-colors ${
+          className={`hidden md:flex items-center space-x-7 text-xs font-sans tracking-wide transition-colors ${
             isScrolled ? "text-muted-foreground" : "text-white/80"
           }`}
         >
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-primary/25 bg-primary/10 text-primary font-mono text-[10px]">
+            <span className="flex h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+            <span>DIA 2.0 Online</span>
+          </div>
+          <Link
+            href="/#dia-prototype"
+            className={`transition-colors ${
+              isScrolled ? "hover:text-foreground" : "hover:text-white"
+            }`}
+          >
+            Live Prototype
+          </Link>
           <Link
             href="/#sanctuaries"
             className={`transition-colors ${
@@ -64,6 +76,14 @@ export function Navbar({}: NavbarProps = {}) {
             }`}
           >
             Sanctuaries
+          </Link>
+          <Link
+            href="/#how-dia-operates"
+            className={`transition-colors ${
+              isScrolled ? "hover:text-foreground" : "hover:text-white"
+            }`}
+          >
+            How DIA Operates
           </Link>
           <Link
             href="/#manifesto"
@@ -74,14 +94,6 @@ export function Navbar({}: NavbarProps = {}) {
             Philosophy
           </Link>
           <Link
-            href="/quiz"
-            className={`transition-colors ${
-              isScrolled ? "hover:text-foreground" : "hover:text-white"
-            }`}
-          >
-            Taste Quiz
-          </Link>
-          <Link
             href="/journal"
             className={`transition-colors ${
               isScrolled ? "hover:text-foreground" : "hover:text-white"
@@ -89,26 +101,18 @@ export function Navbar({}: NavbarProps = {}) {
           >
             Journal
           </Link>
-          <Link
-            href="/designer"
-            className={`transition-colors ${
-              isScrolled ? "hover:text-foreground" : "hover:text-white"
-            }`}
-          >
-            Trip Designer
-          </Link>
         </nav>
 
         {/* Right Actions */}
         <div className="flex items-center space-x-3">
-          <Link href="/designer" className="hidden sm:block">
+          <Link href="/designer">
             <Button
               variant="default"
               size="sm"
-              className="rounded-full bg-primary px-5 font-sans text-xs font-medium text-primary-foreground hover:bg-primary/90 shadow-sm cursor-pointer"
+              className="rounded-xl bg-primary px-4 sm:px-5 font-sans text-xs font-medium text-primary-foreground hover:bg-primary/90 shadow-sm cursor-pointer flex items-center gap-1.5"
             >
-              <Sparkles className="mr-1.5 h-3.5 w-3.5" />
-              Inquire
+              <Sparkles className="h-3.5 w-3.5" />
+              <span>Member Studio</span>
             </Button>
           </Link>
 
@@ -116,7 +120,7 @@ export function Navbar({}: NavbarProps = {}) {
           <button
             type="button"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className={`md:hidden flex h-10 w-10 items-center justify-center rounded-full border transition-colors cursor-pointer ${
+            className={`md:hidden flex h-10 w-10 items-center justify-center rounded-xl border transition-colors cursor-pointer ${
               isScrolled || isMobileMenuOpen
                 ? "border-border text-foreground hover:bg-muted"
                 : "border-white/30 text-white hover:bg-white/10"

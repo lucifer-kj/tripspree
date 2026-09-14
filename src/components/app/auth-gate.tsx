@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import Link from "next/link";
@@ -21,6 +21,17 @@ export function AuthGate({
   const [passcode, setPasscode] = useState("");
   const [emailInput, setEmailInput] = useState("");
   const [isError, setIsError] = useState(false);
+  const [draftPreview] = useState<{ destination?: string; sanctuaryName?: string; prompt?: string } | null>(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const stored = localStorage.getItem("tripspree_draft_session");
+        if (stored) return JSON.parse(stored);
+      } catch {
+        // ignore
+      }
+    }
+    return null;
+  });
 
   // If already authenticated, render protected view seamlessly
   if (isAuthenticated && currentUser) {
@@ -102,6 +113,21 @@ export function AuthGate({
 
         {/* Member Sign-In Card */}
         <div className="rounded-2xl border border-border bg-card/90 backdrop-blur-xl p-6 sm:p-8 shadow-xl space-y-6">
+          {/* Pending Prototype Draft Notice */}
+          {draftPreview && (
+            <div className="p-3.5 rounded-xl border border-chart-1/30 bg-chart-1/10 flex items-start gap-3">
+              <Sparkles className="h-4 w-4 text-chart-1 shrink-0 mt-0.5" />
+              <div className="text-xs">
+                <span className="font-mono text-[10px] uppercase text-chart-1 font-semibold block mb-0.5">
+                  Itinerary Draft Detected
+                </span>
+                <p className="text-foreground">
+                  Your trial draft for <strong className="font-medium">{draftPreview.destination || draftPreview.sanctuaryName}</strong> will automatically hydrate into your Member Studio upon sign in.
+                </p>
+              </div>
+            </div>
+          )}
+
           {/* Quick Demo Access Button */}
           <div className="p-4 rounded-xl border border-primary/25 bg-primary/5 space-y-3">
             <div className="flex items-center justify-between">
