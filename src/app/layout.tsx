@@ -21,9 +21,20 @@ const ibmPlexMono = IBM_Plex_Mono({
   display: "swap",
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_APP_URL || "https://tripspree-prod.vercel.app";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "TripSpree — Curated Private Travel & Sanctuaries",
   description: "Travel is not an escape. It is an awakening.",
+  openGraph: {
+    title: "TripSpree — Curated Private Travel & Sanctuaries",
+    description: "Travel is not an escape. It is an awakening.",
+    url: siteUrl,
+    siteName: "TripSpree",
+    locale: "en_US",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
