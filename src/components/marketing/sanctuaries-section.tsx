@@ -51,7 +51,7 @@ export function SanctuariesSection({ isReducedMotion }: SanctuariesSectionProps)
       location: "Udaipur, Rajasthan",
       country: "India",
       tag: "Verified Heritage",
-      tagColor: "text-chart-1 border-chart-1/30 bg-chart-1/10",
+      tagColor: "text-[#a855f7] border-[#a855f7]/30 bg-[#a855f7]/10",
       type: "Mewar Palace Courtyards",
       stillnessScore: 98,
       rateInr: "₹2,40,000",
@@ -70,7 +70,7 @@ export function SanctuariesSection({ isReducedMotion }: SanctuariesSectionProps)
       location: "Vembanad Canals, Kerala",
       country: "India",
       tag: "Verified Sanctuary",
-      tagColor: "text-chart-1 border-chart-1/30 bg-chart-1/10",
+      tagColor: "text-[#38bdf8] border-[#38bdf8]/30 bg-[#38bdf8]/10",
       type: "Private Teakwood Kettuvallam",
       stillnessScore: 96,
       rateInr: "₹1,80,000",
@@ -89,7 +89,7 @@ export function SanctuariesSection({ isReducedMotion }: SanctuariesSectionProps)
       location: "Indus Valley, Ladakh",
       country: "India",
       tag: "Team-Vetted",
-      tagColor: "text-chart-2 border-chart-2/30 bg-chart-2/10",
+      tagColor: "text-[#f97316] border-[#f97316]/30 bg-[#f97316]/10",
       type: "Nomadic Luxury Stargazing Camp",
       stillnessScore: 99,
       rateInr: "₹2,10,000",
@@ -108,7 +108,7 @@ export function SanctuariesSection({ isReducedMotion }: SanctuariesSectionProps)
       location: "Positano, Amalfi Coast",
       country: "Italy",
       tag: "Verified Coastal",
-      tagColor: "text-chart-1 border-chart-1/30 bg-chart-1/10",
+      tagColor: "text-[#a855f7] border-[#a855f7]/30 bg-[#a855f7]/10",
       type: "Mediterranean Cliffside Refuge",
       stillnessScore: 94,
       rateInr: "₹3,20,000",
@@ -127,7 +127,7 @@ export function SanctuariesSection({ isReducedMotion }: SanctuariesSectionProps)
       location: "St. Moritz, Engadin",
       country: "Switzerland",
       tag: "Verified Alpine",
-      tagColor: "text-chart-1 border-chart-1/30 bg-chart-1/10",
+      tagColor: "text-[#a855f7] border-[#a855f7]/30 bg-[#a855f7]/10",
       type: "Engadin Pine & Granite Sanctuary",
       stillnessScore: 98,
       rateInr: "₹3,60,000",
@@ -146,20 +146,20 @@ export function SanctuariesSection({ isReducedMotion }: SanctuariesSectionProps)
     <section
       ref={containerRef}
       id="retreats"
-      className="relative bg-[#091b20] text-white py-24 sm:py-32 border-b border-white/10"
+      className="relative bg-[#0c0717] text-white py-24 sm:py-32 border-b border-white/10"
       aria-label="TripSpree Handcrafted Sanctuaries"
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         {/* Section Header & Currency Toggle */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8 border-b border-white/10 pb-10">
           <div>
-            <div className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-chart-1 mb-3">
+            <div className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-[#a855f7] mb-3">
               <span>+</span>
               <span>CURATED SANCTUARIES</span>
             </div>
             <h2 className="font-sans font-bold text-3xl sm:text-5xl uppercase tracking-tight text-white leading-tight">
               Quiet Private Estates, <br />
-              <span className="font-serif italic font-normal lowercase text-white/70">
+              <span className="font-serif italic font-normal lowercase text-[#a855f7]">
                 hand-selected without
               </span>{" "}
               compromise
@@ -173,7 +173,7 @@ export function SanctuariesSection({ isReducedMotion }: SanctuariesSectionProps)
               onClick={() => setCurrency("INR")}
               className={`px-4 py-1.5 rounded-full font-mono text-xs transition-all cursor-pointer ${
                 currency === "INR"
-                  ? "bg-chart-1 text-[#0D2E37] font-semibold shadow-xs"
+                  ? "bg-primary text-white font-semibold shadow-xs"
                   : "text-white/60 hover:text-white"
               }`}
             >
@@ -184,7 +184,7 @@ export function SanctuariesSection({ isReducedMotion }: SanctuariesSectionProps)
               onClick={() => setCurrency("USD")}
               className={`px-4 py-1.5 rounded-full font-mono text-xs transition-all cursor-pointer ${
                 currency === "USD"
-                  ? "bg-chart-1 text-[#0D2E37] font-semibold shadow-xs"
+                  ? "bg-primary text-white font-semibold shadow-xs"
                   : "text-white/60 hover:text-white"
               }`}
             >
@@ -202,7 +202,7 @@ export function SanctuariesSection({ isReducedMotion }: SanctuariesSectionProps)
               whileInView={isReducedMotion ? {} : { opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-10% 0px" }}
               transition={{ duration: 0.5, delay: idx * 0.1 }}
-              className="group rounded-3xl border border-white/10 bg-white/[0.02] hover:bg-white/[0.04] p-6 sm:p-8 lg:p-10 transition-all duration-300 hover:border-white/20 shadow-xl"
+              className="group rounded-3xl border border-[#25183e] bg-[#130c24] hover:bg-[#180f2e] p-6 sm:p-8 lg:p-10 transition-all duration-300 hover:border-primary/40 shadow-xl"
             >
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
                 {/* Left Side: Property Specs & Actions (7 cols) */}
@@ -210,7 +210,7 @@ export function SanctuariesSection({ isReducedMotion }: SanctuariesSectionProps)
                   <div>
                     {/* Eyebrow & Status Chip */}
                     <div className="flex items-center gap-3 mb-3">
-                      <span className="font-mono text-[10px] text-chart-1 uppercase tracking-widest">
+                      <span className="font-mono text-[10px] text-[#a855f7] uppercase tracking-widest">
                         {String(idx + 1).padStart(2, "0")} / SANCTUARY
                       </span>
                       <span
@@ -221,7 +221,7 @@ export function SanctuariesSection({ isReducedMotion }: SanctuariesSectionProps)
                     </div>
 
                     {/* Sanctuary Title */}
-                    <h3 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-normal text-white group-hover:text-chart-1 transition-colors">
+                    <h3 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-normal text-white group-hover:text-primary transition-colors">
                       {sanctuary.title}
                     </h3>
 
@@ -239,22 +239,22 @@ export function SanctuariesSection({ isReducedMotion }: SanctuariesSectionProps)
                     </p>
                   </div>
 
-                  {/* 4 Metadata Specification Rows (Vita signature) */}
+                  {/* 4 Metadata Specification Rows */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 py-4 border-y border-white/10 text-xs font-sans">
                     <div className="flex items-center gap-2.5 text-white/80">
-                      <MapPin className="h-4 w-4 text-chart-1 shrink-0" />
+                      <MapPin className="h-4 w-4 text-[#a855f7] shrink-0" />
                       <span>{sanctuary.location}</span>
                     </div>
                     <div className="flex items-center gap-2.5 text-white/80">
-                      <Calendar className="h-4 w-4 text-chart-1 shrink-0" />
+                      <Calendar className="h-4 w-4 text-[#a855f7] shrink-0" />
                       <span>{sanctuary.duration}</span>
                     </div>
                     <div className="flex items-center gap-2.5 text-white/80">
-                      <Users className="h-4 w-4 text-chart-1 shrink-0" />
+                      <Users className="h-4 w-4 text-[#a855f7] shrink-0" />
                       <span>{sanctuary.capacity}</span>
                     </div>
                     <div className="flex items-center gap-2.5 text-white/80">
-                      <ShieldCheck className="h-4 w-4 text-chart-1 shrink-0" />
+                      <ShieldCheck className="h-4 w-4 text-[#a855f7] shrink-0" />
                       <span>{sanctuary.stillnessScore}% Stillness Rating</span>
                     </div>
                   </div>
@@ -264,11 +264,11 @@ export function SanctuariesSection({ isReducedMotion }: SanctuariesSectionProps)
                     <button
                       type="button"
                       onClick={() => setActiveModalSanctuary(sanctuary)}
-                      className="inline-flex items-center gap-2 rounded-full bg-chart-1 px-5 py-2.5 text-xs font-sans font-semibold text-[#0D2E37] hover:bg-white transition-all shadow-md cursor-pointer group/btn"
+                      className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-xs font-sans font-semibold text-[#0c0717] hover:bg-white/90 transition-all shadow-md cursor-pointer group/btn"
                     >
                       <span>Inspect Sanctuary</span>
                       <svg
-                        className="h-2.5 w-2.5 fill-[#0D2E37] transition-transform group-hover/btn:rotate-45 duration-300"
+                        className="h-2.5 w-2.5 fill-[#0c0717] transition-transform group-hover/btn:rotate-45 duration-300"
                         viewBox="0 0 8 8"
                         xmlns="http://www.w3.org/2000/svg"
                       >
@@ -298,9 +298,9 @@ export function SanctuariesSection({ isReducedMotion }: SanctuariesSectionProps)
                     sizes="(max-width: 1024px) 100vw, 50vw"
                     className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#091b20]/60 via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0c0717]/60 via-transparent to-transparent" />
                   <div className="absolute bottom-4 right-4">
-                    <span className="px-3 py-1 rounded-full bg-[#091b20]/80 backdrop-blur-md border border-white/20 font-mono text-[10px] text-white uppercase tracking-wider">
+                    <span className="px-3 py-1 rounded-full bg-[#0c0717]/80 backdrop-blur-md border border-white/20 font-mono text-[10px] text-white uppercase tracking-wider">
                       {sanctuary.country}
                     </span>
                   </div>
@@ -313,12 +313,12 @@ export function SanctuariesSection({ isReducedMotion }: SanctuariesSectionProps)
 
       {/* Quick View Modal */}
       {activeModalSanctuary && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/75 backdrop-blur-md">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-md">
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            className="relative w-full max-w-2xl overflow-hidden rounded-3xl border border-white/20 bg-[#091b20] p-6 sm:p-8 shadow-2xl text-white"
+            className="relative w-full max-w-2xl overflow-hidden rounded-3xl border border-[#25183e] bg-[#130c24] p-6 sm:p-8 shadow-2xl text-white"
           >
             <button
               type="button"
@@ -336,16 +336,16 @@ export function SanctuariesSection({ isReducedMotion }: SanctuariesSectionProps)
                 fill
                 className="object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#091b20]/90 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0c0717]/90 via-transparent to-transparent" />
               <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white font-mono text-xs">
                 <span>{activeModalSanctuary.location} • {activeModalSanctuary.country}</span>
-                <span className="bg-chart-1 px-3 py-1 rounded-full text-[#0D2E37] font-semibold">
+                <span className="bg-primary px-3 py-1 rounded-full text-white font-semibold">
                   {currency === "INR" ? activeModalSanctuary.rateInr : activeModalSanctuary.rateUsd} / night
                 </span>
               </div>
             </div>
 
-            <span className="font-mono text-xs uppercase tracking-wider text-chart-1 font-medium block mb-1">
+            <span className="font-mono text-xs uppercase tracking-wider text-[#a855f7] font-medium block mb-1">
               {activeModalSanctuary.type}
             </span>
             <h2 className="font-serif text-2xl sm:text-3xl text-white font-medium mb-3">
@@ -362,7 +362,7 @@ export function SanctuariesSection({ isReducedMotion }: SanctuariesSectionProps)
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 font-sans text-xs text-white/80">
                 {activeModalSanctuary.amenities.map((amenity) => (
                   <div key={amenity} className="flex items-center gap-2">
-                    <ShieldCheck className="h-3.5 w-3.5 text-chart-1 shrink-0" />
+                    <ShieldCheck className="h-3.5 w-3.5 text-[#a855f7] shrink-0" />
                     <span>{amenity}</span>
                   </div>
                 ))}
@@ -381,7 +381,7 @@ export function SanctuariesSection({ isReducedMotion }: SanctuariesSectionProps)
               <Link href={`/designer?sanctuary=${activeModalSanctuary.id}`}>
                 <Button
                   size="sm"
-                  className="rounded-full bg-chart-1 text-[#0D2E37] hover:bg-white font-sans text-xs font-semibold px-6 cursor-pointer"
+                  className="rounded-full bg-primary text-white hover:bg-primary/90 font-sans text-xs font-semibold px-6 cursor-pointer"
                 >
                   Plan with DIA in Studio
                   <ArrowRight className="ml-1.5 h-3.5 w-3.5" />

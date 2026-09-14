@@ -56,14 +56,14 @@ export function VitaSpecialistsSection({ isReducedMotion }: VitaSpecialistsSecti
   return (
     <section
       id="specialists"
-      className="relative bg-[#091b20] text-white py-24 sm:py-32 border-b border-white/10"
+      className="relative bg-[#0c0717] text-white py-24 sm:py-32 border-b border-white/10"
       aria-label="TripSpree Specialists"
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
           <div>
-            <div className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-chart-1 mb-3">
+            <div className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-[#a855f7] mb-3">
               <span>+</span>
               <span>HUMAN INTUITION & GATEKEEPERS</span>
             </div>
@@ -90,24 +90,24 @@ export function VitaSpecialistsSection({ isReducedMotion }: VitaSpecialistsSecti
               whileInView={isReducedMotion ? {} : { opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: idx * 0.15 }}
-              className="rounded-3xl border border-white/10 bg-white/[0.02] hover:bg-white/[0.04] p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 hover:border-white/20 group"
+              className="rounded-3xl border border-[#25183e] bg-[#130c24] hover:bg-[#180f2e] p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 hover:border-primary/40 group shadow-lg"
             >
               <div>
                 {/* Top Row: Index & Monogram */}
                 <div className="flex items-center justify-between mb-6">
-                  <span className="font-mono text-xs text-chart-1 font-semibold">
+                  <span className="font-mono text-xs text-[#a855f7] font-semibold">
                     0{idx + 1} / SPECIALIST
                   </span>
-                  <div className="h-8 w-8 rounded-full border border-white/15 bg-white/5 flex items-center justify-center text-chart-1 font-mono text-xs">
+                  <div className="h-8 w-8 rounded-full border border-white/15 bg-white/5 flex items-center justify-center text-[#a855f7] font-mono text-xs">
                     ✦
                   </div>
                 </div>
 
                 {/* Name & Role */}
-                <h3 className="font-serif text-xl sm:text-2xl text-white font-normal mb-1 group-hover:text-chart-1 transition-colors">
+                <h3 className="font-serif text-xl sm:text-2xl text-white font-normal mb-1 group-hover:text-primary transition-colors">
                   {specialist.name}
                 </h3>
-                <span className="font-sans text-xs text-chart-1 font-medium block mb-4">
+                <span className="font-sans text-xs text-[#a855f7] font-medium block mb-4">
                   {specialist.role}
                 </span>
 
@@ -118,11 +118,11 @@ export function VitaSpecialistsSection({ isReducedMotion }: VitaSpecialistsSecti
                 {/* Verification Rows */}
                 <div className="space-y-2.5 py-4 border-t border-white/10 text-xs font-sans">
                   <div className="flex items-center gap-2 text-white/80">
-                    <Award className="h-3.5 w-3.5 text-chart-1 shrink-0" />
+                    <Award className="h-3.5 w-3.5 text-[#a855f7] shrink-0" />
                     <span>{specialist.credentials}</span>
                   </div>
                   <div className="flex items-center gap-2 text-white/80">
-                    <ShieldCheck className="h-3.5 w-3.5 text-chart-1 shrink-0" />
+                    <ShieldCheck className="h-3.5 w-3.5 text-[#a855f7] shrink-0" />
                     <span className="font-mono text-[11px] text-white/90">{specialist.clearance}</span>
                   </div>
                 </div>
@@ -133,7 +133,7 @@ export function VitaSpecialistsSection({ isReducedMotion }: VitaSpecialistsSecti
                 <span className="font-mono text-[11px] text-white/50">{specialist.experience}</span>
                 <Link
                   href={`/designer?specialist=${specialist.id}`}
-                  className="inline-flex items-center gap-1.5 text-xs font-sans text-chart-1 hover:text-white transition-colors group-hover:translate-x-0.5"
+                  className="inline-flex items-center gap-1.5 text-xs font-sans text-primary hover:text-white transition-colors group-hover:translate-x-0.5"
                 >
                   <span>Request Consult</span>
                   <ArrowRight className="h-3.5 w-3.5" />

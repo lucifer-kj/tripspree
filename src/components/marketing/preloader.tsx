@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+import Image from "next/image";
+
 interface PreloaderProps {
   onComplete?: () => void;
   isReducedMotion?: boolean;
@@ -37,7 +39,7 @@ export function Preloader({ onComplete, isReducedMotion = false }: PreloaderProp
         key="preloader"
         initial={{ opacity: 1 }}
         exit={{ opacity: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }}
-        className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#060606] text-[#f0f0f0] select-none"
+        className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#0c0717] text-[#f5f3ff] select-none"
         role="status"
         aria-live="polite"
         aria-label="Loading TripSpree"
@@ -47,11 +49,16 @@ export function Preloader({ onComplete, isReducedMotion = false }: PreloaderProp
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="flex h-16 w-16 items-center justify-center rounded-full border border-white/15 bg-white/5 backdrop-blur-sm"
+            className="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/15 bg-white/5 backdrop-blur-sm p-2"
           >
-            <span className="font-serif text-3xl font-normal tracking-tighter text-white">
-              TS
-            </span>
+            <Image
+              src="/images/brand/logo.png"
+              alt="TripSpree Logo"
+              width={48}
+              height={48}
+              className="object-contain"
+              priority
+            />
           </motion.div>
 
           <motion.div

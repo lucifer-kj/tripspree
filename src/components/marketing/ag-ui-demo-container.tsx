@@ -175,16 +175,16 @@ export function AGUIDemoContainer({ isReducedMotion }: AGUIDemoContainerProps) {
       aria-label="DIA Autonomous Concierge Prototype"
     >
       {/* Contained Glassmorphic Prototype Container */}
-      <div className="rounded-3xl border border-white/15 bg-[#091b20]/95 backdrop-blur-xl shadow-2xl overflow-hidden transition-all duration-300">
+      <div className="rounded-3xl border border-[#25183e] bg-[#130c24]/95 backdrop-blur-xl shadow-2xl overflow-hidden transition-all duration-300">
         {/* Prototype Container Header Bar */}
         <div className="p-6 sm:p-8 border-b border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white/[0.02]">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <span className="flex h-2 w-2 rounded-full bg-chart-1 animate-pulse" />
-              <span className="font-mono text-[10px] uppercase tracking-widest text-chart-1 font-semibold">
+              <span className="flex h-2 w-2 rounded-full bg-[#a855f7] animate-pulse" />
+              <span className="font-mono text-[10px] uppercase tracking-widest text-[#a855f7] font-semibold">
                 Autonomous Concierge Trial • DIA 2.0
               </span>
-              <span className="rounded-full bg-chart-1/10 border border-chart-1/20 px-2 py-0.5 text-[9px] font-mono text-chart-1">
+              <span className="rounded-full bg-primary/20 border border-primary/30 px-2 py-0.5 text-[9px] font-mono text-white">
                 Prototype Canvas
               </span>
             </div>
@@ -210,7 +210,7 @@ export function AGUIDemoContainer({ isReducedMotion }: AGUIDemoContainerProps) {
         </div>
 
         {/* Interactive Preset Chips Bar */}
-        <div className="px-6 sm:px-8 py-3.5 bg-black/20 border-b border-white/10 flex items-center gap-2 overflow-x-auto no-scrollbar">
+        <div className="px-6 sm:px-8 py-3.5 bg-black/30 border-b border-white/10 flex items-center gap-2 overflow-x-auto no-scrollbar">
           <span className="font-mono text-[10px] uppercase text-white/50 shrink-0 mr-1 tracking-wider">
             Select Simulation Realm:
           </span>
@@ -221,7 +221,7 @@ export function AGUIDemoContainer({ isReducedMotion }: AGUIDemoContainerProps) {
               onClick={() => handleSelectPreset(key)}
               className={`px-3 py-1.5 rounded-xl text-xs font-sans whitespace-nowrap transition-all border cursor-pointer ${
                 selectedKey === key && isExpanded
-                  ? "bg-chart-1 text-[#0D2E37] border-chart-1 font-semibold shadow-sm"
+                  ? "bg-primary text-white border-primary font-semibold shadow-sm"
                   : "bg-white/5 text-white/70 border-white/10 hover:text-white hover:border-white/30"
               }`}
             >

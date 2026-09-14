@@ -48,52 +48,50 @@
 }
 
 .dark {
-  --card: #121212;
-  --ring: #ad46ff;
-  --input: #33353a;
-  --muted: #2a2c33;
-  --accent: #1e293b;
-  --border: #2a2b2c;
+  --card: #130c24;
+  --ring: #8247ff;
+  --input: #25183e;
+  --muted: #1c1236;
+  --accent: #241544;
+  --border: #25183e;
   --radius: 0.575rem;
-  --chart-1: #4ade80;
-  --chart-2: #ad46ff;
-  --chart-3: #fca5a5;
-  --chart-4: #5993f4;
-  --chart-5: #a0a0a0;
-  --popover: #222327;
-  --primary: #ad46ff;
-  --sidebar: #161618;
+  --chart-1: #a855f7;
+  --chart-2: #8247ff;
+  --chart-3: #f97316;
+  --chart-4: #38bdf8;
+  --chart-5: #a78bfa;
+  --popover: #170e2d;
+  --primary: #8247ff;
+  --sidebar: #130c24;
   --spacing: 0.27rem;
   --font-mono: IBM Plex Mono, monospace;
   --font-sans: var(--font-montserrat), Montserrat, sans-serif;
-  --secondary: #1b1d1e;
-  --background: #060606;
+  --secondary: #1c1236;
+  --background: #0c0717;
   --font-serif: Lora, serif;
-  --foreground: #f0f0f0;
+  --foreground: #f5f3ff;
 
-  /* FIX: original #f87171 gave white-on-destructive a 2.77:1 contrast
-     ratio in dark mode — a hard WCAG AA fail for text/icon use (needs
-     4.5:1). Darkened to clear AA while keeping the same red hue. */
+  /* WCAG AA contrast compliant destructive red */
   --destructive: #c93838;
 
   --shadow-blur: 3px;
   --shadow-color: #000000;
-  --sidebar-ring: #8c00ff;
+  --sidebar-ring: #8247ff;
   --shadow-spread: 0px;
   --letter-spacing: 0em;
   --shadow-opacity: 0.01;
-  --sidebar-accent: #2a2c33;
-  --sidebar-border: #33353a;
-  --card-foreground: #f0f0f0;
+  --sidebar-accent: #25183e;
+  --sidebar-border: #25183e;
+  --card-foreground: #f5f3ff;
   --shadow-offset-x: 0;
   --shadow-offset-y: 1px;
-  --sidebar-primary: oklch(0.627 0.265 303.9);
-  --muted-foreground: #a0a0a0;
-  --accent-foreground: #ad46ff;
-  --popover-foreground: #f0f0f0;
+  --sidebar-primary: #8247ff;
+  --muted-foreground: #a78bfa;
+  --accent-foreground: #c084fc;
+  --popover-foreground: #f5f3ff;
   --primary-foreground: #ffffff;
-  --sidebar-foreground: #f0f0f0;
-  --secondary-foreground: #f0f0f0;
+  --sidebar-foreground: #f5f3ff;
+  --secondary-foreground: #f5f3ff;
   --destructive-foreground: #ffffff;
   --sidebar-accent-foreground: #c790f4;
   --sidebar-primary-foreground: #ffffff;

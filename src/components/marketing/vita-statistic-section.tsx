@@ -43,20 +43,20 @@ const STATISTIC_ITEMS = [
 export function VitaStatisticSection({ isReducedMotion }: VitaStatisticSectionProps) {
   return (
     <section
-      className="relative bg-[#091b20] text-white border-y border-white/10 py-16 sm:py-24"
+      className="relative bg-[#0c0717] text-white border-y border-white/10 py-16 sm:py-24"
       aria-label="TripSpree Featured Realms"
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         {/* Section Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 sm:mb-16 gap-6">
           <div>
-            <div className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-chart-1 mb-3">
+            <div className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-[#a855f7] mb-3">
               <span>+</span>
               <span>CURATED SANCTUARY CORRIDORS</span>
             </div>
             <h2 className="font-sans font-bold text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-white">
               Quiet Luxury <br />
-              <span className="font-serif italic font-normal lowercase text-white/70">
+              <span className="font-serif italic font-normal lowercase text-[#a855f7]">
                 in three distinct
               </span>{" "}
               realms
@@ -83,10 +83,10 @@ export function VitaStatisticSection({ isReducedMotion }: VitaStatisticSectionPr
             >
               {/* Top Row: Index and Corner Symbol */}
               <div className="flex items-center justify-between mb-6">
-                <span className="font-mono text-xs text-chart-1 font-semibold">
+                <span className="font-mono text-xs text-[#a855f7] font-semibold">
                   {item.num} / 03
                 </span>
-                <span className="font-mono text-white/30 text-xs group-hover:text-chart-1 transition-colors">
+                <span className="font-mono text-white/30 text-xs group-hover:text-[#a855f7] transition-colors">
                   +
                 </span>
               </div>
@@ -100,9 +100,9 @@ export function VitaStatisticSection({ isReducedMotion }: VitaStatisticSectionPr
                   sizes="(max-width: 768px) 100vw, 33vw"
                   className="object-cover group-hover:scale-105 transition-transform duration-700"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#091b20]/80 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0c0717]/80 via-transparent to-transparent" />
                 <div className="absolute bottom-3 left-3">
-                  <span className="px-2.5 py-1 rounded-full bg-[#091b20]/80 backdrop-blur-md border border-white/15 font-mono text-[10px] text-white uppercase tracking-wider">
+                  <span className="px-2.5 py-1 rounded-full bg-[#0c0717]/80 backdrop-blur-md border border-white/15 font-mono text-[10px] text-white uppercase tracking-wider">
                     {item.tag}
                   </span>
                 </div>
@@ -110,7 +110,7 @@ export function VitaStatisticSection({ isReducedMotion }: VitaStatisticSectionPr
 
               {/* Title & Description */}
               <div className="flex-1">
-                <h3 className="font-sans font-bold text-lg sm:text-xl text-white mb-2.5 group-hover:text-chart-1 transition-colors">
+                <h3 className="font-sans font-bold text-lg sm:text-xl text-white mb-2.5 group-hover:text-[#a855f7] transition-colors">
                   {item.title}
                 </h3>
                 <p className="font-sans text-xs text-white/70 leading-relaxed font-light mb-6">
@@ -121,7 +121,7 @@ export function VitaStatisticSection({ isReducedMotion }: VitaStatisticSectionPr
               {/* Bottom Metrics Bar */}
               <div className="pt-4 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-white/60">
                 <span>{item.metric}</span>
-                <span className="text-chart-1">{item.stillness}</span>
+                <span className="text-[#a855f7]">{item.stillness}</span>
               </div>
             </motion.div>
           ))}

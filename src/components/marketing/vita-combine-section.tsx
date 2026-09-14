@@ -122,20 +122,20 @@ export function VitaCombineSection({ isReducedMotion }: VitaCombineSectionProps)
   return (
     <section
       id="combine"
-      className="relative bg-[#091b20] text-white py-24 sm:py-32 border-b border-white/10"
+      className="relative bg-[#0c0717] text-white py-24 sm:py-32 border-b border-white/10"
       aria-label="TripSpree Combine Workflow"
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 sm:mb-16 gap-8">
           <div>
-            <div className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-chart-1 mb-3">
+            <div className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-[#a855f7] mb-3">
               <span>+</span>
               <span>TAILORED ORCHESTRATION</span>
             </div>
             <h2 className="font-sans font-bold text-3xl sm:text-5xl uppercase tracking-tight text-white leading-tight">
               Combine Stay, Transit & <br />
-              <span className="font-serif italic font-normal lowercase text-chart-1">
+              <span className="font-serif italic font-normal lowercase text-[#a855f7]">
                 curated stillness
               </span>{" "}
               seamlessly
@@ -151,7 +151,7 @@ export function VitaCombineSection({ isReducedMotion }: VitaCombineSectionProps)
                 onClick={() => setActiveTab(tab)}
                 className={`px-4 py-1.5 rounded-full font-sans text-xs transition-all cursor-pointer ${
                   activeTab === tab
-                    ? "bg-chart-1 text-[#0D2E37] font-semibold shadow-xs"
+                    ? "bg-primary text-white font-semibold shadow-xs"
                     : "text-white/60 hover:text-white"
                 }`}
               >
@@ -162,7 +162,7 @@ export function VitaCombineSection({ isReducedMotion }: VitaCombineSectionProps)
         </div>
 
         {/* Tab Description Banner */}
-        <div className="mb-10 p-6 rounded-2xl border border-white/10 bg-white/[0.02] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="mb-10 p-6 rounded-2xl border border-[#25183e] bg-[#130c24] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h3 className="font-sans font-bold text-lg text-white mb-1">
               {currentTab.title}
@@ -173,7 +173,7 @@ export function VitaCombineSection({ isReducedMotion }: VitaCombineSectionProps)
           </div>
 
           <div className="flex items-center gap-3 shrink-0">
-            <span className="flex items-center gap-1.5 text-xs font-mono text-chart-1">
+            <span className="flex items-center gap-1.5 text-xs font-mono text-[#a855f7]">
               <ShieldCheck className="h-4 w-4" />
               Specialist Vetted
             </span>
@@ -193,21 +193,21 @@ export function VitaCombineSection({ isReducedMotion }: VitaCombineSectionProps)
             {currentTab.steps.map((item) => (
               <div
                 key={item.step}
-                className="relative rounded-2xl border border-white/10 bg-white/[0.02] hover:bg-white/[0.05] p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 group hover:border-white/20"
+                className="relative rounded-2xl border border-[#25183e] bg-[#130c24] hover:bg-[#180f2e] p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 group hover:border-primary/40 shadow-lg"
               >
                 {/* Step Top Row */}
                 <div className="flex items-center justify-between mb-8">
-                  <span className="font-mono text-xl font-bold text-chart-1">
+                  <span className="font-mono text-xl font-bold text-[#a855f7]">
                     {item.step}
                   </span>
-                  <span className="font-mono text-white/30 text-xs group-hover:text-chart-1 transition-colors">
+                  <span className="font-mono text-white/30 text-xs group-hover:text-[#a855f7] transition-colors">
                     +
                   </span>
                 </div>
 
                 {/* Content */}
                 <div className="flex-1 mb-6">
-                  <h4 className="font-sans font-bold text-base sm:text-lg text-white mb-2.5 group-hover:text-chart-1 transition-colors">
+                  <h4 className="font-sans font-bold text-base sm:text-lg text-white mb-2.5 group-hover:text-[#a855f7] transition-colors">
                     {item.title}
                   </h4>
                   <p className="font-sans text-xs text-white/70 leading-relaxed font-light">
@@ -218,7 +218,7 @@ export function VitaCombineSection({ isReducedMotion }: VitaCombineSectionProps)
                 {/* Bottom Tag */}
                 <div className="pt-4 border-t border-white/10 flex items-center justify-between text-[11px] font-mono">
                   <span className="text-white/50">{item.tag}</span>
-                  <span className="text-chart-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span className="text-[#a855f7] opacity-0 group-hover:opacity-100 transition-opacity">
                     →
                   </span>
                 </div>
@@ -228,9 +228,9 @@ export function VitaCombineSection({ isReducedMotion }: VitaCombineSectionProps)
         </AnimatePresence>
 
         {/* Bottom CTA Row */}
-        <div className="mt-12 flex flex-col sm:flex-row items-center justify-between p-6 sm:p-8 rounded-2xl border border-white/15 bg-gradient-to-r from-white/[0.04] to-transparent gap-6">
+        <div className="mt-12 flex flex-col sm:flex-row items-center justify-between p-6 sm:p-8 rounded-2xl border border-[#25183e] bg-gradient-to-r from-white/[0.04] to-transparent gap-6">
           <div className="flex items-center gap-4">
-            <div className="h-10 w-10 rounded-xl bg-chart-1/10 border border-chart-1/20 flex items-center justify-center text-chart-1">
+            <div className="h-10 w-10 rounded-xl bg-primary/20 border border-primary/30 flex items-center justify-center text-primary">
               <Sparkles className="h-5 w-5" />
             </div>
             <div>
@@ -245,11 +245,11 @@ export function VitaCombineSection({ isReducedMotion }: VitaCombineSectionProps)
 
           <Link
             href="/designer"
-            className="inline-flex items-center gap-2 rounded-full bg-chart-1 px-6 py-3 text-xs sm:text-sm font-sans font-semibold text-[#0D2E37] hover:bg-white transition-all shadow-md cursor-pointer group shrink-0"
+            className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-xs sm:text-sm font-sans font-semibold text-[#0c0717] hover:bg-white/90 transition-all shadow-md cursor-pointer group shrink-0"
           >
             <span>Launch Combine Studio</span>
             <svg
-              className="h-2.5 w-2.5 fill-[#0D2E37] transition-transform group-hover:rotate-45 duration-300"
+              className="h-2.5 w-2.5 fill-[#0c0717] transition-transform group-hover:rotate-45 duration-300"
               viewBox="0 0 8 8"
               xmlns="http://www.w3.org/2000/svg"
             >

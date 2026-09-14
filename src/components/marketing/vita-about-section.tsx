@@ -12,11 +12,11 @@ export function VitaAboutSection({ isReducedMotion }: VitaAboutSectionProps) {
   return (
     <section
       id="about"
-      className="relative bg-[#091b20] text-white py-20 sm:py-32 border-b border-white/10 overflow-hidden"
+      className="relative bg-[#0c0717] text-white py-20 sm:py-32 border-b border-white/10 overflow-hidden"
       aria-label="About TripSpree"
     >
       {/* Decorative background grid subtle lines */}
-      <div className="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:32px_32px] pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(#a855f70a_1px,transparent_1px)] [background-size:32px_32px] pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
@@ -36,22 +36,22 @@ export function VitaAboutSection({ isReducedMotion }: VitaAboutSectionProps) {
                 sizes="(max-width: 1024px) 100vw, 40vw"
                 className="object-cover group-hover:scale-105 transition-transform duration-700"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#091b20]/90 via-[#091b20]/20 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0c0717]/90 via-[#0c0717]/20 to-transparent" />
 
               {/* Top Floating Badge */}
               <div className="absolute top-4 left-4">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#091b20]/80 backdrop-blur-md border border-white/20 text-[10px] font-mono uppercase tracking-widest text-chart-1">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0c0717]/80 backdrop-blur-md border border-white/20 text-[10px] font-mono uppercase tracking-widest text-[#a855f7]">
                   <span className="text-xs">✦</span>
                   <span>Digital Atelier</span>
                 </div>
               </div>
 
               {/* Bottom Quote Overlay */}
-              <div className="absolute bottom-6 left-6 right-6 p-4 rounded-xl bg-[#091b20]/85 backdrop-blur-md border border-white/10">
+              <div className="absolute bottom-6 left-6 right-6 p-4 rounded-xl bg-[#0c0717]/85 backdrop-blur-md border border-white/10">
                 <p className="font-serif italic text-xs sm:text-sm text-white/90 leading-snug">
                   &ldquo;Travel is not an escape. It is an awakening of senses long dulled by the commonplace.&rdquo;
                 </p>
-                <span className="block font-mono text-[10px] uppercase text-chart-1 tracking-wider mt-2">
+                <span className="block font-mono text-[10px] uppercase text-[#a855f7] tracking-wider mt-2">
                   — The TripSpree Manifesto
                 </span>
               </div>
@@ -68,7 +68,7 @@ export function VitaAboutSection({ isReducedMotion }: VitaAboutSectionProps) {
           >
             <div>
               {/* Category Eyebrow */}
-              <div className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-chart-1 mb-4">
+              <div className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-[#a855f7] mb-4">
                 <span>+</span>
                 <span>OUR ESSENCE</span>
               </div>
@@ -76,7 +76,7 @@ export function VitaAboutSection({ isReducedMotion }: VitaAboutSectionProps) {
               {/* Vita-Style Drop-Indented Monumental Headline */}
               <h2 className="font-sans font-extrabold text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-white leading-[1.05] mb-6">
                 Travel should not be an exhausting checklist,{" "}
-                <span className="block font-serif italic font-normal lowercase text-chart-1 tracking-normal sm:pl-8">
+                <span className="block font-serif italic font-normal lowercase text-[#a855f7] tracking-normal sm:pl-8">
                   but an unhurried return
                 </span>{" "}
                 to intuition and wonder.
@@ -98,7 +98,7 @@ export function VitaAboutSection({ isReducedMotion }: VitaAboutSectionProps) {
                 </span>
               </div>
               <div className="border-l border-white/10 pl-4 sm:pl-6">
-                <span className="block font-sans font-bold text-2xl sm:text-3xl md:text-4xl text-chart-1 tracking-tight">
+                <span className="block font-sans font-bold text-2xl sm:text-3xl md:text-4xl text-[#a855f7] tracking-tight">
                   1,470+
                 </span>
                 <span className="block font-mono text-[10px] sm:text-[11px] text-white/50 uppercase tracking-wider mt-1">
@@ -119,11 +119,11 @@ export function VitaAboutSection({ isReducedMotion }: VitaAboutSectionProps) {
             <div className="flex flex-wrap items-center gap-4">
               <Link
                 href="/designer"
-                className="inline-flex items-center gap-2.5 rounded-full bg-chart-1 px-6 py-3 text-xs sm:text-sm font-sans font-semibold text-[#0D2E37] hover:bg-white transition-all shadow-lg cursor-pointer group"
+                className="inline-flex items-center gap-2.5 rounded-full bg-white px-6 py-3 text-xs sm:text-sm font-sans font-semibold text-[#0c0717] hover:bg-white/90 transition-all shadow-lg cursor-pointer group"
               >
                 <span>Design Your Journey with DIA</span>
                 <svg
-                  className="h-3 w-3 fill-[#0D2E37] transition-transform group-hover:rotate-45 duration-300"
+                  className="h-3 w-3 fill-[#0c0717] transition-transform group-hover:rotate-45 duration-300"
                   viewBox="0 0 8 8"
                   xmlns="http://www.w3.org/2000/svg"
                 >

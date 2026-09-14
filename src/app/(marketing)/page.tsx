@@ -17,7 +17,7 @@ export default function MarketingHomePage() {
   const { isReducedMotion } = useReducedMotionState();
 
   return (
-    <main className="min-h-screen bg-[#091b20] text-white selection:bg-chart-1 selection:text-[#0D2E37]">
+    <main className="min-h-screen bg-[#0c0717] text-white selection:bg-primary/30 selection:text-white">
       {/* Editorial Preloader */}
       <Preloader isReducedMotion={isReducedMotion} />
 
