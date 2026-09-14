@@ -73,10 +73,10 @@ export function Hero({ isReducedMotion }: HeroProps) {
       {/* LAYER 0: Authentic Full-Bleed Sky & Mountain Landscape (100vw, no container box) */}
       <motion.div
         style={{ y: isReducedMotion ? "0%" : backgroundY }}
-        className="absolute inset-0 z-0 h-[112%] -top-[6%] w-full pointer-events-none select-none"
+        className="absolute inset-0 z-0 h-full w-full pointer-events-none select-none"
       >
         <Image
-          src="/images/hero/bg-part-1.webp"
+          src="/images/hero/mountains-layer.webp"
           alt="Expansive mountain landscape and atmospheric sky"
           fill
           priority
@@ -86,31 +86,31 @@ export function Hero({ isReducedMotion }: HeroProps) {
         <div className="absolute inset-0 bg-gradient-to-b from-[#0c0717]/30 via-transparent to-transparent" />
       </motion.div>
 
-      {/* LAYER 1: Monumental Title "Travel" (z-index: 2 - lower portion tucks behind foreground ridge) */}
+      {/* LAYER 1: Monumental Title "Travel" (z-index: 2 - sits between background and foreground) */}
       <motion.div
         style={{ y: isReducedMotion ? "0%" : textY }}
-        className="relative z-[2] w-full max-w-5xl mx-auto px-6 pt-32 sm:pt-36 md:pt-40 flex flex-col items-center text-center select-none"
+        className="relative z-[2] w-full max-w-5xl mx-auto px-6 pt-24 sm:pt-28 md:pt-32 lg:pt-36 flex flex-col items-center text-center select-none"
       >
-        <h1 className="font-sans font-bold text-white text-6xl sm:text-7xl md:text-8xl lg:text-[8rem] tracking-tight leading-none drop-shadow-md">
+        <h1 className="font-sans font-bold text-white text-6xl sm:text-7xl md:text-8xl lg:text-[8.5rem] tracking-tight leading-none drop-shadow-md">
           Travel
         </h1>
       </motion.div>
 
-      {/* LAYER 2: Authentic Full-Bleed Foreground Plains (Yurts, horse, golden hills - z-index: 3) */}
+      {/* LAYER 2: Authentic Full-Bleed Foreground Plains (Yurts, horse, rising right hill - z-index: 3) */}
       <motion.div
         style={{ y: isReducedMotion ? "0%" : foregroundY }}
-        className="absolute inset-x-0 bottom-0 z-[3] h-[48%] sm:h-[50%] md:h-[54%] w-full pointer-events-none select-none"
+        className="absolute inset-0 z-[3] h-full w-full pointer-events-none select-none"
       >
         <Image
-          src="/images/hero/bg-part-2.webp"
+          src="/images/hero/foreground-layer.webp"
           alt="Golden foreground plains with nomadic yurts and grazing horse"
           fill
           priority
           sizes="100vw"
-          className="object-cover object-bottom"
+          className="object-cover object-center"
         />
         {/* Soft edge blend at the very bottom */}
-        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#0c0717] to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#0c0717] to-transparent" />
       </motion.div>
 
       {/* LAYER 3: Subtitle, Core CTA & Sleek Consultation Pill (z-index: 4 - sits cleanly ON TOP of foreground) */}
