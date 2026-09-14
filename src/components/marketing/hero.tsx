@@ -53,11 +53,6 @@ export function Hero({ isReducedMotion }: HeroProps) {
       localStorage.setItem("tripspree_draft_session", JSON.stringify(draft));
       window.dispatchEvent(new CustomEvent("dia-prompt-submitted", { detail: draft }));
     }
-
-    const prototypeElement = document.getElementById("dia-prototype");
-    if (prototypeElement) {
-      prototypeElement.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
   };
 
   return (
@@ -102,9 +97,9 @@ export function Hero({ isReducedMotion }: HeroProps) {
       {/* LAYER 2: Monumental "Travel" Typography (Sits behind the foreground hill in Part 2) */}
       <motion.div
         style={{ y: isReducedMotion ? "0%" : textY }}
-        className="relative z-[2] w-full max-w-6xl mx-auto px-6 pt-32 sm:pt-40 md:pt-48 lg:pt-52 flex flex-col items-center text-center pointer-events-none select-none"
+        className="relative z-[2] w-full max-w-6xl mx-auto px-4 pt-32 sm:pt-40 md:pt-48 lg:pt-48 flex flex-col items-center text-center pointer-events-none select-none"
       >
-        <h1 className="font-sans font-extrabold text-white text-7xl sm:text-8xl md:text-9xl lg:text-[11.5rem] tracking-tight leading-[0.85] drop-shadow-md">
+        <h1 className="font-sans font-extrabold text-white text-7xl sm:text-6xl md:text-7xl lg:text-[9.5rem] tracking-tight leading-[0.85] drop-shadow-md">
           Travel
         </h1>
       </motion.div>
@@ -128,9 +123,9 @@ export function Hero({ isReducedMotion }: HeroProps) {
       </motion.div>
 
       {/* LAYER 4: Subtitle and White-with-Purple Built-in Chatbox (Replaces the Explore button) */}
-      <div className="relative z-[10] w-full max-w-4xl mx-auto px-4 sm:px-6 pt-2 sm:pt-4 pb-20 sm:pb-28 lg:pb-32 flex flex-col items-center text-center">
+      <div className="relative z-[10] w-full max-w-4xl mx-auto px-4 sm:px-6 pt-2 sm:pt-4 pb-20 sm:pb-28 lg:pb-42 flex flex-col items-center text-center">
         {/* Purpose Subtitle matching Vita Travels */}
-        <p className="font-sans text-base sm:text-lg md:text-xl text-white font-medium max-w-xl mx-auto leading-snug drop-shadow-md mb-6 sm:mb-8">
+        <p className="font-sans text-base sm:text-lg md:text-xl text-white font-medium max-w-xl mx-auto leading-snug drop-shadow-md mb-8 sm:mb-8">
           With purpose. Orchestrate unhurried journeys, rare access, and boutique stays in one place.
         </p>
 

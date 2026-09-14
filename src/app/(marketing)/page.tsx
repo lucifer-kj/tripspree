@@ -6,7 +6,7 @@ import { Navbar } from "@/components/marketing/navbar";
 import { Hero } from "@/components/marketing/hero";
 import { VitaStatisticSection } from "@/components/marketing/vita-statistic-section";
 import { VitaAboutSection } from "@/components/marketing/vita-about-section";
-import { AGUIDemoContainer } from "@/components/marketing/ag-ui-demo-container";
+import { AGUICanvasModal } from "@/components/marketing/ag-ui-canvas-modal";
 import { SanctuariesSection } from "@/components/marketing/sanctuaries-section";
 import { VitaCombineSection } from "@/components/marketing/vita-combine-section";
 import { VitaDestinationSection } from "@/components/marketing/vita-destination-section";
@@ -33,23 +33,23 @@ export default function MarketingHomePage() {
       {/* Section 3: Editorial About Frame, Indented Manifesto & Counters */}
       <VitaAboutSection isReducedMotion={isReducedMotion} />
 
-      {/* Section 4: Contained Expandable AG-UI Interactive Prototype Canvas */}
-      <AGUIDemoContainer isReducedMotion={isReducedMotion} />
-
-      {/* Section 5: Vita Horizontal Split Card Sanctuaries with 4 Metadata Rows */}
+      {/* Section 4: Vita Horizontal Split Card Sanctuaries with 4 Metadata Rows */}
       <SanctuariesSection isReducedMotion={isReducedMotion} />
 
-      {/* Section 6: Combine Stay, Transit & Extras 4-Step Architecture */}
+      {/* Section 5: Combine Stay, Transit & Extras 4-Step Architecture */}
       <VitaCombineSection isReducedMotion={isReducedMotion} />
 
-      {/* Section 7: Celestial Coordinate Radar Map */}
+      {/* Section 6: Celestial Coordinate Radar Map */}
       <VitaDestinationSection isReducedMotion={isReducedMotion} />
 
-      {/* Section 8: Generational Specialists & Cultural Stewards */}
+      {/* Section 7: Generational Specialists & Cultural Stewards */}
       <VitaSpecialistsSection isReducedMotion={isReducedMotion} />
 
       {/* Global Panoramic Landscape Footer */}
       <Footer />
+
+      {/* Full-Page Immersive AG-UI Generative Canvas Modal */}
+      <AGUICanvasModal isReducedMotion={isReducedMotion} />
     </main>
   );
 }
