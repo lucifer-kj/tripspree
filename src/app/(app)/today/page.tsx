@@ -1,24 +1,82 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AppSidebar } from "@/components/app/app-sidebar";
 import { ConfidenceChip } from "@/components/app/confidence-chip";
 import { EveningCheckinCard } from "@/components/app/evening-checkin-card";
 import { TodayVoiceBar } from "@/components/app/today-voice-bar";
 import { Button } from "@/components/ui/button";
+import { useTripSpreeStore } from "@/lib/store";
+import { AuthGate } from "@/components/app/auth-gate";
 import {
   MapPin,
   Clock,
   CheckCircle2,
+  Wifi,
+  Radio,
 } from "lucide-react";
 
 export default function TodayViewPage() {
-  const [isNextEventConfirmed, setIsNextEventConfirmed] = useState(false);
+  const { currentTrip, isDriverStandingBy, toggleDriverStandingBy, setLiveSync } = useTripSpreeStore();
+  const [localTime, setLocalTime] = useState("16:42:00");
+  const [isOnline, setIsOnline] = useState(true);
+
+  // Active day is Day 2 of current journey
+  const activeDay = currentTrip.days.find((d) => d.dayNumber === 2) || currentTrip.days[0];
+
+  // Live Tokyo Standard Time clock engine
+  useEffect(() => {
+    const updateTime = () => {
+      try {
+        const formatted = new Intl.DateTimeFormat("en-US", {
+          timeZone: "Asia/Tokyo",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: false,
+        }).format(new Date());
+        setLocalTime(formatted);
+      } catch {
+        // Fallback for environments without timezone support
+        const d = new Date();
+        setLocalTime(`${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`);
+      }
+    };
+
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Honest network online/offline listener (per UI/UX spec §4.5)
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const onOnline = () => {
+      setIsOnline(true);
+      setLiveSync(true);
+    };
+    const onOffline = () => {
+      setIsOnline(false);
+      setLiveSync(false);
+    };
+
+    window.addEventListener("online", onOnline);
+    window.addEventListener("offline", onOffline);
+    return () => {
+      window.removeEventListener("online", onOnline);
+      window.removeEventListener("offline", onOffline);
+    };
+  }, [setLiveSync]);
 
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-muted/30 font-sans text-foreground">
-      {/* App Navigation Sidebar */}
-      <AppSidebar activeTab="today" />
+    <AuthGate
+      fallbackTitle="Today View Studio"
+      fallbackDescription="Live sanctuary agenda, private chauffeur dispatch, and travel director briefings require member authentication."
+    >
+      <div className="flex h-screen w-full overflow-hidden bg-muted/30 font-sans text-foreground">
+        {/* App Navigation Sidebar */}
+        <AppSidebar activeTab="today" />
 
       {/* Main Today Screen Canvas */}
       <main className="flex-1 flex flex-col overflow-y-auto">
@@ -30,16 +88,22 @@ export default function TodayViewPage() {
             </span>
             <span className="h-3.5 w-px bg-border" />
             <span className="font-mono text-xs text-muted-foreground">
-              OCTOBER 15, 2026
+              {activeDay.date}
             </span>
           </div>
 
           {/* Honest PWA Cache / Live Indicator (per UI/UX spec §4.5) */}
           <div className="flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1 font-mono text-[11px] text-muted-foreground">
-            <span className="h-2 w-2 rounded-full bg-chart-1 animate-pulse" />
-            <span className="text-foreground font-medium">Live Sync Active</span>
+            <span
+              className={`h-2 w-2 rounded-full ${
+                isOnline ? "bg-chart-1 animate-pulse" : "bg-warning-fill"
+              }`}
+            />
+            <span className="text-foreground font-medium">
+              {isOnline ? "Live Sync Active" : "Offline Mode"}
+            </span>
             <span className="text-muted-foreground/60">•</span>
-            <span>Cached Offline</span>
+            <span>{isOnline ? "Encrypted WebSocket" : "Cached Offline (Local Store)"}</span>
           </div>
         </header>
 
@@ -50,14 +114,14 @@ export default function TodayViewPage() {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-border">
               <div>
                 <span className="font-mono text-xs text-primary tracking-widest uppercase block mb-1.5 font-medium">
-                  Current Sanctuary • Day 02 of 04
+                  Current Sanctuary • Day 0{activeDay.dayNumber} of 0{currentTrip.days.length}
                 </span>
                 <h1 className="font-serif text-2xl sm:text-4xl text-foreground font-medium tracking-tight">
-                  Hoshinoya Arashiyama
+                  {activeDay.sanctuaryName}
                 </h1>
                 <div className="flex items-center gap-2 text-muted-foreground font-mono text-xs sm:text-sm mt-2">
                   <MapPin className="h-4 w-4 text-primary shrink-0" />
-                  <span>Oi River Gorge, Kyoto, Japan</span>
+                  <span>{activeDay.destination}</span>
                 </div>
               </div>
 
@@ -67,18 +131,24 @@ export default function TodayViewPage() {
                   Local Time
                 </div>
                 <div className="text-xl sm:text-2xl font-semibold text-foreground tracking-tight my-0.5">
-                  16:42 <span className="text-xs text-muted-foreground font-normal">JST</span>
+                  {localTime} <span className="text-xs text-muted-foreground font-normal">JST</span>
                 </div>
                 <div className="text-xs text-muted-foreground">
-                  18°C • Quiet Drizzle
+                  18°C • Quiet Autumn Drizzle
                 </div>
               </div>
             </div>
 
             {/* Quick Sanctuary Amenities for Today */}
             <div className="pt-4 flex flex-wrap items-center justify-between gap-4 text-xs font-mono text-muted-foreground">
-              <span>SANCTUARY WI-FI: HOSHINOYA_PRIVATE</span>
-              <span>CONCIERGE EXT: #01</span>
+              <span className="flex items-center gap-1.5">
+                <Wifi className="h-3.5 w-3.5 text-primary" />
+                SANCTUARY WI-FI: HOSHINOYA_PRIVATE
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Radio className="h-3.5 w-3.5 text-primary" />
+                AGENT EXT: #01
+              </span>
             </div>
           </div>
 
@@ -92,18 +162,18 @@ export default function TodayViewPage() {
                 </span>
               </div>
 
-              <ConfidenceChip tier="Verified" size="sm" />
+              <ConfidenceChip tier={activeDay.afternoonActivity.confidenceTier || "Verified"} size="sm" />
             </div>
 
             <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-4">
               <div>
                 <div className="flex items-center gap-2 font-mono text-sm sm:text-base text-foreground font-medium mb-1.5">
                   <Clock className="h-4 w-4 text-primary" />
-                  <span>17:30 JST (In 48 minutes)</span>
+                  <span>{activeDay.afternoonActivity.time}</span>
                 </div>
 
                 <h2 className="font-sans text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-                  Private Sunset Moss Garden Contemplation at Saihō-ji
+                  {activeDay.afternoonActivity.title}
                 </h2>
               </div>
             </div>
@@ -112,9 +182,9 @@ export default function TodayViewPage() {
             <div className="rounded-xl bg-primary/5 border border-primary/15 p-4 mb-6">
               <p className="font-sans text-xs sm:text-sm text-foreground/90 leading-relaxed">
                 <span className="font-mono text-xs uppercase tracking-wider text-primary font-semibold mr-2">
-                  Curator Note:
+                  Director&apos;s Note:
                 </span>
-                General public access ended at 16:30. Abbot Kensho will meet your private vehicle at the North Cloister Gate. Shoe covers provided on site.
+                {activeDay.afternoonActivity.notes || activeDay.curatorNote}
               </p>
             </div>
 
@@ -123,21 +193,21 @@ export default function TodayViewPage() {
               <Button
                 type="button"
                 variant="default"
-                onClick={() => setIsNextEventConfirmed(!isNextEventConfirmed)}
-                className={`min-h-[48px] rounded-xl px-6 font-sans text-sm font-medium transition-all ${
-                  isNextEventConfirmed
+                onClick={toggleDriverStandingBy}
+                className={`min-h-[48px] rounded-xl px-6 font-sans text-sm font-medium transition-all cursor-pointer ${
+                  isDriverStandingBy
                     ? "bg-chart-1 text-background hover:bg-chart-1/90"
                     : "bg-primary text-primary-foreground hover:bg-primary/90"
                 }`}
               >
                 <CheckCircle2 className="mr-2 h-4 w-4" />
-                {isNextEventConfirmed
+                {isDriverStandingBy
                   ? "Driver Notified • Standing By"
                   : "Ready for Driver Transfer"}
               </Button>
 
               <div className="flex items-center justify-center text-xs font-mono text-muted-foreground px-3 min-h-[44px]">
-                <span>Driver: Mr. Tanaka (Black Alphard #408)</span>
+                <span>Driver: {currentTrip.driverName || "Mr. Tanaka"} ({currentTrip.driverCar || "Black Alphard #408"})</span>
               </div>
             </div>
           </div>
@@ -151,17 +221,17 @@ export default function TodayViewPage() {
             <div className="space-y-4">
               <div className="flex items-start gap-4 pb-4 border-b border-border/60">
                 <div className="font-mono text-xs text-primary font-medium w-14 shrink-0 pt-0.5">
-                  20:00
+                  {activeDay.eveningActivity.time}
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="font-sans text-sm font-medium text-foreground">
-                    Private Kaiseki Hearth Dinner
+                    {activeDay.eveningActivity.title}
                   </p>
                   <p className="font-sans text-xs text-muted-foreground mt-0.5">
-                    Dining Pavilion Terrace • Table 4 (Overlooking Oi River)
+                    {activeDay.eveningActivity.location} • {activeDay.eveningActivity.notes}
                   </p>
                 </div>
-                <ConfidenceChip tier="Verified" size="sm" />
+                <ConfidenceChip tier={activeDay.eveningActivity.confidenceTier || "Verified"} size="sm" />
               </div>
 
               <div className="flex items-start gap-4">
@@ -191,5 +261,6 @@ export default function TodayViewPage() {
         </div>
       </main>
     </div>
+  </AuthGate>
   );
 }

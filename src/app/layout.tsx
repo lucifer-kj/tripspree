@@ -23,6 +23,8 @@ const ibmPlexMono = IBM_Plex_Mono({
 
 const siteUrl = process.env.NEXT_PUBLIC_APP_URL || "https://tripspree-prod.vercel.app";
 
+import { FloatingVoicePill } from "@/components/app/floating-voice-pill";
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: "TripSpree — Curated Private Travel & Sanctuaries",
@@ -49,6 +51,7 @@ export default function RootLayout({
     >
       <body className="min-h-screen bg-background text-foreground font-sans">
         {children}
+        <FloatingVoicePill />
       </body>
     </html>
   );

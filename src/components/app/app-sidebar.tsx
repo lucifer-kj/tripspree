@@ -12,8 +12,8 @@ export function AppSidebar({ activeTab = "designer" }: AppSidebarProps) {
     { id: "overview", label: "Dashboard", href: "/designer", icon: LayoutDashboard },
     { id: "designer", label: "Trip Designer", href: "/designer", icon: Compass },
     { id: "today", label: "Today View", href: "/today", icon: CalendarCheck },
-    { id: "documents", label: "Pre-Departure", href: "/designer", icon: FileText },
-    { id: "journal", label: "Journal", href: "/journal", icon: BookOpen },
+    { id: "pre-departure", label: "Pre-Departure Hub", href: "/pre-departure", icon: FileText },
+    { id: "journal", label: "Travel Journal", href: "/journal", icon: BookOpen },
   ];
 
   return (
@@ -57,21 +57,22 @@ export function AppSidebar({ activeTab = "designer" }: AppSidebarProps) {
 
       {/* Bottom Profile / Settings */}
       <div className="flex flex-col items-center gap-3">
-        <button
-          type="button"
+        <Link
+          href="/account"
           className="flex h-9 w-9 items-center justify-center rounded-xl text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
-          title="Settings"
-          aria-label="Settings"
+          title="Account & Settings"
+          aria-label="Account & Settings"
         >
           <Settings className="h-4 w-4" />
-        </button>
+        </Link>
 
-        <div
-          className="flex h-10 w-10 items-center justify-center rounded-full bg-muted border border-border text-foreground font-mono text-xs font-medium"
-          title="Patron Profile"
+        <Link
+          href="/account"
+          className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 border border-primary/20 text-primary font-mono text-xs font-semibold hover:bg-primary/20 transition-colors"
+          title="Member Profile"
         >
-          EV
-        </div>
+          JS
+        </Link>
       </div>
     </aside>
   );

@@ -24,7 +24,7 @@ export function Footer() {
 
           <div className="flex flex-col items-start md:items-end">
             <span className="font-mono text-xs text-[#a0a0a0] mb-2 uppercase tracking-wider">
-              Curatorial Inquiries
+              Travel Inquiries
             </span>
             <a
               href="mailto:concierge@tripspree.com"
@@ -49,7 +49,7 @@ export function Footer() {
               </li>
               <li>
                 <Link href="/journal" className="hover:text-white transition-colors">
-                  Curator&apos;s Journal
+                  Travel Journal
                 </Link>
               </li>
               <li>
@@ -67,7 +67,7 @@ export function Footer() {
 
           <div>
             <span className="font-mono text-xs tracking-wider uppercase text-white/50 block mb-4">
-              Curations
+              Destinations
             </span>
             <ul className="space-y-2.5 text-[#a0a0a0]">
               <li>
@@ -110,7 +110,7 @@ export function Footer() {
               Provenance
             </span>
             <p className="font-sans text-xs text-[#a0a0a0] leading-relaxed">
-              Every route in TripSpree has been personally traversed by a curator. No algorithmic aggregations.
+              Every route in TripSpree has been personally traversed by a destination specialist. No algorithmic aggregations.
             </p>
           </div>
         </div>
@@ -120,7 +120,7 @@ export function Footer() {
           <span>© 2026 TripSpree. All rights reserved.</span>
           <div className="flex items-center space-x-6">
             <span className="hover:text-white cursor-pointer transition-colors">Privacy Charter</span>
-            <span className="hover:text-white cursor-pointer transition-colors">Patron Agreement</span>
+            <span className="hover:text-white cursor-pointer transition-colors">Membership Terms</span>
             <span className="hover:text-white cursor-pointer transition-colors">Accessibility</span>
           </div>
         </div>

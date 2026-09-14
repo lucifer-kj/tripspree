@@ -6,11 +6,11 @@ import { Sparkles, ShieldCheck, MapPin, Feather } from "lucide-react";
 export function ManifestoSection() {
   const pillars = [
     {
-      title: "The Curatorial Method",
+      title: "The Bespoke Method",
       tag: "Verified",
       tagColor: "bg-chart-1/15 text-chart-1 border-chart-1/25",
       description:
-        "Every itinerary is individually drafted by a dedicated private curator. No generic templates, no mass bookings.",
+        "Every itinerary is individually drafted by a dedicated travel director. No generic templates, no mass bookings.",
       icon: Feather,
     },
     {
@@ -18,12 +18,12 @@ export function ManifestoSection() {
       tag: "Team-Vetted",
       tagColor: "bg-chart-2/15 text-chart-2 border-chart-2/25",
       description:
-        "We inspect estates, private islands, and lodges in person before ever presenting them to our patrons.",
+        "We inspect estates, private islands, and lodges in person before ever presenting them to our travelers.",
       icon: ShieldCheck,
     },
     {
       title: "Singular Access",
-      tag: "Curated",
+      tag: "Verified",
       tagColor: "bg-chart-3/15 text-chart-3 border-chart-3/25",
       description:
         "Private after-hours entry to cultural treasures, maritime charters, and quiet remote preserves.",

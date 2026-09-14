@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import { ArrowUpRight } from "lucide-react";
@@ -26,7 +26,7 @@ const JOURNAL_ENTRIES: JournalEntry[] = [
     region: "Kyoto, Japan",
     category: "Cultural Sanctuaries",
     curator: "Kenji Sato",
-    curatorRole: "East Asian Heritage Curator",
+    curatorRole: "East Asian Heritage Specialist",
     date: "Autumn 2026",
     readTime: "7 min read",
     heightClass: "min-h-[440px]",

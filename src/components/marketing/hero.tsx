@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, Compass, ShieldCheck, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { UNSPLASH_ASSETS } from "@/lib/unsplash";
@@ -26,31 +27,46 @@ const PACING_OPTIONS = [
 export function Hero({ isReducedMotion }: HeroProps) {
   const [selectedSanctuary, setSelectedSanctuary] = useState("kyoto");
   const [selectedPace, setSelectedPace] = useState("unhurried");
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Framer Motion scroll parallax
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+  const cardY = useTransform(scrollYProgress, [0, 1], ["0%", "-6%"]);
 
   return (
     <section
-      className="relative min-h-[92vh] w-full flex items-center justify-center px-4 py-20 sm:px-8 md:px-12 lg:px-16 overflow-hidden bg-background"
+      ref={sectionRef}
+      className="relative min-h-[95vh] w-full flex items-center justify-center px-4 py-24 sm:px-8 md:px-12 lg:px-16 overflow-hidden bg-background"
       aria-label="TripSpree Hero Section"
     >
-      {/* Full-Bleed Atmospheric Background Photography from Unsplash */}
-      <div className="absolute inset-0 z-0">
+      {/* Full-Bleed Parallax Background Photography from Unsplash */}
+      <motion.div
+        style={{ y: isReducedMotion ? "0%" : backgroundY }}
+        className="absolute inset-0 z-0 h-[120%] -top-[10%]"
+      >
         <Image
           src={UNSPLASH_ASSETS.heroBackground.url}
           alt={UNSPLASH_ASSETS.heroBackground.alt}
           fill
           priority
           sizes="100vw"
-          className={`object-cover object-center ${
-            isReducedMotion ? "scale-100" : "scale-105 transition-transform duration-1000"
-          }`}
+          className="object-cover object-center"
         />
         {/* Editorial Vignette & Contrast Gradients */}
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-background/30" />
         <div className="absolute inset-0 bg-[#060606]/40 backdrop-blur-[2px]" />
-      </div>
+      </motion.div>
 
-      {/* Floating Modern Editorial Card (Inspired by User Reference) */}
-      <div className="relative z-10 mx-auto w-full max-w-6xl">
+      {/* Floating Modern Editorial Card with Scroll Parallax Offset */}
+      <motion.div
+        style={{ y: isReducedMotion ? "0%" : cardY }}
+        className="relative z-10 mx-auto w-full max-w-6xl"
+      >
         <div className="rounded-3xl border border-white/20 bg-background/90 backdrop-blur-xl p-6 sm:p-10 md:p-12 lg:p-14 shadow-2xl text-foreground">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             {/* Left Column: Monumental Headline & Curatorial Search */}
@@ -85,18 +101,20 @@ export function Hero({ isReducedMotion }: HeroProps) {
                   </span>
                   <div className="flex flex-wrap gap-2">
                     {DESTINATIONS.map((dest) => (
-                      <button
+                      <motion.button
                         key={dest.id}
                         type="button"
+                        whileHover={isReducedMotion ? undefined : { y: -2, scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
                         onClick={() => setSelectedSanctuary(dest.id)}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-sans transition-all border cursor-pointer ${
+                        className={`px-3.5 py-1.5 rounded-xl text-xs font-sans transition-all border cursor-pointer ${
                           selectedSanctuary === dest.id
                             ? "bg-primary text-primary-foreground border-primary font-medium shadow-sm"
                             : "bg-background text-muted-foreground border-border hover:text-foreground hover:border-primary/40"
                         }`}
                       >
                         {dest.label}
-                      </button>
+                      </motion.button>
                     ))}
                   </div>
                 </div>
@@ -107,18 +125,20 @@ export function Hero({ isReducedMotion }: HeroProps) {
                   </span>
                   <div className="flex flex-wrap gap-2">
                     {PACING_OPTIONS.map((pace) => (
-                      <button
+                      <motion.button
                         key={pace.id}
                         type="button"
+                        whileHover={isReducedMotion ? undefined : { y: -1, scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
                         onClick={() => setSelectedPace(pace.id)}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-sans transition-all border cursor-pointer ${
+                        className={`px-3.5 py-1.5 rounded-xl text-xs font-sans transition-all border cursor-pointer ${
                           selectedPace === pace.id
                             ? "bg-muted text-foreground border-border font-medium"
                             : "bg-background text-muted-foreground border-border/70 hover:text-foreground hover:border-border"
                         }`}
                       >
                         {pace.label}
-                      </button>
+                      </motion.button>
                     ))}
                   </div>
                 </div>
@@ -129,7 +149,7 @@ export function Hero({ isReducedMotion }: HeroProps) {
                     <span>100% Team-Vetted Stays</span>
                   </div>
 
-                  <Link href="/designer">
+                  <Link href={`/designer?realm=${selectedSanctuary}&pace=${selectedPace}`}>
                     <Button
                       size="default"
                       className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90 px-6 font-sans text-xs shadow-md cursor-pointer"
@@ -145,7 +165,7 @@ export function Hero({ isReducedMotion }: HeroProps) {
               <div className="flex items-center gap-6 text-[11px] font-mono text-muted-foreground">
                 <span className="flex items-center gap-1.5">
                   <Sparkles className="h-3 w-3 text-primary" />
-                  Quiet Concierge Voice Consultation
+                  Voice Agent Consultation
                 </span>
                 <span>•</span>
                 <span>Private & Discrepant Access</span>
@@ -154,13 +174,17 @@ export function Hero({ isReducedMotion }: HeroProps) {
 
             {/* Right Column: Dimensional Framed Sanctuary Visual Frame */}
             <div className="lg:col-span-5 relative">
-              <div className="relative aspect-[4/5] sm:aspect-square lg:aspect-[4/5] w-full rounded-2xl overflow-hidden border border-border shadow-xl group">
+              <motion.div
+                whileHover={isReducedMotion ? undefined : { y: -4, scale: 1.01 }}
+                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                className="relative aspect-[4/5] sm:aspect-square lg:aspect-[4/5] w-full rounded-2xl overflow-hidden border border-border shadow-xl group"
+              >
                 <Image
                   src={UNSPLASH_ASSETS.heroFocalPavilion.url}
                   alt={UNSPLASH_ASSETS.heroFocalPavilion.alt}
                   fill
                   sizes="(max-width: 1024px) 100vw, 40vw"
-                  className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                  className="object-cover object-center group-hover:scale-106 transition-transform duration-700"
                 />
 
                 {/* Subtle Inner Gradient for Contrast */}
@@ -181,7 +205,7 @@ export function Hero({ isReducedMotion }: HeroProps) {
                     Natural thermal springs overlooking tranquil coastal pine islands.
                   </h2>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Photo Attribution Micro-tag */}
               <p className="mt-2 text-right text-[9px] font-mono text-muted-foreground">
@@ -199,7 +223,7 @@ export function Hero({ isReducedMotion }: HeroProps) {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

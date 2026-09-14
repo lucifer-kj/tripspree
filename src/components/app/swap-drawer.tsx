@@ -91,7 +91,7 @@ export function SwapDrawer({
             {/* Alternatives List (2-3 options) */}
             <div className="flex-1 overflow-y-auto p-6 space-y-4">
               <span className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground block mb-2">
-                Curator Recommended Options
+                Specialist Recommended Options
               </span>
 
               {alternatives.map((alt) => (

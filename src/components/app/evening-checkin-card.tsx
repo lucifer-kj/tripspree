@@ -2,20 +2,32 @@
 
 import { useState } from "react";
 import { Check, Moon, RefreshCw } from "lucide-react";
+import { useTripSpreeStore } from "@/lib/store";
 
 export function EveningCheckinCard() {
-  const [selectedPacing, setSelectedPacing] = useState<string | null>(null);
-  const [isCompleted, setIsCompleted] = useState(false);
+  const { checkIns, submitCheckIn } = useTripSpreeStore();
+  const latestCheckIn = checkIns.find((c) => c.dayNumber === 2);
+  const [selectedPacing, setSelectedPacing] = useState<string | null>(
+    latestCheckIn ? latestCheckIn.mood : null
+  );
+  const [isCompleted, setIsCompleted] = useState(Boolean(latestCheckIn));
 
   const pacingOptions = [
-    { id: "perfect", label: "Cadence was perfect" },
-    { id: "fast", label: "A bit rushed / more rest" },
-    { id: "quiet", label: "Too quiet / more access" },
+    { id: "perfect", label: "Cadence was perfect", mood: "exceptional" as const },
+    { id: "fast", label: "A bit rushed / more rest", mood: "fatigued" as const },
+    { id: "quiet", label: "Too quiet / more access", mood: "needs-adjustment" as const },
   ];
 
   const handleSelect = (id: string) => {
+    const opt = pacingOptions.find((p) => p.id === id);
     setSelectedPacing(id);
     setIsCompleted(true);
+    submitCheckIn({
+      dayNumber: 2,
+      sanctuary: "Hoshinoya Kyoto",
+      mood: opt?.mood || "peaceful",
+      notes: opt?.label,
+    });
   };
 
   const handleReset = () => {
@@ -53,7 +65,7 @@ export function EveningCheckinCard() {
                 Recorded for tomorrow: &ldquo;{pacingOptions.find((p) => p.id === selectedPacing)?.label}&rdquo;
               </p>
               <p className="font-mono text-[11px] text-muted-foreground mt-0.5">
-                Curator Elena Vance notified • Adjustments applied
+                Agent Elena Vance notified • Adjustments applied
               </p>
             </div>
           </div>

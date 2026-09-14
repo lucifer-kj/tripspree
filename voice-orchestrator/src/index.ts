@@ -37,21 +37,23 @@ app.use(
   })
 );
 
-// Health check endpoint
+// Health check endpoint (for Vercel deployment verification)
 app.get('/health', (_req, res) => {
   res.status(200).json({
-    status: 'healthy',
+    status: 'ok',
     service: 'voice-orchestrator',
     timestamp: new Date().toISOString(),
-    version: '1.0.0',
   });
 });
 
 // Vapi Webhook entry point
 app.post('/webhooks/vapi', handleVapiWebhook);
 
-export const server = app.listen(PORT, () => {
-  console.log(`[Voice Orchestrator] Service listening on port ${PORT}`);
-});
+// Start server only for local development (skipped on Vercel Fluid Compute)
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`[Voice Orchestrator] Service listening on port ${PORT}`);
+  });
+}
 
 export default app;

@@ -1,17 +1,28 @@
 "use client";
 
+import { useTripSpreeStore } from "@/lib/store";
+import { InAppJournalView } from "@/components/app/in-app-journal-view";
 import Image from "next/image";
+import Link from "next/link";
 import { useReducedMotionState } from "@/lib/use-reduced-motion";
 import { Navbar } from "@/components/marketing/navbar";
 import { Footer } from "@/components/marketing/footer";
 import { ScrollHeadline } from "@/components/marketing/scroll-headline";
 import { JournalGrid } from "@/components/journal/journal-grid";
-import { BookOpen, Sparkles, Feather, ArrowUpRight } from "lucide-react";
+import { BookOpen, Sparkles, Feather, ArrowUpRight, ShieldCheck, Compass } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { UNSPLASH_ASSETS } from "@/lib/unsplash";
 
 export default function JournalIndexPage() {
+  const { isAuthenticated, currentUser } = useTripSpreeStore();
   const { isReducedMotion, toggleReducedMotion } = useReducedMotionState();
 
+  // If user is authenticated, render the rich in-app dashboard journal
+  if (isAuthenticated && currentUser) {
+    return <InAppJournalView />;
+  }
+
+  // Public visitor marketing view of the Journal
   return (
     <main className="min-h-screen bg-background text-foreground selection:bg-primary/20 selection:text-primary">
       {/* Global Navigation */}
@@ -23,11 +34,20 @@ export default function JournalIndexPage() {
       {/* Editorial Journal Header */}
       <header className="relative pt-36 pb-20 px-6 md:px-16 border-b border-border bg-muted/30">
         <div className="mx-auto max-w-6xl">
-          <div className="flex items-center gap-2 mb-4">
-            <BookOpen className="h-4 w-4 text-primary" />
-            <span className="font-mono text-xs tracking-[0.25em] uppercase text-muted-foreground">
-              Curator&apos;s Journal &mdash; Volume I
-            </span>
+          <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
+            <div className="flex items-center gap-2">
+              <BookOpen className="h-4 w-4 text-primary" />
+              <span className="font-mono text-xs tracking-[0.25em] uppercase text-muted-foreground">
+                Travel Journal &mdash; Volume I
+              </span>
+            </div>
+
+            <Link href="/designer">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 font-mono text-[11px] text-primary border border-primary/25 hover:bg-primary/20 transition-colors">
+                <ShieldCheck className="h-3 w-3" />
+                <span>Member Sign-In</span>
+              </span>
+            </Link>
           </div>
 
           <div className="max-w-4xl mb-8">
@@ -40,8 +60,8 @@ export default function JournalIndexPage() {
           </div>
 
           <p className="max-w-2xl font-sans text-base sm:text-lg text-muted-foreground leading-relaxed">
-            The Journal is not a catalog of recommendations or touristic itineraries. It is a contemplative archive of field observations,
-            architectural studies, and philosophical reflections penned by our private curators in residence.
+            The Journal is not a catalog of generic itineraries. It is a contemplative archive of field observations,
+            architectural studies, and philosophical reflections penned by our travel specialists in residence.
           </p>
         </div>
       </header>
@@ -80,7 +100,7 @@ export default function JournalIndexPage() {
               <div className="flex items-center gap-3 font-mono text-xs text-white/60">
                 <span>By Claire Dubois</span>
                 <span>•</span>
-                <span>Founding Curator</span>
+                <span>Destination Specialist</span>
                 <span>•</span>
                 <span>12 min read</span>
               </div>
@@ -88,7 +108,7 @@ export default function JournalIndexPage() {
 
             <div className="relative z-10 max-w-3xl">
               <span className="font-mono text-xs tracking-widest uppercase text-primary block mb-3">
-                Curatorial Essay
+                Featured Essay
               </span>
               <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-normal leading-tight text-white mb-6 group-hover:text-primary-foreground/90 transition-colors">
                 The Geometry of Sunlight: Shadows Across Roman Aqueducts at Twilight
@@ -97,16 +117,21 @@ export default function JournalIndexPage() {
                 How Mediterranean stone absorbs the heat of midsummer and exhales it into the evening air — reflections on staying inside a 16th-century mas where time is measured only by the movement of olive branch shadows across lime-plastered walls.
               </p>
 
-              <div className="flex items-center gap-2 text-sm font-mono tracking-wider uppercase text-white/80 group-hover:text-white transition-colors">
-                <span>Read Full Dispatch</span>
-                <ArrowUpRight className="h-4 w-4" />
-              </div>
+              <Link href="/designer">
+                <Button
+                  variant="outline"
+                  className="rounded-full border-white/30 text-white bg-white/10 hover:bg-white/20 font-mono text-xs tracking-wider uppercase gap-2 cursor-pointer"
+                >
+                  <span>Sign In to Read Full Dispatches</span>
+                  <ArrowUpRight className="h-3.5 w-3.5" />
+                </Button>
+              </Link>
             </div>
           </article>
         </div>
       </section>
 
-      {/* Asymmetric 3-Column Journal Grid (Tengile Reference) */}
+      {/* Asymmetric 3-Column Journal Grid */}
       <section className="py-12 px-6 md:px-16 bg-background">
         <div className="mx-auto max-w-6xl">
           <div className="mb-12">
@@ -128,11 +153,11 @@ export default function JournalIndexPage() {
         </div>
       </section>
 
-      {/* Dark-Ground Rest Beat (homepage-motion.md technique applied to Journal) */}
+      {/* Dark-Ground Rest Beat */}
       <section className="bg-[#060606] text-[#f0f0f0] py-32 px-6 md:px-16 border-t border-white/10">
         <div className="mx-auto max-w-4xl text-center">
           <span className="font-mono text-xs tracking-[0.25em] uppercase text-primary block mb-6">
-            Curatorial Creed
+            Travel Philosophy
           </span>
 
           <ScrollHeadline
@@ -141,10 +166,19 @@ export default function JournalIndexPage() {
             isReducedMotion={isReducedMotion}
           />
 
-          <p className="font-sans text-base sm:text-lg text-[#a0a0a0] leading-relaxed max-w-2xl mx-auto">
-            We commission our curators not to record lists of places, but to document moments of awakening.
+          <p className="font-sans text-base sm:text-lg text-[#a0a0a0] leading-relaxed max-w-2xl mx-auto mb-8">
+            We commission our destination writers not to record lists of places, but to document moments of awakening.
             When you return from a TripSpree journey, the world has not changed — but your presence within it has.
           </p>
+
+          <Link href="/designer">
+            <Button
+              className="rounded-full bg-primary text-primary-foreground font-sans text-xs uppercase tracking-wider px-8 py-3 cursor-pointer"
+            >
+              <Compass className="mr-2 h-4 w-4" />
+              <span>Explore The Journey Studio</span>
+            </Button>
+          </Link>
         </div>
       </section>
 

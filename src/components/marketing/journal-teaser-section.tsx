@@ -1,8 +1,9 @@
 "use client";
 
+import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { ScrollHeadline } from "@/components/marketing/scroll-headline";
 import { BookOpen, ArrowRight, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,6 +14,14 @@ interface JournalTeaserProps {
 }
 
 export function JournalTeaserSection({ isReducedMotion }: JournalTeaserProps) {
+  const containerRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"],
+  });
+
+  const middleColParallax = useTransform(scrollYProgress, [0, 1], [30, -30]);
+
   const teasers = [
     {
       id: "autumn-kyoto",
@@ -31,7 +40,7 @@ export function JournalTeaserSection({ isReducedMotion }: JournalTeaserProps) {
       curator: "M. Rossi",
       date: "September 2026",
       readTime: "8 min read",
-      aspect: "aspect-[3/4.5] md:translate-y-6",
+      aspect: "aspect-[3/4.5]",
       asset: UNSPLASH_ASSETS.mountFujiSunrise,
     },
     {
@@ -48,8 +57,9 @@ export function JournalTeaserSection({ isReducedMotion }: JournalTeaserProps) {
 
   return (
     <section
+      ref={containerRef}
       id="journal"
-      className="relative z-10 bg-background text-foreground py-28 px-6 md:px-16 border-t border-border transition-colors duration-300"
+      className="relative z-10 bg-background text-foreground py-32 px-6 md:px-16 border-t border-border transition-colors duration-300 overflow-hidden"
     >
       <div className="mx-auto max-w-6xl">
         {/* Section Header */}
@@ -69,7 +79,7 @@ export function JournalTeaserSection({ isReducedMotion }: JournalTeaserProps) {
             />
 
             <p className="font-sans text-base sm:text-lg text-muted-foreground leading-relaxed mt-6">
-              Field journals penned by our private curators across five continents — reflections on the fragrance of cedar in Yoshino,
+              Field dispatches penned by our destination specialists across five continents — reflections on the fragrance of cedar in Yoshino,
               the maritime stillness of the Aegean at twilight, and the philosophy of returning changed.
             </p>
           </div>
@@ -86,74 +96,75 @@ export function JournalTeaserSection({ isReducedMotion }: JournalTeaserProps) {
           </Link>
         </div>
 
-        {/* Asymmetric 3-Column Preview Grid with Smooth Staggered Reveals */}
+        {/* Asymmetric 3-Column Preview Grid with Smooth Staggered Parallax & Hover Physics */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
-          {teasers.map((entry, idx) => (
-            <motion.div
-              key={idx}
-              initial={isReducedMotion ? undefined : { opacity: 0, y: 24 }}
-              whileInView={isReducedMotion ? undefined : { opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-5% 0px" }}
-              transition={{
-                duration: 0.65,
-                delay: idx * 0.12,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-              className={entry.aspect}
-            >
-              <Link
-                href="/journal"
-                className={`group relative flex flex-col h-full w-full overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 ${
+          {teasers.map((entry, idx) => {
+            const isMiddle = idx === 1;
+            return (
+              <motion.div
+                key={entry.id}
+                style={{
+                  y: isReducedMotion ? 0 : isMiddle ? middleColParallax : 0,
+                }}
+                initial={isReducedMotion ? undefined : { opacity: 0, y: 24 }}
+                whileInView={isReducedMotion ? undefined : { opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-5% 0px" }}
+                whileHover={
                   isReducedMotion
-                    ? "hover:border-primary"
-                    : "hover:border-primary/50 hover:shadow-2xl"
+                    ? undefined
+                    : {
+                        y: -6,
+                        transition: { duration: 0.25, ease: [0.16, 1, 0.3, 1] },
+                      }
+                }
+                transition={{
+                  duration: 0.65,
+                  delay: idx * 0.12,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+                className={`group rounded-2xl overflow-hidden border border-border bg-card shadow-sm hover:shadow-xl hover:border-primary/40 transition-colors ${
+                  isMiddle ? "md:translate-y-6" : ""
                 }`}
               >
-                {/* Photo Area with Background Image */}
-                <div className="relative flex-1 w-full h-full p-6 flex flex-col justify-between overflow-hidden">
-                  <Image
-                    src={entry.asset.url}
-                    alt={entry.asset.alt}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                    className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
-                  />
-
-                  {/* Dark Vignette Scrim */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/40" />
-
-                  {/* Floating Badge */}
-                  <div className="flex justify-between items-start z-10">
-                    <span className="font-mono text-[10px] tracking-wider uppercase px-2.5 py-1 rounded-full bg-background/80 backdrop-blur-md text-foreground border border-white/20">
-                      {entry.category}
-                    </span>
-
-                    {/* Circular Arrow Button (Tengile mechanic) */}
-                    <div className="h-9 w-9 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity">
-                      <ArrowUpRight className="h-4 w-4" />
+                <Link href="/journal">
+                  {/* Aspect-Ratio Box with next/image */}
+                  <div className={`relative w-full ${entry.aspect} overflow-hidden bg-muted`}>
+                    <Image
+                      src={entry.asset.url}
+                      alt={entry.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white font-mono text-xs">
+                      <span>{entry.category}</span>
                     </div>
                   </div>
 
-                  {/* Bottom Overlay Info */}
-                  <div className="z-10 text-white">
-                    <div className="flex items-center gap-2 font-mono text-[10px] text-white/70 mb-2">
-                      <span>{entry.curator}</span>
-                      <span>•</span>
-                      <span>{entry.readTime}</span>
+                  {/* Metadata & Title */}
+                  <div className="p-6 flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center justify-between text-xs font-mono text-muted-foreground mb-3">
+                        <span>{entry.date}</span>
+                        <span>{entry.readTime}</span>
+                      </div>
+
+                      <h3 className="font-serif text-2xl font-normal text-foreground group-hover:text-primary transition-colors leading-snug flex items-center justify-between">
+                        <span>{entry.title}</span>
+                        <ArrowUpRight className="h-4 w-4 opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all text-primary shrink-0 ml-2" />
+                      </h3>
                     </div>
 
-                    <h3 className="font-serif text-xl sm:text-2xl font-normal leading-snug text-white group-hover:text-primary-foreground transition-colors">
-                      {entry.title}
-                    </h3>
-
-                    <p className="mt-2 text-[9px] font-mono text-white/50">
-                      Photo by {entry.asset.photographer}
-                    </p>
+                    <div className="mt-6 pt-4 border-t border-border/60 flex items-center justify-between text-xs font-mono text-muted-foreground group-hover:text-foreground transition-colors">
+                      <span>Written by {entry.curator}</span>
+                      <span className="text-primary font-sans text-xs">Read Article →</span>
+                    </div>
                   </div>
-                </div>
-              </Link>
-            </motion.div>
-          ))}
+                </Link>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>

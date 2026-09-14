@@ -29,10 +29,10 @@ export function ManifestoDarkBeat({ isReducedMotion }: ManifestoDarkBeatProps) {
     {
       icon: Shield,
       title: "Total Discretion",
-      chip: "Curated Standard",
+      chip: "Verified Standard",
       chipClass: "bg-chart-3/15 text-chart-3 border-chart-3/30",
       description:
-        "Encrypted communications, private air charters, and quiet ground transfers arranged directly by your dedicated curator.",
+        "Encrypted communications, private air charters, and quiet ground transfers arranged directly by your dedicated travel director.",
     },
   ];
 
@@ -57,17 +57,18 @@ export function ManifestoDarkBeat({ isReducedMotion }: ManifestoDarkBeatProps) {
             text="We do not book itineraries. We compose memory."
             className="text-4xl sm:text-6xl md:text-7xl text-white font-normal leading-[1.1]"
             isReducedMotion={isReducedMotion}
+            mode="scrub"
           />
         </div>
 
         {/* One Substantial Literary Paragraph */}
         <p className="max-w-2xl font-sans text-base sm:text-lg text-[#a0a0a0] leading-relaxed mb-20">
-          Standard travel platforms arrange transit and rooms. We curate moments of profound arrival.
-          We work with a select circle of patrons each season, ensuring every encounter is shaped with depth,
+          Standard travel platforms arrange transit and rooms. We design moments of profound arrival.
+          We work with a select circle of travelers each season, ensuring every encounter is shaped with depth,
           culinary authenticity, and absolute reverence for silence.
         </p>
 
-        {/* Three Pillars in Rest Beat with Smooth Staggered Reveals */}
+        {/* Three Pillars in Rest Beat with Smooth Staggered Reveals & Hover Physics */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {pillars.map((pillar, idx) => {
             const Icon = pillar.icon;
@@ -77,12 +78,21 @@ export function ManifestoDarkBeat({ isReducedMotion }: ManifestoDarkBeatProps) {
                 initial={isReducedMotion ? undefined : { opacity: 0, y: 24 }}
                 whileInView={isReducedMotion ? undefined : { opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-5% 0px" }}
+                whileHover={
+                  isReducedMotion
+                    ? undefined
+                    : {
+                        y: -5,
+                        borderColor: "rgba(255, 255, 255, 0.28)",
+                        backgroundColor: "rgba(255, 255, 255, 0.05)",
+                      }
+                }
                 transition={{
                   duration: 0.65,
                   delay: idx * 0.12,
                   ease: [0.16, 1, 0.3, 1],
                 }}
-                className="rounded-xl border border-white/10 bg-white/[0.03] p-8 backdrop-blur-sm transition-all duration-300 hover:border-white/20"
+                className="rounded-xl border border-white/10 bg-white/[0.03] p-8 backdrop-blur-sm transition-colors duration-200 cursor-default"
               >
                 <div className="flex items-center justify-between mb-6">
                   <div className="h-10 w-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-primary">
