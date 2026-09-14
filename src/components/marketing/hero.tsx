@@ -32,7 +32,7 @@ export function Hero({ isReducedMotion }: HeroProps) {
   // Authentic 2-plane parallax depths matching Vita Travels
   const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "8%"]);
   const textY = useTransform(scrollYProgress, [0, 1], ["0%", "-4%"]);
-  const foregroundY = useTransform(scrollYProgress, [0, 1], ["0%", "14%"]);
+  const foregroundY = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
 
   const handleTriggerPrototype = (customPrompt?: string) => {
     const activePrompt = customPrompt || promptInput.trim();
@@ -63,7 +63,7 @@ export function Hero({ isReducedMotion }: HeroProps) {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-[96vh] lg:min-h-[102vh] w-full overflow-hidden bg-[#0c0717] text-white flex flex-col justify-between"
+      className="relative min-h-[100vh] lg:min-h-[108vh] w-full overflow-hidden bg-[#0c0717] text-white flex flex-col justify-between"
       aria-label="TripSpree Hero Section"
     >
       {/* Vita Architectural Corner Cross Markers */}
@@ -73,55 +73,37 @@ export function Hero({ isReducedMotion }: HeroProps) {
       {/* LAYER 0: Authentic Full-Bleed Sky & Mountain Landscape (100vw, no container box) */}
       <motion.div
         style={{ y: isReducedMotion ? "0%" : backgroundY }}
-        className="absolute inset-0 z-0 h-full w-full pointer-events-none select-none"
+        className="absolute inset-0 z-0 h-[115%] -top-[5%] w-full pointer-events-none select-none"
       >
         <Image
-          src="/images/hero/mountains-layer.webp"
+          src="/images/hero/bg-part-1.webp"
           alt="Expansive mountain landscape and atmospheric sky"
           fill
           priority
           sizes="100vw"
           className="object-cover object-center"
         />
+        {/* Subtle atmospheric darkening gradient for text contrast */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#0c0717]/30 via-transparent to-transparent" />
       </motion.div>
 
-      {/* LAYER 1: Monumental Title "Travel" (z-index: 2 - sits between background and foreground) */}
+      {/* LAYER 1: Vita Typography & Core CTA (Sits behind foreground hills) */}
       <motion.div
         style={{ y: isReducedMotion ? "0%" : textY }}
-        className="relative z-[2] w-full max-w-5xl mx-auto px-6 pt-24 sm:pt-28 md:pt-32 lg:pt-36 flex flex-col items-center text-center select-none"
+        className="relative z-[2] w-full max-w-5xl mx-auto px-6 pt-36 sm:pt-44 md:pt-48 flex flex-col items-center text-center"
       >
-        <h1 className="font-sans font-bold text-white text-6xl sm:text-7xl md:text-8xl lg:text-[8.5rem] tracking-tight leading-none drop-shadow-md">
+        {/* Vita Monumental Single Title: "Travel" */}
+        <h1 className="font-sans font-bold text-white text-7xl sm:text-8xl md:text-9xl lg:text-[10.5rem] tracking-tight leading-[0.9] drop-shadow-md select-none">
           Travel
         </h1>
-      </motion.div>
 
-      {/* LAYER 2: Authentic Full-Bleed Foreground Plains (Yurts, horse, rising right hill - z-index: 3) */}
-      <motion.div
-        style={{ y: isReducedMotion ? "0%" : foregroundY }}
-        className="absolute inset-0 z-[3] h-full w-full pointer-events-none select-none"
-      >
-        <Image
-          src="/images/hero/foreground-layer.webp"
-          alt="Golden foreground plains with nomadic yurts and grazing horse"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-center"
-        />
-        {/* Soft edge blend at the very bottom */}
-        <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#0c0717] to-transparent" />
-      </motion.div>
-
-      {/* LAYER 3: Subtitle, Core CTA & Sleek Consultation Pill (z-index: 4 - sits cleanly ON TOP of foreground) */}
-      <div className="relative z-[4] w-full max-w-3xl mx-auto px-4 sm:px-6 -mt-4 sm:-mt-6 pb-12 sm:pb-16 flex flex-col items-center text-center">
-        {/* Vita Purpose Subtitle: 2 lines, clean, centered, crisp white */}
-        <p className="font-sans text-sm sm:text-base md:text-lg text-white font-medium max-w-md mx-auto leading-snug drop-shadow-sm mb-6">
+        {/* Vita Purpose Subtitle: 2 lines, clean, centered */}
+        <p className="font-sans text-base sm:text-lg md:text-xl text-white font-medium max-w-xl mx-auto leading-snug mt-4 sm:mt-6 drop-shadow-sm">
           With purpose. Orchestrate unhurried journeys, rare access, and boutique stays in one place.
         </p>
 
         {/* Vita Exact White Pill Button */}
-        <div className="mb-6">
+        <div className="mt-8 flex flex-col items-center gap-4">
           <a
             href="#retreats"
             className="inline-flex items-center gap-2 rounded-full bg-white px-7 py-3 text-xs sm:text-sm font-sans font-semibold text-[#0c0717] hover:bg-white/95 transition-all shadow-xl hover:scale-105 cursor-pointer group"
@@ -136,47 +118,70 @@ export function Hero({ isReducedMotion }: HeroProps) {
             </svg>
           </a>
         </div>
+      </motion.div>
 
-        {/* Sleek Slim Consultation Pill Bar */}
-        <div className="w-full max-w-xl">
-          <div className="rounded-full border border-white/20 bg-[#0c0717]/80 backdrop-blur-xl p-1.5 pl-4 pr-1.5 shadow-2xl text-white flex items-center gap-2">
-            <Sparkles className="h-4 w-4 text-[#a855f7] shrink-0" />
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleTriggerPrototype();
-              }}
-              className="flex-1 flex items-center gap-2"
-            >
+      {/* LAYER 2: Authentic Full-Bleed Foreground Plains (Yurts, horse, golden hills) */}
+      <motion.div
+        style={{ y: isReducedMotion ? "0%" : foregroundY }}
+        className="absolute inset-x-0 bottom-0 z-[3] h-[50%] sm:h-[55%] md:h-[62%] w-full pointer-events-none select-none"
+      >
+        <Image
+          src="/images/hero/bg-part-2.webp"
+          alt="Golden foreground plains with nomadic yurts and grazing horse"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-bottom"
+        />
+        {/* Soft edge blend at the very bottom into the next section */}
+        <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#0c0717] via-[#0c0717]/80 to-transparent" />
+      </motion.div>
+
+      {/* LAYER 3: Sleek Minimalist Consultation Pill at the Base */}
+      <div className="relative z-[10] w-full max-w-3xl mx-auto px-4 sm:px-6 pb-10 sm:pb-14 flex flex-col items-center">
+        <div className="w-full rounded-2xl border border-white/20 bg-[#0c0717]/85 backdrop-blur-xl p-2.5 sm:p-3 shadow-2xl text-white">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleTriggerPrototype();
+            }}
+            className="flex items-center gap-2 sm:gap-3"
+          >
+            <div className="relative flex-1 flex items-center pl-3">
+              <Sparkles className="h-4 w-4 text-[#a855f7] shrink-0 mr-2" />
               <input
                 type="text"
                 value={promptInput}
                 onChange={(e) => setPromptInput(e.target.value)}
-                placeholder="Where is your mind drifting? (e.g. 5 days in Udaipur...)"
+                placeholder="Where is your mind drifting? (e.g. 5 days in Udaipur palaces...)"
                 className="w-full bg-transparent text-xs sm:text-sm text-white placeholder:text-white/50 focus:outline-none font-sans"
               />
-              <button
-                type="button"
-                onClick={() => setIsVoiceGateOpen(true)}
-                title="Voice Consultation (Member Feature)"
-                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full hover:bg-white/10 text-white/70 hover:text-white transition-colors cursor-pointer"
-              >
-                <Mic className="h-3.5 w-3.5" />
-              </button>
-              <Button
-                type="submit"
-                size="sm"
-                className="h-8 rounded-full bg-primary text-white hover:bg-primary/90 px-4 text-xs font-sans font-medium shrink-0 cursor-pointer"
-              >
-                <span>Consult</span>
-                <ArrowRight className="h-3 w-3" />
-              </Button>
-            </form>
-          </div>
+            </div>
 
-          {/* Quick inspiration chips */}
-          <div className="mt-2.5 flex items-center justify-center gap-1.5 flex-wrap">
-            <span className="font-mono text-[9px] uppercase tracking-wider text-white/50 mr-1">
+            {/* Mic Button -> Voice Gate Modal */}
+            <button
+              type="button"
+              onClick={() => setIsVoiceGateOpen(true)}
+              title="Voice Call with DIA (Member Feature)"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/15 bg-white/5 text-white/80 hover:text-primary hover:border-primary/50 transition-all cursor-pointer"
+            >
+              <Mic className="h-4 w-4" />
+            </button>
+
+            {/* Consult Button in Royal Purple */}
+            <Button
+              type="submit"
+              size="default"
+              className="h-10 rounded-xl bg-primary text-white hover:bg-primary/90 px-4 sm:px-5 text-xs sm:text-sm font-sans font-medium flex items-center gap-1.5 shadow-md cursor-pointer transition-colors"
+            >
+              <span>Consult DIA</span>
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Button>
+          </form>
+
+          {/* Quick Inspiration Chips */}
+          <div className="mt-2.5 pt-2 border-t border-white/10 flex items-center gap-1.5 flex-wrap justify-center sm:justify-start">
+            <span className="font-mono text-[9px] uppercase tracking-wider text-white/40 mr-1">
               Curate:
             </span>
             {QUICK_INSPIRATIONS.map((item) => (
@@ -187,7 +192,7 @@ export function Hero({ isReducedMotion }: HeroProps) {
                   setPromptInput(item.prompt);
                   handleTriggerPrototype(item.prompt);
                 }}
-                className="rounded-full border border-white/10 bg-[#0c0717]/60 hover:bg-primary/20 hover:border-primary/40 px-2.5 py-0.5 text-[10px] font-sans text-white/80 hover:text-white transition-all cursor-pointer backdrop-blur-xs"
+                className="rounded-lg border border-white/10 bg-white/5 hover:bg-primary/20 hover:border-primary/40 px-2 py-0.5 text-[10px] font-sans text-white/75 hover:text-white transition-all cursor-pointer"
               >
                 {item.label}
               </button>
