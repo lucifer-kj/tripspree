@@ -1,0 +1,62 @@
+{
+  "name": "TripSpree Quiet Concierge",
+  "transcriber": {
+    "provider": "deepgram",
+    "model": "nova-2",
+    "language": "en-US",
+    "smartFormat": true
+  },
+  "model": {
+    "provider": "custom-llm",
+    "systemPrompt": "You are the transport layer for TripSpree's Quiet Concierge. Always invoke the orchestrate_turn tool with the user's latest statement and session metadata. Never answer directly or fabricate facts.",
+    "tools": [
+      {
+        "type": "function",
+        "async": false,
+        "function": {
+          "name": "orchestrate_turn",
+          "description": "Evaluates user turn through TripSpree's Mastra decision tree for safety, escalation, knowledge retrieval, and grounded response synthesis.",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "transcript": {
+                "type": "string",
+                "description": "The exact latest utterance spoken by the traveler."
+              },
+              "callId": {
+                "type": "string",
+                "description": "Unique call ID provided in call context."
+              },
+              "tripId": {
+                "type": "string",
+                "description": "Current active trip identifier."
+              },
+              "userId": {
+                "type": "string",
+                "description": "Authenticated traveler profile identifier."
+              },
+              "currentSanctuary": {
+                "type": "string",
+                "description": "The sanctuary or lodging currently occupied by traveler (e.g. Amanemu, Benesse House)."
+              }
+            },
+            "required": ["transcript"]
+          }
+        }
+      }
+    ]
+  },
+  "voice": {
+    "provider": "11labs",
+    "voiceId": "sarah",
+    "model": "eleven_turbo_v2_5",
+    "stability": 0.65,
+    "similarityBoost": 0.8
+  },
+  "firstMessage": "Good evening. I'm with you — how can I assist with your journey tonight?",
+  "serverUrl": "https://api.tripspree.com/webhooks/vapi",
+  "serverUrlSecret": "configured_via_vapi_dashboard",
+  "silenceTimeoutSeconds": 25,
+  "maxDurationSeconds": 1800,
+  "backgroundSound": "off"
+}

@@ -1,0 +1,7 @@
+packages:
+  - '.'
+  - 'voice-orchestrator'
+
+allowBuilds:
+  esbuild: true
+  unrs-resolver: true
