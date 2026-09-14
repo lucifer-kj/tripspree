@@ -146,32 +146,40 @@ export function SanctuariesSection({ isReducedMotion }: SanctuariesSectionProps)
     <section
       ref={containerRef}
       id="retreats"
-      className="relative bg-[#0c0717] text-white py-24 sm:py-32 border-b border-white/10"
+      className="relative bg-[#0c0717] text-white py-28 sm:py-36 md:py-44 border-b border-white/10"
       aria-label="TripSpree Handcrafted Sanctuaries"
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12">
-        {/* Section Header & Currency Toggle */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8 border-b border-white/10 pb-10">
+        {/* Section Header & Currency Toggle with Line-Masking Wipes */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 sm:mb-20 gap-8 border-b border-white/10 pb-10">
           <div>
             <div className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-[#a855f7] mb-3">
               <span>+</span>
               <span>CURATED SANCTUARIES</span>
             </div>
-            <h2 className="font-sans font-bold text-3xl sm:text-5xl uppercase tracking-tight text-white leading-tight">
-              Quiet Private Estates, <br />
-              <span className="font-serif italic font-normal lowercase text-[#a855f7]">
-                hand-selected without
-              </span>{" "}
-              compromise
-            </h2>
+            <div className="overflow-hidden pb-1">
+              <motion.h2
+                initial={isReducedMotion ? {} : { y: "110%" }}
+                whileInView={isReducedMotion ? {} : { y: "0%" }}
+                viewport={{ once: true, margin: "-8% 0px" }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                className="font-sans font-bold text-3xl sm:text-5xl uppercase tracking-tight text-white leading-tight"
+              >
+                Quiet Private Estates, <br />
+                <span className="font-serif italic font-normal lowercase text-[#a855f7]">
+                  hand-selected without
+                </span>{" "}
+                compromise
+              </motion.h2>
+            </div>
           </div>
 
-          {/* Currency Toggle (₹ INR <-> $ USD) */}
+          {/* Currency Toggle (₹ INR <-> $ USD) with Apple Tactile Feedback */}
           <div className="shrink-0 flex items-center gap-2 rounded-full border border-white/15 bg-white/5 p-1.5 backdrop-blur-md">
             <button
               type="button"
               onClick={() => setCurrency("INR")}
-              className={`px-4 py-1.5 rounded-full font-mono text-xs transition-all cursor-pointer ${
+              className={`px-4 py-1.5 rounded-full font-mono text-xs transition-all duration-100 cursor-pointer active:scale-95 ${
                 currency === "INR"
                   ? "bg-primary text-white font-semibold shadow-xs"
                   : "text-white/60 hover:text-white"
@@ -182,7 +190,7 @@ export function SanctuariesSection({ isReducedMotion }: SanctuariesSectionProps)
             <button
               type="button"
               onClick={() => setCurrency("USD")}
-              className={`px-4 py-1.5 rounded-full font-mono text-xs transition-all cursor-pointer ${
+              className={`px-4 py-1.5 rounded-full font-mono text-xs transition-all duration-100 cursor-pointer active:scale-95 ${
                 currency === "USD"
                   ? "bg-primary text-white font-semibold shadow-xs"
                   : "text-white/60 hover:text-white"
@@ -193,16 +201,18 @@ export function SanctuariesSection({ isReducedMotion }: SanctuariesSectionProps)
           </div>
         </div>
 
-        {/* Vita Travels Signature Horizontal Split Cards (.featured-item) */}
-        <div className="space-y-8 sm:space-y-12">
+        {/* Sanctuaries List with Asymmetric Editorial Layout */}
+        <div className="space-y-12 sm:space-y-16">
           {sanctuaries.map((sanctuary, idx) => (
             <motion.div
               key={sanctuary.id}
-              initial={isReducedMotion ? {} : { opacity: 0, y: 30 }}
+              initial={isReducedMotion ? {} : { opacity: 0, y: 32 }}
               whileInView={isReducedMotion ? {} : { opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-10% 0px" }}
-              transition={{ duration: 0.5, delay: idx * 0.1 }}
-              className="group rounded-3xl border border-[#25183e] bg-[#130c24] hover:bg-[#180f2e] p-6 sm:p-8 lg:p-10 transition-all duration-300 hover:border-primary/40 shadow-xl"
+              transition={{ duration: 0.6, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }}
+              className={`group rounded-3xl border border-[#25183e] bg-[#130c24]/90 backdrop-blur-md hover:bg-[#180f2e] p-6 sm:p-8 lg:p-10 transition-all duration-300 hover:border-primary/50 shadow-2xl active:scale-[0.99] ${
+                idx % 2 === 1 ? "lg:ml-3" : "lg:mr-3"
+              }`}
             >
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
                 {/* Left Side: Property Specs & Actions (7 cols) */}
@@ -259,12 +269,12 @@ export function SanctuariesSection({ isReducedMotion }: SanctuariesSectionProps)
                     </div>
                   </div>
 
-                  {/* Button Actions with Vita 4-Point Star */}
+                  {/* Button Actions with Vita 4-Point Star & Apple Tactile Response */}
                   <div className="flex flex-wrap items-center gap-3 pt-2">
                     <button
                       type="button"
                       onClick={() => setActiveModalSanctuary(sanctuary)}
-                      className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-xs font-sans font-semibold text-[#0c0717] hover:bg-white/90 transition-all shadow-md cursor-pointer group/btn"
+                      className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-xs font-sans font-semibold text-[#0c0717] hover:bg-white/90 active:scale-95 transition-all shadow-md cursor-pointer group/btn"
                     >
                       <span>Inspect Sanctuary</span>
                       <svg
@@ -278,7 +288,7 @@ export function SanctuariesSection({ isReducedMotion }: SanctuariesSectionProps)
 
                     <Link
                       href={`/designer?sanctuary=${sanctuary.id}`}
-                      className="inline-flex items-center gap-1.5 rounded-full border border-white/20 px-4 py-2.5 text-xs font-sans text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+                      className="inline-flex items-center gap-1.5 rounded-full border border-white/20 px-4 py-2.5 text-xs font-sans text-white/80 hover:text-white hover:bg-white/10 active:scale-95 transition-all"
                     >
                       <span>Plan with DIA</span>
                       <ArrowRight className="h-3.5 w-3.5" />
@@ -286,19 +296,26 @@ export function SanctuariesSection({ isReducedMotion }: SanctuariesSectionProps)
                   </div>
                 </div>
 
-                {/* Right Side: High Resolution Photo with Zoom (6 cols) */}
+                {/* Right Side: High Resolution Photo with 650ms Luxury Easing and Interactive + Overlay (6 cols) */}
                 <div
                   onClick={() => setActiveModalSanctuary(sanctuary)}
-                  className="lg:col-span-6 relative aspect-16/10 rounded-2xl overflow-hidden bg-black/40 border border-white/15 cursor-pointer"
+                  className="lg:col-span-6 relative aspect-16/10 rounded-2xl overflow-hidden bg-black/40 border border-white/15 cursor-pointer group/img"
                 >
                   <Image
                     src={sanctuary.asset.url}
                     alt={sanctuary.title}
                     fill
                     sizes="(max-width: 1024px) 100vw, 50vw"
-                    className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                    className="object-cover object-center group-hover/img:scale-105 transition-transform duration-[650ms] ease-[cubic-bezier(0.25,1,0.5,1)]"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0c0717]/60 via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0c0717]/80 via-transparent to-transparent group-hover/img:via-[#0c0717]/30 transition-colors duration-500" />
+                  
+                  {/* Interactive + Overlay Icon on Hover */}
+                  <div className="absolute top-4 right-4 z-10 opacity-0 group-hover/img:opacity-100 transition-all duration-300 transform scale-75 group-hover/img:scale-100">
+                    <div className="h-9 w-9 rounded-full bg-white/95 backdrop-blur-md text-[#0c0717] flex items-center justify-center font-mono text-base font-bold shadow-xl">
+                      +
+                    </div>
+                  </div>
                   <div className="absolute bottom-4 right-4">
                     <span className="px-3 py-1 rounded-full bg-[#0c0717]/80 backdrop-blur-md border border-white/20 font-mono text-[10px] text-white uppercase tracking-wider">
                       {sanctuary.country}

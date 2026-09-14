@@ -65,23 +65,53 @@ export function Hero({ isReducedMotion }: HeroProps) {
       <div className="absolute top-24 left-6 z-20 text-white/30 font-mono text-sm select-none pointer-events-none">+</div>
       <div className="absolute top-24 right-6 z-20 text-white/30 font-mono text-sm select-none pointer-events-none">+</div>
 
-      {/* BASE LAYER: Complete Scenic Landscape fallback so no voids ever appear */}
-      <div className="absolute inset-0 z-0 w-full h-full pointer-events-none select-none">
-        <Image
-          src="/images/hero/bg-sky.webp"
-          alt="Atmospheric mountain backdrop"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-center"
-        />
+      {/* BASE LAYER: Complete Scenic Landscape fallback with continuous slow Ken Burns micro-scaling */}
+      <div className="absolute inset-0 z-0 w-full h-full pointer-events-none select-none overflow-hidden">
+        <motion.div
+          animate={
+            isReducedMotion
+              ? { scale: 1 }
+              : {
+                  scale: [1, 1.06, 1],
+                }
+          }
+          transition={{
+            duration: 24,
+            repeat: Infinity,
+            repeatType: "mirror",
+            ease: "easeInOut",
+          }}
+          className="relative w-full h-full origin-center"
+        >
+          <Image
+            src="/images/hero/bg-sky.webp"
+            alt="Atmospheric mountain backdrop"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center"
+          />
+        </motion.div>
         <div className="absolute inset-0 bg-[#0c0717]/15" />
       </div>
 
-      {/* LAYER 1: Mountain Ridges & Sky (Part 1 - Top Pinned, Full Width) */}
+      {/* LAYER 1: Mountain Ridges & Sky (Part 1 - Top Pinned, Full Width) with Parallax & Ken Burns */}
       <motion.div
         style={{ y: isReducedMotion ? "0%" : backgroundY }}
-        className="absolute top-0 left-0 right-0 w-full z-[1] pointer-events-none select-none"
+        animate={
+          isReducedMotion
+            ? { scale: 1 }
+            : {
+                scale: [1, 1.03, 1],
+              }
+        }
+        transition={{
+          duration: 24,
+          repeat: Infinity,
+          repeatType: "mirror",
+          ease: "easeInOut",
+        }}
+        className="absolute top-0 left-0 right-0 w-full z-[1] pointer-events-none select-none origin-top"
       >
         <Image
           src="/69b131f7e83fd36f79be5b78_bg-part-1.webp"

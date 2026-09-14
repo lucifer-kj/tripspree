@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
+import Image from "next/image";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform, type Variants } from "framer-motion";
 import { Sparkles, ShieldCheck } from "lucide-react";
 
 interface VitaCombineSectionProps {
@@ -116,18 +117,67 @@ const TAB_DATA: Record<TabType, { label: string; title: string; desc: string; st
 
 export function VitaCombineSection({ isReducedMotion }: VitaCombineSectionProps) {
   const [activeTab, setActiveTab] = useState<TabType>("stay");
+  const sectionRef = useRef<HTMLElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+
+  // Parallax background image translates at a slower velocity than foreground content
+  const bgParallaxY = useTransform(scrollYProgress, [0, 1], ["-12%", "12%"]);
 
   const currentTab = TAB_DATA[activeTab];
 
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 22 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.55,
+        ease: [0.16, 1, 0.3, 1],
+      },
+    },
+  };
+
   return (
     <section
+      ref={sectionRef}
       id="combine"
-      className="relative bg-[#0c0717] text-white py-24 sm:py-32 border-b border-white/10"
+      className="relative bg-[#0c0717] text-white py-28 sm:py-36 border-b border-white/10 overflow-hidden"
       aria-label="TripSpree Combine Workflow"
     >
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
+      {/* 3D Parallax Background Image translating slower than foreground */}
+      <motion.div
+        style={{ y: isReducedMotion ? "0%" : bgParallaxY }}
+        className="absolute -top-[18%] inset-x-0 -bottom-[18%] w-full pointer-events-none select-none z-0"
+      >
+        <Image
+          src="/images/hero/bg-sky.webp"
+          alt="Atmospheric landscape backdrop"
+          fill
+          sizes="100vw"
+          className="object-cover object-center opacity-35"
+        />
+        {/* Soft Obsidian Vignette Scrim */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0c0717] via-[#0c0717]/85 to-[#0c0717]" />
+        <div className="absolute inset-0 bg-[radial-gradient(#8247ff15_1px,transparent_1px)] [background-size:36px_36px]" />
+      </motion.div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 sm:mb-16 gap-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
           <div>
             <div className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-[#a855f7] mb-3">
               <span>+</span>
@@ -142,14 +192,14 @@ export function VitaCombineSection({ isReducedMotion }: VitaCombineSectionProps)
             </h2>
           </div>
 
-          {/* Vita Style Tab Selectors */}
+          {/* Vita Style Tab Selectors with Apple Tactile Feedback */}
           <div className="flex items-center gap-2 rounded-full border border-white/15 bg-white/5 p-1.5 backdrop-blur-md">
             {(["stay", "transfers", "extras"] as TabType[]).map((tab) => (
               <button
                 key={tab}
                 type="button"
                 onClick={() => setActiveTab(tab)}
-                className={`px-4 py-1.5 rounded-full font-sans text-xs transition-all cursor-pointer ${
+                className={`px-4 py-1.5 rounded-full font-sans text-xs transition-all duration-100 cursor-pointer active:scale-95 ${
                   activeTab === tab
                     ? "bg-primary text-white font-semibold shadow-xs"
                     : "text-white/60 hover:text-white"
@@ -162,7 +212,7 @@ export function VitaCombineSection({ isReducedMotion }: VitaCombineSectionProps)
         </div>
 
         {/* Tab Description Banner */}
-        <div className="mb-10 p-6 rounded-2xl border border-[#25183e] bg-[#130c24] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="mb-12 p-6 sm:p-7 rounded-2xl border border-[#25183e] bg-[#130c24]/90 backdrop-blur-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xl">
           <div>
             <h3 className="font-sans font-bold text-lg text-white mb-1">
               {currentTab.title}
@@ -180,20 +230,21 @@ export function VitaCombineSection({ isReducedMotion }: VitaCombineSectionProps)
           </div>
         </div>
 
-        {/* 4-Step Architecture Cards Grid */}
+        {/* 4-Step Architecture Cards Grid with Staggered Fade-Up Reveals */}
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
-            initial={isReducedMotion ? {} : { opacity: 0, y: 15 }}
-            animate={isReducedMotion ? {} : { opacity: 1, y: 0 }}
-            exit={isReducedMotion ? {} : { opacity: 0, y: -15 }}
-            transition={{ duration: 0.35 }}
+            variants={containerVariants}
+            initial={isReducedMotion ? "visible" : "hidden"}
+            animate="visible"
+            exit={isReducedMotion ? {} : { opacity: 0, y: -10 }}
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
           >
             {currentTab.steps.map((item) => (
-              <div
+              <motion.div
                 key={item.step}
-                className="relative rounded-2xl border border-[#25183e] bg-[#130c24] hover:bg-[#180f2e] p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 group hover:border-primary/40 shadow-lg"
+                variants={itemVariants}
+                className="relative rounded-2xl border border-[#25183e] bg-[#130c24]/90 backdrop-blur-md hover:bg-[#180f2e] p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 group hover:border-primary/40 active:scale-[0.985] shadow-lg"
               >
                 {/* Step Top Row */}
                 <div className="flex items-center justify-between mb-8">
@@ -222,7 +273,7 @@ export function VitaCombineSection({ isReducedMotion }: VitaCombineSectionProps)
                     →
                   </span>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </motion.div>
         </AnimatePresence>

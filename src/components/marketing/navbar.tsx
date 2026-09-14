@@ -24,10 +24,10 @@ export function Navbar({ isReducedMotion, onToggleReducedMotion }: NavbarProps =
 
   return (
     <motion.header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         isScrolled || isMobileMenuOpen
           ? "bg-[#0c0717]/80 backdrop-blur-2xl backdrop-saturate-180 border-b border-white/15 text-white shadow-[0_8px_32px_0_rgba(0,0,0,0.37)]"
-          : "bg-transparent text-white"
+          : "bg-black/15 backdrop-blur-[6px] border-b border-white/5 text-white"
       }`}
     >
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 md:px-12">

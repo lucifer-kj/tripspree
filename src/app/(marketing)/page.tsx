@@ -1,6 +1,7 @@
 "use client";
 
 import { useReducedMotionState } from "@/lib/use-reduced-motion";
+import { SmoothScrollProvider } from "@/components/marketing/smooth-scroll-provider";
 import { Preloader } from "@/components/marketing/preloader";
 import { Navbar } from "@/components/marketing/navbar";
 import { Hero } from "@/components/marketing/hero";
@@ -17,39 +18,41 @@ export default function MarketingHomePage() {
   const { isReducedMotion } = useReducedMotionState();
 
   return (
-    <main className="min-h-screen bg-[#0c0717] text-white selection:bg-primary/30 selection:text-white">
-      {/* Editorial Preloader */}
-      <Preloader isReducedMotion={isReducedMotion} />
+    <SmoothScrollProvider>
+      <main className="min-h-screen bg-[#0c0717] text-white selection:bg-primary/30 selection:text-white">
+        {/* Editorial Preloader */}
+        <Preloader isReducedMotion={isReducedMotion} />
 
-      {/* Global Navigation with Vita Star Monogram */}
-      <Navbar />
+        {/* Global Navigation with Vita Star Monogram */}
+        <Navbar />
 
-      {/* Section 1: Vita 3-Plane Layered Parallax Hero with Integrated Chatbox */}
-      <Hero isReducedMotion={isReducedMotion} />
+        {/* Section 1: Vita 3-Plane Layered Parallax Hero with Integrated Chatbox */}
+        <Hero isReducedMotion={isReducedMotion} />
 
-      {/* Section 2: 3-Column Bordered Realms & Statistic Cards */}
-      <VitaStatisticSection isReducedMotion={isReducedMotion} />
+        {/* Section 2: 3-Column Bordered Realms & Statistic Cards */}
+        <VitaStatisticSection isReducedMotion={isReducedMotion} />
 
-      {/* Section 3: Editorial About Frame, Indented Manifesto & Counters */}
-      <VitaAboutSection isReducedMotion={isReducedMotion} />
+        {/* Section 3: Editorial About Frame, Indented Manifesto & Counters */}
+        <VitaAboutSection isReducedMotion={isReducedMotion} />
 
-      {/* Section 4: Vita Horizontal Split Card Sanctuaries with 4 Metadata Rows */}
-      <SanctuariesSection isReducedMotion={isReducedMotion} />
+        {/* Section 4: Vita Horizontal Split Card Sanctuaries with 4 Metadata Rows */}
+        <SanctuariesSection isReducedMotion={isReducedMotion} />
 
-      {/* Section 5: Combine Stay, Transit & Extras 4-Step Architecture */}
-      <VitaCombineSection isReducedMotion={isReducedMotion} />
+        {/* Section 5: Combine Stay, Transit & Extras 4-Step Architecture */}
+        <VitaCombineSection isReducedMotion={isReducedMotion} />
 
-      {/* Section 6: Celestial Coordinate Radar Map */}
-      <VitaDestinationSection isReducedMotion={isReducedMotion} />
+        {/* Section 6: Celestial Coordinate Radar Map */}
+        <VitaDestinationSection isReducedMotion={isReducedMotion} />
 
-      {/* Section 7: Generational Specialists & Cultural Stewards */}
-      <VitaSpecialistsSection isReducedMotion={isReducedMotion} />
+        {/* Section 7: Generational Specialists & Cultural Stewards */}
+        <VitaSpecialistsSection isReducedMotion={isReducedMotion} />
 
-      {/* Global Panoramic Landscape Footer */}
-      <Footer />
+        {/* Global Panoramic Landscape Footer */}
+        <Footer />
 
-      {/* Full-Page Immersive AG-UI Generative Canvas Modal */}
-      <AGUICanvasModal isReducedMotion={isReducedMotion} />
-    </main>
+        {/* Full-Page Immersive AG-UI Generative Canvas Modal */}
+        <AGUICanvasModal isReducedMotion={isReducedMotion} />
+      </main>
+    </SmoothScrollProvider>
   );
 }

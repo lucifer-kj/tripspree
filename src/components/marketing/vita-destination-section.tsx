@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, ShieldCheck } from "lucide-react";
+import { UNSPLASH_ASSETS } from "@/lib/unsplash";
 
 interface VitaDestinationSectionProps {
   isReducedMotion: boolean;
@@ -90,35 +92,88 @@ const DESTINATIONS: CoordinatePoint[] = [
   },
 ];
 
+const ASYMMETRIC_DESTINATIONS = [
+  {
+    id: "asym-udaipur",
+    name: "Udaipur Palaces",
+    region: "Rajasthan",
+    asset: UNSPLASH_ASSETS.udaivilasUdaipur,
+    heightClass: "h-64 sm:h-72",
+    offsetClass: "mt-0 sm:mt-6",
+    stillness: "98% Stillness",
+  },
+  {
+    id: "asym-kerala",
+    name: "Kumarakom Canals",
+    region: "Kerala",
+    asset: UNSPLASH_ASSETS.keralaBackwaters,
+    heightClass: "h-76 sm:h-96",
+    offsetClass: "mt-0 sm:-mt-6",
+    stillness: "97% Stillness",
+  },
+  {
+    id: "asym-ladakh",
+    name: "Thiksey Solitude",
+    region: "Ladakh",
+    asset: UNSPLASH_ASSETS.ladakhStargazing,
+    heightClass: "h-72 sm:h-84",
+    offsetClass: "mt-0 sm:mt-8",
+    stillness: "99% Stillness",
+  },
+  {
+    id: "asym-amalfi",
+    name: "Positano Cliffs",
+    region: "Amalfi Coast",
+    asset: UNSPLASH_ASSETS.amalfiVeranda,
+    heightClass: "h-64 sm:h-72",
+    offsetClass: "mt-0 sm:mt-2",
+    stillness: "94% Stillness",
+  },
+];
+
 export function VitaDestinationSection({ isReducedMotion }: VitaDestinationSectionProps) {
   const [activePoint, setActivePoint] = useState<CoordinatePoint>(DESTINATIONS[0]);
 
   return (
     <section
       id="destination"
-      className="relative bg-[#0c0717] text-white py-24 sm:py-32 border-b border-white/10 overflow-hidden"
+      className="relative bg-[#0c0717] text-white py-28 sm:py-36 md:py-44 border-b border-white/10 overflow-hidden"
       aria-label="TripSpree Destinations"
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12">
-        {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
+        {/* Section Header with Line-Masking Wipes */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 sm:mb-20 gap-8">
           <div>
             <div className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-[#a855f7] mb-3">
               <span>+</span>
               <span>TERRITORIAL RADAR</span>
             </div>
-            <h2 className="font-sans font-bold text-3xl sm:text-5xl uppercase tracking-tight text-white leading-tight">
-              Celestial Coordinates <br />
-              <span className="font-serif italic font-normal lowercase text-[#a855f7]">
-                across India &
-              </span>{" "}
-              the globe
-            </h2>
+            <div className="overflow-hidden pb-1">
+              <motion.h2
+                initial={isReducedMotion ? {} : { y: "110%" }}
+                whileInView={isReducedMotion ? {} : { y: "0%" }}
+                viewport={{ once: true, margin: "-8% 0px" }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                className="font-sans font-bold text-3xl sm:text-5xl uppercase tracking-tight text-white leading-tight"
+              >
+                Celestial Coordinates <br />
+                <span className="font-serif italic font-normal lowercase text-[#a855f7]">
+                  across India &
+                </span>{" "}
+                the globe
+              </motion.h2>
+            </div>
           </div>
 
-          <p className="font-sans text-xs sm:text-sm text-white/70 max-w-md font-light leading-relaxed">
+          <motion.p
+            initial={isReducedMotion ? {} : { opacity: 0, y: 15 }}
+            whileInView={isReducedMotion ? {} : { opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="font-sans text-xs sm:text-sm text-white/70 max-w-md font-light leading-relaxed"
+          >
             Every geographic corridor is mapped by solar angles, biological seclusion indices, and specialist accessibility networks.
-          </p>
+          </motion.p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
@@ -246,6 +301,59 @@ export function VitaDestinationSection({ isReducedMotion }: VitaDestinationSecti
                 </Link>
               </div>
             </motion.div>
+          </div>
+        </div>
+
+        {/* Asymmetric Editorial Photographic Vignettes (Reference 0:08) */}
+        <div className="mt-20 pt-16 border-t border-white/10">
+          <div className="flex items-center justify-between mb-8">
+            <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#a855f7]">
+              + ASYMMETRIC CORRIDOR IMPRESSIONS
+            </span>
+            <span className="font-mono text-[11px] text-white/50">
+              Photographic Cadence
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-start">
+            {ASYMMETRIC_DESTINATIONS.map((dest, idx) => (
+              <motion.div
+                key={dest.id}
+                initial={isReducedMotion ? {} : { opacity: 0, y: 24 }}
+                whileInView={isReducedMotion ? {} : { opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-10% 0px" }}
+                transition={{ duration: 0.6, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                className={`group relative rounded-3xl overflow-hidden bg-black/40 border border-[#25183e] hover:border-primary/50 shadow-xl transition-all duration-300 ${dest.heightClass} ${dest.offsetClass}`}
+              >
+                <Image
+                  src={dest.asset.url}
+                  alt={dest.name}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 25vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-[650ms] ease-[cubic-bezier(0.25,1,0.5,1)]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0c0717]/90 via-[#0c0717]/25 to-transparent group-hover:via-[#0c0717]/40 transition-colors duration-500" />
+                
+                {/* Interactive + Icon on Hover */}
+                <div className="absolute top-3.5 right-3.5 z-10 opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-75 group-hover:scale-100">
+                  <div className="h-7 w-7 rounded-full bg-white text-[#0c0717] flex items-center justify-center font-mono text-xs font-bold shadow-lg">
+                    +
+                  </div>
+                </div>
+
+                <div className="absolute bottom-4 left-4 right-4 z-10">
+                  <span className="font-mono text-[10px] text-[#a855f7] block mb-0.5">
+                    {dest.region}
+                  </span>
+                  <h4 className="font-serif text-lg text-white font-normal group-hover:text-primary transition-colors">
+                    {dest.name}
+                  </h4>
+                  <span className="font-mono text-[10px] text-white/50 block mt-1">
+                    {dest.stillness}
+                  </span>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </div>

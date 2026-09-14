@@ -43,41 +43,55 @@ const STATISTIC_ITEMS = [
 export function VitaStatisticSection({ isReducedMotion }: VitaStatisticSectionProps) {
   return (
     <section
-      className="relative bg-[#0c0717] text-white border-y border-white/10 py-16 sm:py-24"
+      className="relative bg-[#0c0717] text-white border-y border-white/10 py-28 sm:py-36 md:py-44"
       aria-label="TripSpree Featured Realms"
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12">
-        {/* Section Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 sm:mb-16 gap-6">
+        {/* Section Header with Line-Masking Wipes */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-16 sm:mb-20 gap-8">
           <div>
             <div className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-[#a855f7] mb-3">
               <span>+</span>
               <span>CURATED SANCTUARY CORRIDORS</span>
             </div>
-            <h2 className="font-sans font-bold text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-white">
-              Quiet Luxury <br />
-              <span className="font-serif italic font-normal lowercase text-[#a855f7]">
-                in three distinct
-              </span>{" "}
-              realms
-            </h2>
+            <div className="overflow-hidden pb-1">
+              <motion.h2
+                initial={isReducedMotion ? {} : { y: "110%" }}
+                whileInView={isReducedMotion ? {} : { y: "0%" }}
+                viewport={{ once: true, margin: "-8% 0px" }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                className="font-sans font-bold text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-white leading-tight"
+              >
+                Quiet Luxury <br />
+                <span className="font-serif italic font-normal lowercase text-[#a855f7]">
+                  in three distinct
+                </span>{" "}
+                realms
+              </motion.h2>
+            </div>
           </div>
 
-          <p className="font-sans text-xs sm:text-sm text-white/70 max-w-sm leading-relaxed font-light">
+          <motion.p
+            initial={isReducedMotion ? {} : { opacity: 0, y: 15 }}
+            whileInView={isReducedMotion ? {} : { opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="font-sans text-xs sm:text-sm text-white/70 max-w-sm leading-relaxed font-light"
+          >
             Every retreat is personally verified for architectural pedigree, zero-crowd privacy, and profound quietude by our in-house specialists.
-          </p>
+          </motion.p>
         </div>
 
-        {/* 3-Column Bordered Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 border border-white/10 rounded-2xl overflow-hidden bg-white/[0.02]">
+        {/* 3-Column Bordered Cards Grid with Staggered Fade-Ups */}
+        <div className="grid grid-cols-1 md:grid-cols-3 border border-white/10 rounded-3xl overflow-hidden bg-white/[0.02] shadow-2xl">
           {STATISTIC_ITEMS.map((item, idx) => (
             <motion.div
               key={item.num}
-              initial={isReducedMotion ? {} : { opacity: 0, y: 20 }}
+              initial={isReducedMotion ? {} : { opacity: 0, y: 28 }}
               whileInView={isReducedMotion ? {} : { opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: idx * 0.15 }}
-              className={`relative p-6 sm:p-8 flex flex-col justify-between group hover:bg-white/[0.04] transition-all duration-300 ${
+              transition={{ duration: 0.6, delay: idx * 0.12, ease: [0.16, 1, 0.3, 1] }}
+              className={`relative p-6 sm:p-8 flex flex-col justify-between group hover:bg-white/[0.04] active:scale-[0.99] transition-all duration-300 ${
                 idx !== 0 ? "border-t md:border-t-0 md:border-l border-white/10" : ""
               }`}
             >
@@ -91,20 +105,29 @@ export function VitaStatisticSection({ isReducedMotion }: VitaStatisticSectionPr
                 </span>
               </div>
 
-              {/* Card Image */}
-              <div className="relative h-48 w-full rounded-xl overflow-hidden mb-6 bg-black/40 border border-white/10">
+              {/* Card Image with 650ms Luxury Easing and Interactive + Overlay */}
+              <div className="relative h-56 w-full rounded-2xl overflow-hidden mb-6 bg-black/40 border border-white/10">
                 <Image
                   src={item.image}
                   alt={item.title}
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"
-                  className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  className="object-cover group-hover:scale-105 transition-transform duration-[650ms] ease-[cubic-bezier(0.25,1,0.5,1)]"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0c0717]/80 via-transparent to-transparent" />
-                <div className="absolute bottom-3 left-3">
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0c0717]/85 via-[#0c0717]/20 to-transparent group-hover:via-[#0c0717]/40 transition-colors duration-500" />
+                
+                {/* Floating Tag */}
+                <div className="absolute bottom-3 left-3 z-10">
                   <span className="px-2.5 py-1 rounded-full bg-[#0c0717]/80 backdrop-blur-md border border-white/15 font-mono text-[10px] text-white uppercase tracking-wider">
                     {item.tag}
                   </span>
+                </div>
+
+                {/* Interactive Overlay + Icon revealing on hover */}
+                <div className="absolute top-3 right-3 z-10 opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-75 group-hover:scale-100">
+                  <div className="h-7 w-7 rounded-full bg-white/90 backdrop-blur-md text-[#0c0717] flex items-center justify-center font-mono text-sm font-bold shadow-lg">
+                    +
+                  </div>
                 </div>
               </div>
 
