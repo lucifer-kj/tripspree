@@ -150,12 +150,12 @@ export function Hero({ isReducedMotion }: HeroProps) {
                 />
               </div>
 
-              {/* Mic Button -> Voice Gate Modal */}
+              {/* Mic Button -> Voice Gate Modal with Apple Tactile Feedback */}
               <button
                 type="button"
                 onClick={() => setIsVoiceGateOpen(true)}
                 title="Voice Call with DIA (Member Feature)"
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-purple-200/70 bg-purple-50/70 text-[#8247ff] hover:bg-purple-100 hover:border-purple-300 transition-all cursor-pointer"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-purple-200/70 bg-purple-50/70 text-[#8247ff] hover:bg-purple-100 hover:border-purple-300 active:scale-90 transition-all duration-100 cursor-pointer"
               >
                 <Mic className="h-4 w-4" />
               </button>
@@ -184,7 +184,7 @@ export function Hero({ isReducedMotion }: HeroProps) {
                     setPromptInput(item.prompt);
                     handleTriggerPrototype(item.prompt);
                   }}
-                  className="rounded-lg border border-purple-100 bg-purple-50/60 hover:bg-[#8247ff]/10 hover:border-[#8247ff]/30 px-2.5 py-0.5 text-[10px] font-sans font-medium text-[#130c24] hover:text-[#8247ff] transition-all cursor-pointer"
+                  className="rounded-lg border border-purple-100 bg-purple-50/60 hover:bg-[#8247ff]/10 hover:border-[#8247ff]/30 active:scale-95 px-2.5 py-0.5 text-[10px] font-sans font-medium text-[#130c24] hover:text-[#8247ff] transition-all duration-100 cursor-pointer"
                 >
                   {item.label}
                 </button>
@@ -194,14 +194,15 @@ export function Hero({ isReducedMotion }: HeroProps) {
         </div>
       </div>
 
-      {/* Voice Gate Dialog Modal */}
+      {/* Voice Gate Dialog Modal with Apple Spring Entrance */}
       <AnimatePresence>
         {isVoiceGateOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 10 }}
+              initial={{ opacity: 0, scale: 0.95, y: 15 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 10 }}
+              exit={{ opacity: 0, scale: 0.96, y: 10 }}
+              transition={{ type: "spring", damping: 28, stiffness: 300, bounce: 0 }}
               className="relative w-full max-w-md rounded-2xl border border-white/15 bg-[#130c24] p-6 shadow-2xl text-white"
             >
               <button

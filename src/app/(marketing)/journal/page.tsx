@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
 import { useTripSpreeStore } from "@/lib/store";
 import { useReducedMotionState } from "@/lib/use-reduced-motion";
 import { Navbar } from "@/components/marketing/navbar";
@@ -97,6 +98,17 @@ export default function JournalPage() {
       setTimeout(() => setCopiedLink(false), 2500);
     }
   };
+
+  // Keyboard shortcut: Escape to dismiss Reader Modal
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && selectedDispatch) {
+        setSelectedDispatch(null);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedDispatch]);
 
   return (
     <main className="min-h-screen bg-[#0c0717] text-white selection:bg-[#8247ff]/30 selection:text-white flex flex-col font-sans">
@@ -472,128 +484,152 @@ export default function JournalPage() {
       {/* Global Panoramic Landscape Footer */}
       <Footer />
 
-      {/* Full Literary Reader Drawer Modal */}
-      {selectedDispatch && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-10 bg-black/80 backdrop-blur-md animate-fade-in"
-        >
-          <div className="relative max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-[32px] border border-white/15 bg-[#130c24] p-6 sm:p-10 shadow-2xl text-white">
-            {/* Top Modal Navigation Controls */}
-            <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-6">
-              <div className="flex items-center gap-2.5">
-                <span className="rounded-full bg-[#8247ff]/15 px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-[#a855f7] border border-[#8247ff]/30">
-                  {selectedDispatch.category}
-                </span>
-                <span className="font-mono text-xs text-white/50">
-                  {selectedDispatch.region} &bull; {selectedDispatch.date}
-                </span>
+      {/* Full Literary Reader Drawer Modal with Apple Sheet Physics */}
+      <AnimatePresence>
+        {selectedDispatch && (
+          <div
+            role="dialog"
+            aria-modal="true"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-10"
+          >
+            {/* Backdrop with physical blur & fade */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: isReducedMotion ? 0.1 : 0.2 }}
+              onClick={() => setSelectedDispatch(null)}
+              className="fixed inset-0 bg-black/80 backdrop-blur-md"
+              aria-hidden="true"
+            />
+
+            {/* Modal Card with Apple Spring Expansion */}
+            <motion.div
+              initial={isReducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.95, y: 15 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={isReducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.96, y: 10 }}
+              transition={
+                isReducedMotion
+                  ? { duration: 0.1 }
+                  : { type: "spring", damping: 28, stiffness: 300, bounce: 0 }
+              }
+              className="relative z-10 max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-[32px] border border-white/20 bg-[#130c24] p-6 sm:p-10 shadow-[0_24px_64px_rgba(0,0,0,0.8)] text-white"
+            >
+              {/* Top Modal Navigation Controls */}
+              <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-6">
+                <div className="flex items-center gap-2.5">
+                  <span className="rounded-full bg-[#8247ff]/15 px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-[#a855f7] border border-[#8247ff]/30">
+                    {selectedDispatch.category}
+                  </span>
+                  <span className="font-mono text-xs text-white/50">
+                    {selectedDispatch.region} &bull; {selectedDispatch.date}
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={handleShare}
+                    className="p-2 rounded-full border border-white/10 text-white/70 hover:text-white hover:bg-white/10 active:scale-90 transition-all duration-100 cursor-pointer"
+                    title="Share dispatch"
+                  >
+                    {copiedLink ? <Check className="h-4 w-4 text-emerald-400" /> : <Share2 className="h-4 w-4" />}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => toggleBookmark(selectedDispatch.id)}
+                    className={`p-2 rounded-full border active:scale-90 transition-all duration-100 cursor-pointer ${
+                      bookmarkedDispatches.includes(selectedDispatch.id)
+                        ? "border-[#8247ff] bg-[#8247ff]/20 text-[#a855f7]"
+                        : "border-white/10 text-white/70 hover:text-white hover:bg-white/10"
+                    }`}
+                    title="Bookmark dispatch"
+                  >
+                    {bookmarkedDispatches.includes(selectedDispatch.id) ? (
+                      <BookmarkCheck className="h-4 w-4" />
+                    ) : (
+                      <Bookmark className="h-4 w-4" />
+                    )}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setSelectedDispatch(null)}
+                    className="p-2 rounded-full border border-white/10 text-white/70 hover:text-white hover:bg-white/10 active:scale-90 transition-all duration-100 cursor-pointer"
+                    title="Close reader (ESC)"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
               </div>
 
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={handleShare}
-                  className="p-2 rounded-full border border-white/10 text-white/70 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
-                  title="Share dispatch"
-                >
-                  {copiedLink ? <Check className="h-4 w-4 text-emerald-400" /> : <Share2 className="h-4 w-4" />}
-                </button>
+              {/* Title & Subtitle */}
+              <h2 className="font-serif text-2xl sm:text-4xl text-white font-normal tracking-tight mb-3">
+                {selectedDispatch.title}
+              </h2>
+              <p className="font-sans text-sm sm:text-base text-white/70 italic mb-6">
+                {selectedDispatch.subtitle}
+              </p>
 
-                <button
-                  type="button"
-                  onClick={() => toggleBookmark(selectedDispatch.id)}
-                  className={`p-2 rounded-full border transition-colors cursor-pointer ${
-                    bookmarkedDispatches.includes(selectedDispatch.id)
-                      ? "border-[#8247ff] bg-[#8247ff]/20 text-[#a855f7]"
-                      : "border-white/10 text-white/70 hover:text-white hover:bg-white/10"
-                  }`}
-                  title="Bookmark dispatch"
-                >
-                  {bookmarkedDispatches.includes(selectedDispatch.id) ? (
-                    <BookmarkCheck className="h-4 w-4" />
-                  ) : (
-                    <Bookmark className="h-4 w-4" />
-                  )}
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setSelectedDispatch(null)}
-                  className="p-2 rounded-full border border-white/10 text-white/70 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
-                  title="Close reader"
-                >
-                  <X className="h-4 w-4" />
-                </button>
+              {/* Curator Byline Card */}
+              <div className="flex items-center gap-4 p-4 rounded-2xl border border-white/10 bg-white/5 mb-8">
+                <div className="h-11 w-11 rounded-full bg-[#8247ff]/20 border border-[#8247ff]/40 flex items-center justify-center text-[#a855f7] font-serif font-semibold text-sm">
+                  {selectedDispatch.curator.split(" ").map((n) => n[0]).join("")}
+                </div>
+                <div className="flex-1">
+                  <span className="font-sans text-xs font-semibold text-white block">
+                    {selectedDispatch.curator}
+                  </span>
+                  <span className="font-mono text-[10px] text-white/50">
+                    {selectedDispatch.curatorRole} &bull; {selectedDispatch.readTime}
+                  </span>
+                </div>
+                {selectedDispatch.audioGuideAvailable && (
+                  <div className="flex items-center gap-1.5 text-[#a855f7] font-mono text-[10px] uppercase tracking-wider bg-[#8247ff]/15 px-3 py-1 rounded-full border border-[#8247ff]/25">
+                    <Headphones className="h-3 w-3" />
+                    <span>Audio Narrative Active</span>
+                  </div>
+                )}
               </div>
-            </div>
 
-            {/* Title & Subtitle */}
-            <h2 className="font-serif text-2xl sm:text-4xl text-white font-normal tracking-tight mb-3">
-              {selectedDispatch.title}
-            </h2>
-            <p className="font-sans text-sm sm:text-base text-white/70 italic mb-6">
-              {selectedDispatch.subtitle}
-            </p>
+              {/* Full Narrative Paragraphs */}
+              <div className="space-y-5 font-sans text-sm sm:text-base text-white/85 leading-relaxed">
+                {selectedDispatch.fullNarrative.map((para, idx) => (
+                  <p key={idx}>{para}</p>
+                ))}
+              </div>
 
-            {/* Curator Byline Card */}
-            <div className="flex items-center gap-4 p-4 rounded-2xl border border-white/10 bg-white/5 mb-8">
-              <div className="h-11 w-11 rounded-full bg-[#8247ff]/20 border border-[#8247ff]/40 flex items-center justify-center text-[#a855f7] font-serif font-semibold text-sm">
-                {selectedDispatch.curator.split(" ").map((n) => n[0]).join("")}
-              </div>
-              <div className="flex-1">
-                <span className="font-sans text-xs font-semibold text-white block">
-                  {selectedDispatch.curator}
-                </span>
-                <span className="font-mono text-[10px] text-white/50">
-                  {selectedDispatch.curatorRole} &bull; {selectedDispatch.readTime}
-                </span>
-              </div>
-              {selectedDispatch.audioGuideAvailable && (
-                <div className="flex items-center gap-1.5 text-[#a855f7] font-mono text-[10px] uppercase tracking-wider bg-[#8247ff]/15 px-3 py-1 rounded-full border border-[#8247ff]/25">
-                  <Headphones className="h-3 w-3" />
-                  <span>Audio Narrative Active</span>
+              {/* Logistics / Patron Insight Box */}
+              {selectedDispatch.patronExclusiveNote && (
+                <div className="mt-8 rounded-2xl border border-[#8247ff]/30 bg-[#8247ff]/10 p-5">
+                  <div className="flex items-center gap-2 text-[#a855f7] font-mono text-xs uppercase tracking-wider font-semibold mb-1">
+                    <Radio className="h-3.5 w-3.5 text-[#a855f7] animate-pulse" />
+                    <span>Specialist Logistics Advisory</span>
+                  </div>
+                  <p className="font-sans text-xs sm:text-sm text-white/80">
+                    {selectedDispatch.patronExclusiveNote}
+                  </p>
                 </div>
               )}
-            </div>
 
-            {/* Full Narrative Paragraphs */}
-            <div className="space-y-5 font-sans text-sm sm:text-base text-white/85 leading-relaxed">
-              {selectedDispatch.fullNarrative.map((para, idx) => (
-                <p key={idx}>{para}</p>
-              ))}
-            </div>
-
-            {/* Logistics / Patron Insight Box */}
-            {selectedDispatch.patronExclusiveNote && (
-              <div className="mt-8 rounded-2xl border border-[#8247ff]/30 bg-[#8247ff]/10 p-5">
-                <div className="flex items-center gap-2 text-[#a855f7] font-mono text-xs uppercase tracking-wider font-semibold mb-1">
-                  <Radio className="h-3.5 w-3.5 text-[#a855f7] animate-pulse" />
-                  <span>Specialist Logistics Advisory</span>
-                </div>
-                <p className="font-sans text-xs sm:text-sm text-white/80">
-                  {selectedDispatch.patronExclusiveNote}
-                </p>
+              {/* Footer Finish Reading */}
+              <div className="mt-8 pt-6 border-t border-white/10 flex justify-between items-center">
+                <span className="font-mono text-xs text-white/40">
+                  End of Dispatch &bull; ESC to exit
+                </span>
+                <Button
+                  type="button"
+                  onClick={() => setSelectedDispatch(null)}
+                  className="rounded-full bg-[#8247ff] hover:bg-[#7035eb] text-white text-xs font-mono uppercase tracking-wider px-6 active:scale-95 cursor-pointer"
+                >
+                  Finished Reading
+                </Button>
               </div>
-            )}
-
-            {/* Footer Finish Reading */}
-            <div className="mt-8 pt-6 border-t border-white/10 flex justify-between items-center">
-              <span className="font-mono text-xs text-white/40">
-                End of Dispatch
-              </span>
-              <Button
-                type="button"
-                onClick={() => setSelectedDispatch(null)}
-                className="rounded-full bg-[#8247ff] hover:bg-[#7035eb] text-white text-xs font-mono uppercase tracking-wider px-6 cursor-pointer"
-              >
-                Finished Reading
-              </Button>
-            </div>
+            </motion.div>
           </div>
-        </div>
-      )}
+        )}
+      </AnimatePresence>
     </main>
   );
 }

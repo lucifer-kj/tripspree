@@ -45,7 +45,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${montserrat.variable} ${lora.variable} ${ibmPlexMono.variable} antialiased`}
+      className={`dark ${montserrat.variable} ${lora.variable} ${ibmPlexMono.variable} antialiased`}
     >
       <body className="min-h-screen bg-background text-foreground font-sans">
         {children}

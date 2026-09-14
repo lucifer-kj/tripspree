@@ -26,13 +26,13 @@ export function Navbar({ isReducedMotion, onToggleReducedMotion }: NavbarProps =
     <motion.header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled || isMobileMenuOpen
-          ? "bg-[#0c0717]/90 backdrop-blur-md border-b border-white/10 text-white shadow-lg"
+          ? "bg-[#0c0717]/80 backdrop-blur-2xl backdrop-saturate-180 border-b border-white/15 text-white shadow-[0_8px_32px_0_rgba(0,0,0,0.37)]"
           : "bg-transparent text-white"
       }`}
     >
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 md:px-12">
         {/* Official TripSpree Brand Lockup */}
-        <Link href="/" className="flex items-center gap-2.5 group" aria-label="TripSpree Home">
+        <Link href="/" className="flex items-center gap-2.5 group active:scale-98 transition-transform duration-100" aria-label="TripSpree Home">
           <div className="relative h-8 w-6 flex items-center justify-center shrink-0">
             <Image
               src="/images/brand/logo-mark.png"
@@ -59,35 +59,35 @@ export function Navbar({ isReducedMotion, onToggleReducedMotion }: NavbarProps =
         <nav className="hidden md:flex items-center space-x-8 text-xs font-sans tracking-wide text-white/80">
           <Link
             href="/#retreats"
-            className="hover:text-white transition-colors flex items-center gap-1.5"
+            className="hover:text-white active:scale-95 transition-all duration-100 flex items-center gap-1.5"
           >
             <span className="text-white/40 text-xs">+</span>
             <span>Sanctuaries</span>
           </Link>
           <Link
             href="/#combine"
-            className="hover:text-white transition-colors flex items-center gap-1.5"
+            className="hover:text-white active:scale-95 transition-all duration-100 flex items-center gap-1.5"
           >
             <span className="text-white/40 text-xs">+</span>
             <span>Combine</span>
           </Link>
           <Link
             href="/#destination"
-            className="hover:text-white transition-colors flex items-center gap-1.5"
+            className="hover:text-white active:scale-95 transition-all duration-100 flex items-center gap-1.5"
           >
             <span className="text-white/40 text-xs">+</span>
             <span>Destinations</span>
           </Link>
           <Link
             href="/#specialists"
-            className="hover:text-white transition-colors flex items-center gap-1.5"
+            className="hover:text-white active:scale-95 transition-all duration-100 flex items-center gap-1.5"
           >
             <span className="text-white/40 text-xs">+</span>
             <span>Specialists</span>
           </Link>
           <Link
             href="/journal"
-            className="hover:text-white transition-colors flex items-center gap-1.5"
+            className="hover:text-white active:scale-95 transition-all duration-100 flex items-center gap-1.5"
           >
             <span className="text-white/40 text-xs">+</span>
             <span>Journal</span>
@@ -100,7 +100,7 @@ export function Navbar({ isReducedMotion, onToggleReducedMotion }: NavbarProps =
             <button
               type="button"
               onClick={onToggleReducedMotion}
-              className="hidden lg:flex items-center gap-1 px-3 py-1.5 rounded-full border border-white/20 bg-white/5 text-[10px] font-mono text-white/70 hover:text-white transition-colors cursor-pointer"
+              className="hidden lg:flex items-center gap-1 px-3 py-1.5 rounded-full border border-white/20 bg-white/5 text-[10px] font-mono text-white/70 hover:text-white active:scale-95 transition-all duration-100 cursor-pointer"
               title="Toggle reduced motion preference"
               aria-label="Toggle reduced motion preference"
             >
@@ -110,7 +110,7 @@ export function Navbar({ isReducedMotion, onToggleReducedMotion }: NavbarProps =
 
           <a
             href="#retreats"
-            className="hidden sm:inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-xs font-sans font-semibold text-[#0c0717] hover:bg-white/90 transition-all shadow-md cursor-pointer group"
+            className="hidden sm:inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-xs font-sans font-semibold text-[#0c0717] hover:bg-white/90 active:scale-95 transition-all duration-100 shadow-md cursor-pointer group"
           >
             <span>Explore Sanctuaries</span>
             <svg
@@ -126,7 +126,7 @@ export function Navbar({ isReducedMotion, onToggleReducedMotion }: NavbarProps =
           <button
             type="button"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-white hover:bg-white/10 transition-colors cursor-pointer"
+            className="md:hidden flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-white hover:bg-white/10 active:scale-90 transition-all duration-100 cursor-pointer"
             aria-label="Toggle navigation menu"
           >
             {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -141,8 +141,12 @@ export function Navbar({ isReducedMotion, onToggleReducedMotion }: NavbarProps =
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.25 }}
-            className="md:hidden border-b border-white/10 bg-[#0c0717] px-6 py-6 space-y-4"
+            transition={
+              isReducedMotion
+                ? { duration: 0.1 }
+                : { type: "spring", damping: 30, stiffness: 350, bounce: 0 }
+            }
+            className="md:hidden border-b border-white/15 bg-[#0c0717]/95 backdrop-blur-2xl px-6 py-6 space-y-4 shadow-2xl"
           >
             <nav className="flex flex-col space-y-3 text-sm font-sans text-white">
               <Link

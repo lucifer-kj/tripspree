@@ -6,7 +6,7 @@ export function TelemetryMatrix() {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6 select-none h-full">
       {/* CARD 1: Gate & Suite Clearance (Top-Left) */}
-      <div className="relative rounded-[28px] border border-[#25183e] bg-[#130c24] p-6 sm:p-7 flex flex-col justify-between min-h-[220px] shadow-xl group">
+      <div className="relative rounded-[28px] border border-[#25183e] bg-[#130c24] p-6 sm:p-7 flex flex-col justify-between min-h-[220px] shadow-xl group hover:border-[#8247ff]/40 active:scale-[0.985] transition-all duration-150 cursor-pointer">
         {/* Subtle Corner Screw Accents matching Reference */}
         <div className="absolute top-3.5 left-3.5 h-1.5 w-1.5 rounded-full bg-white/20" />
         <div className="absolute top-3.5 right-3.5 h-1.5 w-1.5 rounded-full bg-white/20" />
@@ -37,7 +37,7 @@ export function TelemetryMatrix() {
       </div>
 
       {/* CARD 2: Transit Route & Progress Timeline (Top-Right) */}
-      <div className="rounded-[28px] border border-[#25183e] bg-[#130c24] p-6 sm:p-7 flex flex-col justify-between min-h-[220px] shadow-xl">
+      <div className="rounded-[28px] border border-[#25183e] bg-[#130c24] p-6 sm:p-7 flex flex-col justify-between min-h-[220px] shadow-xl hover:border-[#8247ff]/40 active:scale-[0.985] transition-all duration-150 cursor-pointer">
         {/* Header Countdown */}
         <div>
           <span className="font-mono text-[10px] uppercase tracking-wider text-white/50 block">
@@ -79,7 +79,7 @@ export function TelemetryMatrix() {
       </div>
 
       {/* CARD 3: Boarding Pass & Barcode Dossier (Bottom-Left) */}
-      <div className="rounded-[28px] border border-[#25183e] bg-[#130c24] p-6 sm:p-7 flex flex-col justify-between min-h-[240px] shadow-xl space-y-4">
+      <div className="rounded-[28px] border border-[#25183e] bg-[#130c24] p-6 sm:p-7 flex flex-col justify-between min-h-[240px] shadow-xl space-y-4 hover:border-[#8247ff]/40 active:scale-[0.985] transition-all duration-150 cursor-pointer">
         {/* Route Header */}
         <div className="flex items-center justify-between">
           <div>
@@ -139,7 +139,7 @@ export function TelemetryMatrix() {
       </div>
 
       {/* CARD 4: Split-Flap Departure Board (Bottom-Right) */}
-      <div className="rounded-[28px] border border-[#25183e] bg-[#130c24] p-6 sm:p-7 flex flex-col justify-between min-h-[240px] shadow-xl space-y-3">
+      <div className="rounded-[28px] border border-[#25183e] bg-[#130c24] p-6 sm:p-7 flex flex-col justify-between min-h-[240px] shadow-xl space-y-3 hover:border-[#8247ff]/40 active:scale-[0.985] transition-all duration-150 cursor-pointer">
         {/* Header */}
         <div>
           <div className="font-sans text-sm font-semibold text-white">

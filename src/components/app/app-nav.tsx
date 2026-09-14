@@ -5,6 +5,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Bell, ChevronDown } from "lucide-react";
 
+import { motion } from "framer-motion";
+
 export function AppNav() {
   const pathname = usePathname();
 
@@ -17,11 +19,11 @@ export function AppNav() {
   ];
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-white/10 bg-[#0c0717]/95 backdrop-blur-xl px-4 sm:px-8 lg:px-12 py-4 select-none">
+    <header className="sticky top-0 z-40 w-full border-b border-white/10 bg-[#0c0717]/80 backdrop-blur-2xl backdrop-saturate-180 px-4 sm:px-8 lg:px-12 py-3.5 select-none shadow-[0_8px_32px_0_rgba(0,0,0,0.37)]">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Left: Brand Lockup & Desktop Navigation Links */}
         <div className="flex items-center gap-8 lg:gap-12">
-          <Link href="/" className="flex items-center gap-2.5 group" aria-label="TripSpree Home">
+          <Link href="/" className="flex items-center gap-2.5 group active:scale-98 transition-transform duration-100" aria-label="TripSpree Home">
             <div className="relative h-8 w-6 flex items-center justify-center shrink-0">
               <Image
                 src="/images/brand/logo-mark.png"
@@ -44,8 +46,8 @@ export function AppNav() {
             </div>
           </Link>
 
-          {/* Clean Top Navigation Links matching Reference */}
-          <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-xs sm:text-sm font-sans">
+          {/* Clean Top Navigation Links with Apple-style Fluid Spring Indicator */}
+          <nav className="hidden md:flex items-center gap-1 lg:gap-2 text-xs sm:text-sm font-sans relative">
             {navLinks.map((item, idx) => {
               const isActive =
                 item.href === pathname ||
@@ -54,13 +56,20 @@ export function AppNav() {
                 <Link
                   key={`${item.label}-${idx}`}
                   href={item.href}
-                  className={`transition-colors duration-150 ${
+                  className={`relative px-3.5 py-1.5 rounded-full transition-all duration-150 active:scale-95 ${
                     isActive
                       ? "text-white font-semibold"
-                      : "text-white/60 hover:text-white font-normal"
+                      : "text-white/60 hover:text-white font-normal hover:bg-white/5"
                   }`}
                 >
-                  {item.label}
+                  {isActive && (
+                    <motion.span
+                      layoutId="activeAppNavPill"
+                      transition={{ type: "spring", bounce: 0, duration: 0.35 }}
+                      className="absolute inset-0 rounded-full bg-white/10 border border-white/15 pointer-events-none -z-10"
+                    />
+                  )}
+                  <span className="relative z-10">{item.label}</span>
                 </Link>
               );
             })}
@@ -72,7 +81,7 @@ export function AppNav() {
           {/* Notification Icon Pill */}
           <button
             type="button"
-            className="relative flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white/80 hover:text-white hover:bg-white/10 transition-all cursor-pointer"
+            className="relative flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white/80 hover:text-white hover:bg-white/10 active:scale-90 transition-all duration-100 cursor-pointer"
             title="Notifications"
             aria-label="Notifications"
           >
@@ -83,7 +92,7 @@ export function AppNav() {
           {/* User Profile Avatar with Dropdown Indicator */}
           <Link
             href="/account"
-            className="flex items-center gap-2 pl-1 pr-2 py-1 rounded-full border border-white/15 bg-white/5 hover:bg-white/10 transition-all cursor-pointer group"
+            className="flex items-center gap-2 pl-1 pr-2 py-1 rounded-full border border-white/15 bg-white/5 hover:bg-white/10 active:scale-95 transition-all duration-100 cursor-pointer group"
           >
             <div className="relative h-8 w-8 rounded-full overflow-hidden border border-white/20 bg-[#130c24] flex items-center justify-center">
               <span className="font-serif text-xs font-semibold text-[#a855f7]">TS</span>

@@ -136,15 +136,24 @@ export function AGUICanvasModal({ isReducedMotion }: AGUICanvasModalProps) {
 
   const activeData = DEMO_PRESETS[selectedKey] || DEMO_PRESETS.udaipur;
 
-  // Lock body scroll when modal is open
+  // Lock body scroll and register Escape key listener when modal is open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
     }
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        setIsOpen(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+
     return () => {
       document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, [isOpen]);
 
@@ -214,22 +223,26 @@ export function AGUICanvasModal({ isReducedMotion }: AGUICanvasModalProps) {
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: isReducedMotion ? 0.1 : 0.3 }}
+          initial={isReducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.97, y: 15 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={isReducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.98, y: 10 }}
+          transition={
+            isReducedMotion
+              ? { duration: 0.1 }
+              : { type: "spring", damping: 30, stiffness: 320, bounce: 0 }
+          }
           className="fixed inset-0 z-50 overflow-y-auto bg-[#0c0717] text-white flex flex-col justify-between"
           aria-modal="true"
           role="dialog"
           aria-label="TripSpree Autonomous AG-UI Canvas"
         >
           {/* Top Bar: Navigation & Telemetry State */}
-          <div className="sticky top-0 z-30 w-full border-b border-white/10 bg-[#0c0717]/95 backdrop-blur-xl px-4 sm:px-8 py-4 flex items-center justify-between">
+          <div className="sticky top-0 z-30 w-full border-b border-white/10 bg-[#0c0717]/85 backdrop-blur-2xl backdrop-saturate-180 px-4 sm:px-8 py-4 flex items-center justify-between shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
             <div className="flex items-center gap-3">
               <button
                 type="button"
                 onClick={() => setIsOpen(false)}
-                className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 hover:bg-white/10 px-4 py-2 text-xs font-sans text-white transition-all cursor-pointer group"
+                className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 hover:bg-white/10 active:scale-95 px-4 py-2 text-xs font-sans text-white transition-all duration-100 cursor-pointer group"
               >
                 <span className="text-white/60 group-hover:text-white transition-colors">←</span>
                 <span>Return to Editorial</span>
