@@ -4,43 +4,51 @@ import { useReducedMotionState } from "@/lib/use-reduced-motion";
 import { Preloader } from "@/components/marketing/preloader";
 import { Navbar } from "@/components/marketing/navbar";
 import { Hero } from "@/components/marketing/hero";
+import { VitaStatisticSection } from "@/components/marketing/vita-statistic-section";
+import { VitaAboutSection } from "@/components/marketing/vita-about-section";
 import { AGUIDemoContainer } from "@/components/marketing/ag-ui-demo-container";
 import { SanctuariesSection } from "@/components/marketing/sanctuaries-section";
-import { HowDiaOperatesSection } from "@/components/marketing/how-dia-operates-section";
-import { ManifestoDarkBeat } from "@/components/marketing/manifesto-dark-beat";
-import { JournalTeaserSection } from "@/components/marketing/journal-teaser-section";
+import { VitaCombineSection } from "@/components/marketing/vita-combine-section";
+import { VitaDestinationSection } from "@/components/marketing/vita-destination-section";
+import { VitaSpecialistsSection } from "@/components/marketing/vita-specialists-section";
 import { Footer } from "@/components/marketing/footer";
 
 export default function MarketingHomePage() {
   const { isReducedMotion } = useReducedMotionState();
 
   return (
-    <main className="min-h-screen bg-background text-foreground selection:bg-primary/20 selection:text-primary">
-      {/* Tengile-inspired Preloader */}
+    <main className="min-h-screen bg-[#091b20] text-white selection:bg-chart-1 selection:text-[#0D2E37]">
+      {/* Editorial Preloader */}
       <Preloader isReducedMotion={isReducedMotion} />
 
-      {/* Global Navigation */}
+      {/* Global Navigation with Vita Star Monogram */}
       <Navbar />
 
-      {/* Section 1: Full-Bleed Parallax Hero with Integrated Chatbox */}
+      {/* Section 1: Vita 3-Plane Layered Parallax Hero with Integrated Chatbox */}
       <Hero isReducedMotion={isReducedMotion} />
 
-      {/* Section 2: Contained Expandable AG-UI Prototype Trial Canvas */}
+      {/* Section 2: 3-Column Bordered Realms & Statistic Cards */}
+      <VitaStatisticSection isReducedMotion={isReducedMotion} />
+
+      {/* Section 3: Editorial About Frame, Indented Manifesto & Counters */}
+      <VitaAboutSection isReducedMotion={isReducedMotion} />
+
+      {/* Section 4: Contained Expandable AG-UI Interactive Prototype Canvas */}
       <AGUIDemoContainer isReducedMotion={isReducedMotion} />
 
-      {/* Section 3: High-Density Curated Sanctuaries (3 India + 3 Global) */}
+      {/* Section 5: Vita Horizontal Split Card Sanctuaries with 4 Metadata Rows */}
       <SanctuariesSection isReducedMotion={isReducedMotion} />
 
-      {/* Section 4: 4-Step Architecture & How DIA Operates Process Grid */}
-      <HowDiaOperatesSection isReducedMotion={isReducedMotion} />
+      {/* Section 6: Combine Stay, Transit & Extras 4-Step Architecture */}
+      <VitaCombineSection isReducedMotion={isReducedMotion} />
 
-      {/* Section 5: Dark-Ground Rest Beat between bright photo sections (Homepage-Motion Rule) */}
-      <ManifestoDarkBeat isReducedMotion={isReducedMotion} />
+      {/* Section 7: Celestial Coordinate Radar Map */}
+      <VitaDestinationSection isReducedMotion={isReducedMotion} />
 
-      {/* Section 6: Travel Journal Teaser Grid (Tengile Asymmetric Grid Layout) */}
-      <JournalTeaserSection isReducedMotion={isReducedMotion} />
+      {/* Section 8: Generational Specialists & Cultural Stewards */}
+      <VitaSpecialistsSection isReducedMotion={isReducedMotion} />
 
-      {/* Global Editorial Footer */}
+      {/* Global Panoramic Landscape Footer */}
       <Footer />
     </main>
   );

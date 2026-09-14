@@ -171,27 +171,27 @@ export function AGUIDemoContainer({ isReducedMotion }: AGUIDemoContainerProps) {
   return (
     <section
       id="dia-prototype"
-      className="relative w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 scroll-mt-20 text-foreground"
+      className="relative w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 scroll-mt-20 text-white"
       aria-label="DIA Autonomous Concierge Prototype"
     >
       {/* Contained Glassmorphic Prototype Container */}
-      <div className="rounded-3xl border border-border bg-card/85 backdrop-blur-xl shadow-2xl overflow-hidden transition-all duration-300">
+      <div className="rounded-3xl border border-white/15 bg-[#091b20]/95 backdrop-blur-xl shadow-2xl overflow-hidden transition-all duration-300">
         {/* Prototype Container Header Bar */}
-        <div className="p-6 sm:p-8 border-b border-border/70 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-muted/20">
+        <div className="p-6 sm:p-8 border-b border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white/[0.02]">
           <div>
             <div className="flex items-center gap-2 mb-2">
               <span className="flex h-2 w-2 rounded-full bg-chart-1 animate-pulse" />
-              <span className="font-mono text-[10px] uppercase tracking-widest text-primary font-semibold">
+              <span className="font-mono text-[10px] uppercase tracking-widest text-chart-1 font-semibold">
                 Autonomous Concierge Trial • DIA 2.0
               </span>
-              <span className="rounded-full bg-primary/10 border border-primary/20 px-2 py-0.5 text-[9px] font-mono text-primary">
+              <span className="rounded-full bg-chart-1/10 border border-chart-1/20 px-2 py-0.5 text-[9px] font-mono text-chart-1">
                 Prototype Canvas
               </span>
             </div>
-            <h2 className="font-serif text-2xl sm:text-3xl font-medium tracking-tight text-foreground">
+            <h2 className="font-serif text-2xl sm:text-3xl font-normal tracking-tight text-white">
               Experience the Dynamic AG-UI Canvas
             </h2>
-            <p className="font-sans text-xs sm:text-sm text-muted-foreground mt-1 max-w-xl leading-relaxed">
+            <p className="font-sans text-xs sm:text-sm text-white/70 mt-1 max-w-xl leading-relaxed font-light">
               Test how DIA autonomously synthesizes verified sanctuary stays, real-time climate telemetry, and unhurried day cadences.
             </p>
           </div>
@@ -201,7 +201,7 @@ export function AGUIDemoContainer({ isReducedMotion }: AGUIDemoContainerProps) {
               type="button"
               variant="outline"
               onClick={() => setIsExpanded(!isExpanded)}
-              className="rounded-xl border-border bg-background hover:bg-muted font-sans text-xs flex items-center gap-2 cursor-pointer"
+              className="rounded-xl border-white/20 bg-white/5 hover:bg-white/10 text-white font-sans text-xs flex items-center gap-2 cursor-pointer"
             >
               <span>{isExpanded ? "Collapse Trial" : "Expand Live Prototype"}</span>
               {isExpanded ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
@@ -210,8 +210,8 @@ export function AGUIDemoContainer({ isReducedMotion }: AGUIDemoContainerProps) {
         </div>
 
         {/* Interactive Preset Chips Bar */}
-        <div className="px-6 sm:px-8 py-3.5 bg-background/50 border-b border-border/50 flex items-center gap-2 overflow-x-auto no-scrollbar">
-          <span className="font-mono text-[10px] uppercase text-muted-foreground shrink-0 mr-1 tracking-wider">
+        <div className="px-6 sm:px-8 py-3.5 bg-black/20 border-b border-white/10 flex items-center gap-2 overflow-x-auto no-scrollbar">
+          <span className="font-mono text-[10px] uppercase text-white/50 shrink-0 mr-1 tracking-wider">
             Select Simulation Realm:
           </span>
           {Object.entries(DEMO_PRESETS).map(([key, item]) => (
@@ -221,8 +221,8 @@ export function AGUIDemoContainer({ isReducedMotion }: AGUIDemoContainerProps) {
               onClick={() => handleSelectPreset(key)}
               className={`px-3 py-1.5 rounded-xl text-xs font-sans whitespace-nowrap transition-all border cursor-pointer ${
                 selectedKey === key && isExpanded
-                  ? "bg-primary text-primary-foreground border-primary font-medium shadow-sm"
-                  : "bg-card text-muted-foreground border-border/80 hover:text-foreground hover:border-primary/40"
+                  ? "bg-chart-1 text-[#0D2E37] border-chart-1 font-semibold shadow-sm"
+                  : "bg-white/5 text-white/70 border-white/10 hover:text-white hover:border-white/30"
               }`}
             >
               {item.title} ({item.destination})
@@ -283,7 +283,7 @@ export function AGUIDemoContainer({ isReducedMotion }: AGUIDemoContainerProps) {
               {/* Generative AG-UI Layout: Split Column */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
                 {/* Left Column: Dynamic Luxury Sanctuary Card */}
-                <div className="lg:col-span-6 rounded-2xl border border-border bg-card overflow-hidden shadow-md group">
+                <div className="lg:col-span-6 rounded-2xl border border-white/15 bg-white/[0.02] overflow-hidden shadow-md group">
                   <div className="relative aspect-[16/10] w-full overflow-hidden">
                     <Image
                       src={activeData.image}
@@ -296,11 +296,11 @@ export function AGUIDemoContainer({ isReducedMotion }: AGUIDemoContainerProps) {
 
                     {/* Top Overlay Badges */}
                     <div className="absolute top-3 left-3 right-3 flex items-center justify-between">
-                      <span className="rounded-full bg-background/90 backdrop-blur-md px-2.5 py-1 text-[10px] font-mono text-foreground border border-border shadow-sm flex items-center gap-1">
-                        <Compass className="h-3 w-3 text-primary" />
+                      <span className="rounded-full bg-[#091b20]/90 backdrop-blur-md px-2.5 py-1 text-[10px] font-mono text-white border border-white/20 shadow-sm flex items-center gap-1">
+                        <Compass className="h-3 w-3 text-chart-1" />
                         {activeData.destination}
                       </span>
-                      <span className="rounded-full bg-chart-1/90 backdrop-blur-md px-2.5 py-1 text-[10px] font-mono text-black font-semibold shadow-sm flex items-center gap-1">
+                      <span className="rounded-full bg-chart-1 px-2.5 py-1 text-[10px] font-mono text-[#0D2E37] font-semibold shadow-sm flex items-center gap-1">
                         <ShieldCheck className="h-3 w-3" />
                         {activeData.stillnessScore}/100 Stillness
                       </span>
@@ -318,34 +318,34 @@ export function AGUIDemoContainer({ isReducedMotion }: AGUIDemoContainerProps) {
                   </div>
 
                   {/* Micro Metadata Footer on Card */}
-                  <div className="p-4 sm:p-5 flex flex-wrap items-center justify-between gap-3 bg-card border-t border-border/60">
+                  <div className="p-4 sm:p-5 flex flex-wrap items-center justify-between gap-3 bg-white/[0.02] border-t border-white/10">
                     <div className="flex items-center gap-3 text-xs font-mono">
-                      <span className="flex items-center gap-1 text-muted-foreground">
-                        <CloudSun className="h-3.5 w-3.5 text-primary" />
+                      <span className="flex items-center gap-1 text-white/70">
+                        <CloudSun className="h-3.5 w-3.5 text-chart-1" />
                         {activeData.temp} • {activeData.weather}
                       </span>
-                      <span className="text-border">|</span>
-                      <span className="text-muted-foreground">{activeData.pacing}</span>
+                      <span className="text-white/30">|</span>
+                      <span className="text-white/70">{activeData.pacing}</span>
                     </div>
 
                     <div className="text-right">
-                      <span className="text-xs font-serif font-bold text-foreground">
+                      <span className="text-xs font-serif font-bold text-white">
                         {activeData.rateInr}{" "}
-                        <span className="text-[10px] font-sans font-normal text-muted-foreground">
+                        <span className="text-[10px] font-sans font-normal text-white/60">
                           ({activeData.rateUsd})
                         </span>
                       </span>
-                      <span className="block text-[9px] font-mono text-muted-foreground">per night • verified</span>
+                      <span className="block text-[9px] font-mono text-white/50">per night • verified</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Right Column: 3-Day Living Rhythm Preview */}
-                <div className="lg:col-span-6 rounded-2xl border border-border bg-card p-5 sm:p-6 shadow-md flex flex-col justify-between h-full">
+                <div className="lg:col-span-6 rounded-2xl border border-white/15 bg-white/[0.02] p-5 sm:p-6 shadow-md flex flex-col justify-between h-full">
                   <div>
-                    <div className="flex items-center justify-between pb-3 mb-4 border-b border-border/70">
-                      <span className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground font-semibold flex items-center gap-1.5">
-                        <Clock className="h-3.5 w-3.5 text-primary" />
+                    <div className="flex items-center justify-between pb-3 mb-4 border-b border-white/10">
+                      <span className="font-mono text-[11px] uppercase tracking-wider text-white/70 font-semibold flex items-center gap-1.5">
+                        <Clock className="h-3.5 w-3.5 text-chart-1" />
                         Autonomous Day Cadence (Preview)
                       </span>
                       <span className="font-mono text-[10px] text-chart-1">Restful Rhythm</span>
@@ -356,17 +356,17 @@ export function AGUIDemoContainer({ isReducedMotion }: AGUIDemoContainerProps) {
                       {activeData.rhythm.map((item) => (
                         <div key={item.day} className="flex gap-3 text-xs font-sans">
                           <div className="flex flex-col items-center">
-                            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 border border-primary/30 font-mono text-[10px] font-semibold text-primary">
+                            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-chart-1/10 border border-chart-1/30 font-mono text-[10px] font-semibold text-chart-1">
                               0{item.day}
                             </span>
-                            {item.day !== 3 && <div className="w-px h-full bg-border my-1" />}
+                            {item.day !== 3 && <div className="w-px h-full bg-white/10 my-1" />}
                           </div>
                           <div className="pb-1">
                             <div className="flex items-center gap-2 mb-0.5">
-                              <span className="font-medium text-foreground">{item.title}</span>
-                              <span className="font-mono text-[10px] text-muted-foreground">{item.time}</span>
+                              <span className="font-medium text-white">{item.title}</span>
+                              <span className="font-mono text-[10px] text-white/50">{item.time}</span>
                             </div>
-                            <p className="text-xs text-muted-foreground leading-relaxed">
+                            <p className="text-xs text-white/70 leading-relaxed font-light">
                               {item.activity}
                             </p>
                           </div>
@@ -376,9 +376,9 @@ export function AGUIDemoContainer({ isReducedMotion }: AGUIDemoContainerProps) {
                   </div>
 
                   {/* Frictionless Session Capture & Sign-In Callout */}
-                  <div className="mt-6 p-4 rounded-xl border border-primary/20 bg-primary/5 space-y-3">
+                  <div className="mt-6 p-4 rounded-xl border border-white/15 bg-white/[0.03] space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="font-mono text-[10px] uppercase tracking-wider text-primary font-semibold flex items-center gap-1">
+                      <span className="font-mono text-[10px] uppercase tracking-wider text-chart-1 font-semibold flex items-center gap-1">
                         <Sparkles className="h-3 w-3" />
                         Session Saved to Profile
                       </span>
@@ -387,12 +387,12 @@ export function AGUIDemoContainer({ isReducedMotion }: AGUIDemoContainerProps) {
                       </span>
                     </div>
 
-                    <p className="font-sans text-xs text-muted-foreground leading-relaxed">
+                    <p className="font-sans text-xs text-white/70 leading-relaxed font-light">
                       This trial itinerary draft is temporarily stored. Sign in to unlock full day-by-day modifications, custom chauffeur logistics, and live in-app voice calls with DIA without repeating your preferences.
                     </p>
 
                     <Link href={`/designer?draft=${selectedKey}`} className="block">
-                      <Button className="w-full rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 font-sans text-xs font-medium cursor-pointer shadow-md flex items-center justify-center gap-2">
+                      <Button className="w-full rounded-xl bg-chart-1 text-[#0D2E37] hover:bg-white font-sans text-xs font-semibold cursor-pointer shadow-md flex items-center justify-center gap-2 transition-colors">
                         <span>Save Itinerary & Continue with DIA</span>
                         <ArrowRight className="h-3.5 w-3.5" />
                       </Button>

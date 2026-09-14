@@ -3,9 +3,15 @@
 import { useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { ScrollHeadline } from "@/components/marketing/scroll-headline";
-import { Sparkles, ArrowUpRight, MapPin, X, ArrowRight, ShieldCheck } from "lucide-react";
+import { motion } from "framer-motion";
+import {
+  MapPin,
+  Calendar,
+  Users,
+  ShieldCheck,
+  X,
+  ArrowRight,
+} from "lucide-react";
 import { UNSPLASH_ASSETS, UnsplashAsset } from "@/lib/unsplash";
 import { Button } from "@/components/ui/button";
 
@@ -25,6 +31,8 @@ interface SanctuaryItem {
   rateInr: string;
   rateUsd: string;
   pacing: string;
+  duration: string;
+  capacity: string;
   notes: string;
   fullStory: string;
   amenities: string[];
@@ -36,27 +44,21 @@ export function SanctuariesSection({ isReducedMotion }: SanctuariesSectionProps)
   const [currency, setCurrency] = useState<"INR" | "USD">("INR");
   const containerRef = useRef<HTMLElement>(null);
 
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"],
-  });
-
-  const colParallax = useTransform(scrollYProgress, [0, 1], [20, -20]);
-
   const sanctuaries: SanctuaryItem[] = [
-    // 3 Domestic Indian Sanctuaries
     {
       id: "udaivilas",
       title: "The Oberoi Udaivilas",
       location: "Udaipur, Rajasthan",
       country: "India",
       tag: "Verified Heritage",
-      tagColor: "bg-chart-1/15 text-chart-1 border-chart-1/25",
-      type: "Royal Mewar Palace Courtyards",
+      tagColor: "text-chart-1 border-chart-1/30 bg-chart-1/10",
+      type: "Mewar Palace Courtyards",
       stillnessScore: 98,
       rateInr: "₹2,40,000",
       rateUsd: "$2,900",
       pacing: "Unhurried (5 Days)",
+      duration: "5 Days / 4 Nights",
+      capacity: "2–4 Guests (Private Pavilion)",
       notes: "Carved marble jharokhas, private Lake Pichola boat arrivals, and candlelit domes overlooking dawn waters.",
       fullStory: "Spread over 50 acres on the banks of Lake Pichola, The Oberoi Udaivilas stands on 200-year-old Mewari hunting grounds. The architecture evokes the grandeur of Rajasthan's golden age with domes, corridors, and tranquil reflecting pools.",
       amenities: ["Private Solar Boat Transfers", "Kohinoor Courtyard Pool", "Ayurvedic Heritage Spa", "Private Palace Historian"],
@@ -68,12 +70,14 @@ export function SanctuariesSection({ isReducedMotion }: SanctuariesSectionProps)
       location: "Vembanad Canals, Kerala",
       country: "India",
       tag: "Verified Sanctuary",
-      tagColor: "bg-chart-1/15 text-chart-1 border-chart-1/25",
+      tagColor: "text-chart-1 border-chart-1/30 bg-chart-1/10",
       type: "Private Teakwood Kettuvallam",
       stillnessScore: 96,
       rateInr: "₹1,80,000",
       rateUsd: "$2,150",
       pacing: "Restorative (4 Days)",
+      duration: "4 Days / 3 Nights",
+      capacity: "2 Guests (Exclusive Vessel)",
       notes: "Handcrafted wooden boat drifting through emerald canals, bespoke Ayurvedic therapies, and personal chef.",
       fullStory: "Drift silently through Kerala’s tranquil backwaters on a private single-cabin kettuvallam built from anjili wood and tied with coir ropes. Your journey is timed to bird migration rhythms, accompanied by fresh coastal organic cuisine.",
       amenities: ["Dedicated Master & Chef", "Onboard Ayurvedic Physician", "Silent Electric Lagoon Motors", "Canopy Sun Deck"],
@@ -85,52 +89,37 @@ export function SanctuariesSection({ isReducedMotion }: SanctuariesSectionProps)
       location: "Indus Valley, Ladakh",
       country: "India",
       tag: "Team-Vetted",
-      tagColor: "bg-chart-2/15 text-chart-2 border-chart-2/25",
+      tagColor: "text-chart-2 border-chart-2/30 bg-chart-2/10",
       type: "Nomadic Luxury Stargazing Camp",
       stillnessScore: 99,
       rateInr: "₹2,10,000",
       rateUsd: "$2,500",
       pacing: "Solitude & High Alpine (6 Days)",
+      duration: "6 Days / 5 Nights",
+      capacity: "2 Guests (Oxygenated Tent)",
       notes: "Oxygenated alpine tents beneath the Milky Way, morning Buddhist chants, and glacial valley stillness.",
       fullStory: "Positioned 11,500 feet high in the Himalayas, this nomadic retreat introduces ultimate contemplative quiet. Guests wake to the sound of monastery horns echoing across snowcapped peaks and stargaze through computerized telescopes.",
       amenities: ["Pressurized Oxygen Suites", "Thiksey Monastery Private Access", "Astronomer-Guided Stargazing", "Chauffeured High-Pass Escort"],
       asset: UNSPLASH_ASSETS.ladakhStargazing,
     },
-
-    // 3 Global Luxury Gateways
     {
       id: "amalfi-veranda",
       title: "Positano Clifftop Veranda",
       location: "Positano, Amalfi Coast",
       country: "Italy",
       tag: "Verified Coastal",
-      tagColor: "bg-chart-1/15 text-chart-1 border-chart-1/25",
+      tagColor: "text-chart-1 border-chart-1/30 bg-chart-1/10",
       type: "Mediterranean Cliffside Refuge",
       stillnessScore: 94,
       rateInr: "₹3,20,000",
       rateUsd: "$3,850",
       pacing: "Coastal Respite (5 Days)",
+      duration: "5 Days / 4 Nights",
+      capacity: "2–6 Guests (Private Wing)",
       notes: "Pastel villa terraces suspended over the Tyrrhenian Sea with private wooden Riva boat charter.",
       fullStory: "Perched high on the rugged cliffs of Positano, this historical family estate offers unmatched panoramas of the azure Mediterranean. Private stone staircases wind down to sequestered coves inaccessible from public paths.",
       amenities: ["Private Riva Boat Charter", "Terrace Michelin Dining", "Cliffside Plunge Pool", "Campania Wine Cellar"],
       asset: UNSPLASH_ASSETS.amalfiVeranda,
-    },
-    {
-      id: "maldives-lagoon",
-      title: "Noonu Atoll Water Villa",
-      location: "Noonu Atoll",
-      country: "Maldives",
-      tag: "Team-Vetted",
-      tagColor: "bg-chart-2/15 text-chart-2 border-chart-2/25",
-      type: "Secluded Overwater Pavilion",
-      stillnessScore: 97,
-      rateInr: "₹3,90,000",
-      rateUsd: "$4,650",
-      pacing: "Island Stillness (5 Days)",
-      notes: "Private catamaran transfers, glass-bottom infinity baths, and uninterrupted coral reef solitude.",
-      fullStory: "Set within a pristine marine reserve in the northern Maldives, this overwater pavilion is suspended entirely over turquoise lagoons. Retractable roofs allow sleeping beneath equatorial constellations with 24/7 personal butler service.",
-      amenities: ["Retractable Stargazing Roof", "Private Saltwater Lagoon Pool", "Seaplane Chauffeur Access", "Resident Marine Biologist"],
-      asset: UNSPLASH_ASSETS.maldivesOverwater,
     },
     {
       id: "swiss-alps",
@@ -138,12 +127,14 @@ export function SanctuariesSection({ isReducedMotion }: SanctuariesSectionProps)
       location: "St. Moritz, Engadin",
       country: "Switzerland",
       tag: "Verified Alpine",
-      tagColor: "bg-chart-1/15 text-chart-1 border-chart-1/25",
+      tagColor: "text-chart-1 border-chart-1/30 bg-chart-1/10",
       type: "Engadin Pine & Granite Sanctuary",
       stillnessScore: 98,
       rateInr: "₹3,60,000",
       rateUsd: "$4,300",
       pacing: "Glacial Retreat (6 Days)",
+      duration: "6 Days / 5 Nights",
+      capacity: "4–8 Guests (Full Chalet)",
       notes: "Swiss stone-pine wood suites, subterranean thermal baths, and private mountain guide clearance.",
       fullStory: "A century-old Engadin refuge reconstructed with untreated Swiss pine, natural granite, and glass framing snow-draped alpine massifs. Subterranean hot mineral pools offer restorative warmth after private cross-country expeditions.",
       amenities: ["Subterranean Granite Thermal Baths", "Ski-In Private Funicular", "Swiss Pine Aromatherapy", "Engadin Fondue Cellar"],
@@ -154,51 +145,47 @@ export function SanctuariesSection({ isReducedMotion }: SanctuariesSectionProps)
   return (
     <section
       ref={containerRef}
-      id="sanctuaries"
-      className="relative z-10 bg-background text-foreground py-28 px-4 sm:px-6 lg:px-12 border-t border-border transition-colors duration-300 overflow-hidden"
+      id="retreats"
+      className="relative bg-[#091b20] text-white py-24 sm:py-32 border-b border-white/10"
+      aria-label="TripSpree Handcrafted Sanctuaries"
     >
-      <div className="mx-auto max-w-7xl">
-        {/* Editorial Section Header & Currency Switch */}
-        <div className="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-8 border-b border-border/70 pb-10">
-          <div className="max-w-3xl">
-            <div className="flex items-center gap-2 mb-3">
-              <Sparkles className="h-4 w-4 text-primary" />
-              <span className="font-mono text-xs tracking-[0.25em] uppercase text-muted-foreground">
-                Featured Sanctuaries • Domestic & Global
-              </span>
+      <div className="max-w-7xl mx-auto px-6 md:px-12">
+        {/* Section Header & Currency Toggle */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8 border-b border-white/10 pb-10">
+          <div>
+            <div className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-chart-1 mb-3">
+              <span>+</span>
+              <span>CURATED SANCTUARIES</span>
             </div>
-
-            <ScrollHeadline
-              text="Quiet private estates, hand-selected without compromise."
-              className="text-3xl sm:text-5xl md:text-6xl text-foreground mb-4 font-normal font-serif leading-tight"
-              isReducedMotion={isReducedMotion}
-            />
-
-            <p className="font-sans text-sm sm:text-base text-muted-foreground leading-relaxed">
-              True luxury is the privilege of unhurried contemplation. Our destination specialists personally inspect each estate before admitting it to the TripSpree collection — from royal Mewar courtyards to alpine glacial refuges.
-            </p>
+            <h2 className="font-sans font-bold text-3xl sm:text-5xl uppercase tracking-tight text-white leading-tight">
+              Quiet Private Estates, <br />
+              <span className="font-serif italic font-normal lowercase text-white/70">
+                hand-selected without
+              </span>{" "}
+              compromise
+            </h2>
           </div>
 
           {/* Currency Toggle (₹ INR <-> $ USD) */}
-          <div className="shrink-0 flex items-center gap-2 rounded-2xl border border-border bg-card p-1.5 shadow-sm">
+          <div className="shrink-0 flex items-center gap-2 rounded-full border border-white/15 bg-white/5 p-1.5 backdrop-blur-md">
             <button
               type="button"
               onClick={() => setCurrency("INR")}
-              className={`px-3.5 py-1.5 rounded-xl font-mono text-xs transition-all cursor-pointer ${
+              className={`px-4 py-1.5 rounded-full font-mono text-xs transition-all cursor-pointer ${
                 currency === "INR"
-                  ? "bg-primary text-primary-foreground font-semibold shadow-xs"
-                  : "text-muted-foreground hover:text-foreground"
+                  ? "bg-chart-1 text-[#0D2E37] font-semibold shadow-xs"
+                  : "text-white/60 hover:text-white"
               }`}
             >
-              ₹ INR (Lakhs)
+              ₹ INR
             </button>
             <button
               type="button"
               onClick={() => setCurrency("USD")}
-              className={`px-3.5 py-1.5 rounded-xl font-mono text-xs transition-all cursor-pointer ${
+              className={`px-4 py-1.5 rounded-full font-mono text-xs transition-all cursor-pointer ${
                 currency === "USD"
-                  ? "bg-primary text-primary-foreground font-semibold shadow-xs"
-                  : "text-muted-foreground hover:text-foreground"
+                  ? "bg-chart-1 text-[#0D2E37] font-semibold shadow-xs"
+                  : "text-white/60 hover:text-white"
               }`}
             >
               $ USD
@@ -206,189 +193,197 @@ export function SanctuariesSection({ isReducedMotion }: SanctuariesSectionProps)
           </div>
         </div>
 
-        {/* Curated 6-Sanctuary Grid (3 India + 3 Global) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {sanctuaries.map((sanctuary, idx) => {
-            const isParallaxTarget = idx % 2 === 1;
-            return (
-              <motion.div
-                key={sanctuary.id}
-                style={{
-                  y: isReducedMotion ? 0 : isParallaxTarget ? colParallax : 0,
-                }}
-                initial={isReducedMotion ? undefined : { opacity: 0, y: 20 }}
-                whileInView={isReducedMotion ? undefined : { opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-5% 0px" }}
-                whileHover={
-                  isReducedMotion
-                    ? undefined
-                    : {
-                        y: -5,
-                        transition: { duration: 0.25, ease: [0.16, 1, 0.3, 1] },
-                      }
-                }
-                transition={{
-                  duration: 0.5,
-                  delay: (idx % 3) * 0.08,
-                  ease: [0.16, 1, 0.3, 1],
-                }}
-                onClick={() => setActiveModalSanctuary(sanctuary)}
-                className="group flex flex-col justify-between overflow-hidden rounded-2xl border border-border/80 bg-card shadow-xs transition-all duration-300 hover:border-primary/50 hover:shadow-xl cursor-pointer"
-              >
-                {/* Visual Frame */}
-                <div className="relative aspect-[16/11] w-full overflow-hidden bg-muted">
-                  <Image
-                    src={sanctuary.asset.url}
-                    alt={sanctuary.asset.alt}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
-                  />
-
-                  {/* Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-
-                  {/* Status & Stillness Badges */}
-                  <div className="absolute top-3 left-3 right-3 flex items-center justify-between">
-                    <span
-                      className={`font-mono text-[10px] tracking-wider uppercase px-2.5 py-0.5 rounded-full border backdrop-blur-md ${sanctuary.tagColor}`}
-                    >
-                      {sanctuary.tag}
-                    </span>
-
-                    <span className="font-mono text-[10px] tracking-wider uppercase px-2 py-0.5 rounded-full bg-black/60 text-white border border-white/20 backdrop-blur-md flex items-center gap-1">
-                      <ShieldCheck className="h-3 w-3 text-chart-1" />
-                      {sanctuary.stillnessScore}/100 Stillness
-                    </span>
-                  </div>
-
-                  {/* Location Pin */}
-                  <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between text-white font-mono text-xs">
-                    <div className="flex items-center gap-1.5">
-                      <MapPin className="h-3.5 w-3.5 text-primary" />
-                      <span>{sanctuary.location}</span>
-                    </div>
-                    <span className="text-[10px] text-white/70 uppercase tracking-widest">{sanctuary.country}</span>
-                  </div>
-                </div>
-
-                {/* Content Details */}
-                <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between space-y-4">
+        {/* Vita Travels Signature Horizontal Split Cards (.featured-item) */}
+        <div className="space-y-8 sm:space-y-12">
+          {sanctuaries.map((sanctuary, idx) => (
+            <motion.div
+              key={sanctuary.id}
+              initial={isReducedMotion ? {} : { opacity: 0, y: 30 }}
+              whileInView={isReducedMotion ? {} : { opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-10% 0px" }}
+              transition={{ duration: 0.5, delay: idx * 0.1 }}
+              className="group rounded-3xl border border-white/10 bg-white/[0.02] hover:bg-white/[0.04] p-6 sm:p-8 lg:p-10 transition-all duration-300 hover:border-white/20 shadow-xl"
+            >
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+                {/* Left Side: Property Specs & Actions (7 cols) */}
+                <div className="lg:col-span-6 flex flex-col justify-between space-y-6">
                   <div>
-                    <div className="flex items-center justify-between mb-1.5">
-                      <span className="font-mono text-[10px] uppercase text-primary tracking-wider font-semibold">
-                        {sanctuary.type}
+                    {/* Eyebrow & Status Chip */}
+                    <div className="flex items-center gap-3 mb-3">
+                      <span className="font-mono text-[10px] text-chart-1 uppercase tracking-widest">
+                        {String(idx + 1).padStart(2, "0")} / SANCTUARY
                       </span>
-                      <span className="font-mono text-[10px] text-muted-foreground">{sanctuary.pacing}</span>
+                      <span
+                        className={`font-mono text-[10px] px-2.5 py-0.5 rounded-full border ${sanctuary.tagColor}`}
+                      >
+                        {sanctuary.tag}
+                      </span>
                     </div>
 
-                    <h3 className="font-serif text-xl font-normal text-foreground group-hover:text-primary transition-colors flex items-center justify-between">
-                      <span>{sanctuary.title}</span>
-                      <ArrowUpRight className="h-4 w-4 opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all text-primary" />
+                    {/* Sanctuary Title */}
+                    <h3 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-normal text-white group-hover:text-chart-1 transition-colors">
+                      {sanctuary.title}
                     </h3>
 
-                    <p className="font-sans text-xs text-muted-foreground mt-2 leading-relaxed line-clamp-2">
+                    {/* Price Spec */}
+                    <div className="mt-2 flex items-baseline gap-2">
+                      <span className="font-mono text-xs text-white/50 uppercase tracking-wider">From</span>
+                      <span className="font-mono text-lg sm:text-xl font-bold text-white">
+                        {currency === "INR" ? sanctuary.rateInr : sanctuary.rateUsd}
+                      </span>
+                      <span className="font-mono text-xs text-white/50">/ night</span>
+                    </div>
+
+                    <p className="font-sans text-xs sm:text-sm text-white/70 leading-relaxed font-light mt-3">
                       {sanctuary.notes}
                     </p>
                   </div>
 
-                  {/* High-Density Rate Bar */}
-                  <div className="pt-3.5 border-t border-border/70 flex items-center justify-between text-xs font-mono">
-                    <div>
-                      <span className="font-serif font-bold text-foreground text-sm">
-                        {currency === "INR" ? sanctuary.rateInr : sanctuary.rateUsd}
-                      </span>
-                      <span className="text-muted-foreground text-[10px]"> / night</span>
+                  {/* 4 Metadata Specification Rows (Vita signature) */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 py-4 border-y border-white/10 text-xs font-sans">
+                    <div className="flex items-center gap-2.5 text-white/80">
+                      <MapPin className="h-4 w-4 text-chart-1 shrink-0" />
+                      <span>{sanctuary.location}</span>
                     </div>
+                    <div className="flex items-center gap-2.5 text-white/80">
+                      <Calendar className="h-4 w-4 text-chart-1 shrink-0" />
+                      <span>{sanctuary.duration}</span>
+                    </div>
+                    <div className="flex items-center gap-2.5 text-white/80">
+                      <Users className="h-4 w-4 text-chart-1 shrink-0" />
+                      <span>{sanctuary.capacity}</span>
+                    </div>
+                    <div className="flex items-center gap-2.5 text-white/80">
+                      <ShieldCheck className="h-4 w-4 text-chart-1 shrink-0" />
+                      <span>{sanctuary.stillnessScore}% Stillness Rating</span>
+                    </div>
+                  </div>
 
-                    <span className="text-primary font-sans font-medium text-[11px] group-hover:translate-x-0.5 transition-transform">
-                      Inspect Sanctuary →
+                  {/* Button Actions with Vita 4-Point Star */}
+                  <div className="flex flex-wrap items-center gap-3 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => setActiveModalSanctuary(sanctuary)}
+                      className="inline-flex items-center gap-2 rounded-full bg-chart-1 px-5 py-2.5 text-xs font-sans font-semibold text-[#0D2E37] hover:bg-white transition-all shadow-md cursor-pointer group/btn"
+                    >
+                      <span>Inspect Sanctuary</span>
+                      <svg
+                        className="h-2.5 w-2.5 fill-[#0D2E37] transition-transform group-hover/btn:rotate-45 duration-300"
+                        viewBox="0 0 8 8"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path d="M8 0C8 0 7.32057 2.41553 7.32057 4C7.32057 5.58447 8 8 8 8C8 8 5.58447 7.32057 4 7.32057C2.41553 7.32057 0 8 0 8C0 8 0.679427 5.58447 0.679427 4C0.679427 2.41553 0 0 0 0C0 0 2.41553 0.679426 4 0.679426C5.58447 0.679426 8 0 8 0Z" />
+                      </svg>
+                    </button>
+
+                    <Link
+                      href={`/designer?sanctuary=${sanctuary.id}`}
+                      className="inline-flex items-center gap-1.5 rounded-full border border-white/20 px-4 py-2.5 text-xs font-sans text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+                    >
+                      <span>Plan with DIA</span>
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Right Side: High Resolution Photo with Zoom (6 cols) */}
+                <div
+                  onClick={() => setActiveModalSanctuary(sanctuary)}
+                  className="lg:col-span-6 relative aspect-16/10 rounded-2xl overflow-hidden bg-black/40 border border-white/15 cursor-pointer"
+                >
+                  <Image
+                    src={sanctuary.asset.url}
+                    alt={sanctuary.title}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#091b20]/60 via-transparent to-transparent" />
+                  <div className="absolute bottom-4 right-4">
+                    <span className="px-3 py-1 rounded-full bg-[#091b20]/80 backdrop-blur-md border border-white/20 font-mono text-[10px] text-white uppercase tracking-wider">
+                      {sanctuary.country}
                     </span>
                   </div>
                 </div>
-              </motion.div>
-            );
-          })}
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
 
-      {/* Sanctuary Quick View Modal */}
+      {/* Quick View Modal */}
       {activeModalSanctuary && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-sm animate-fade-in">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/75 backdrop-blur-md">
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="relative w-full max-w-2xl overflow-hidden rounded-3xl border border-border bg-card p-6 sm:p-8 shadow-2xl text-foreground"
+            className="relative w-full max-w-2xl overflow-hidden rounded-3xl border border-white/20 bg-[#091b20] p-6 sm:p-8 shadow-2xl text-white"
           >
-            {/* Close Button */}
             <button
               type="button"
               onClick={() => setActiveModalSanctuary(null)}
-              className="absolute top-6 right-6 h-9 w-9 rounded-full bg-muted/80 border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer z-10"
+              className="absolute top-6 right-6 h-9 w-9 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white/70 hover:text-white hover:bg-white/20 transition-colors cursor-pointer z-10"
               aria-label="Close modal"
             >
               <X className="h-4 w-4" />
             </button>
 
-            {/* Modal Content */}
-            <div className="relative aspect-16/9 w-full rounded-2xl overflow-hidden bg-muted mb-6">
+            <div className="relative aspect-16/9 w-full rounded-2xl overflow-hidden bg-black/50 mb-6 border border-white/10">
               <Image
                 src={activeModalSanctuary.asset.url}
                 alt={activeModalSanctuary.title}
                 fill
                 className="object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#091b20]/90 via-transparent to-transparent" />
               <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white font-mono text-xs">
                 <span>{activeModalSanctuary.location} • {activeModalSanctuary.country}</span>
-                <span className="bg-primary/90 px-2.5 py-0.5 rounded-full text-white font-semibold">
+                <span className="bg-chart-1 px-3 py-1 rounded-full text-[#0D2E37] font-semibold">
                   {currency === "INR" ? activeModalSanctuary.rateInr : activeModalSanctuary.rateUsd} / night
                 </span>
               </div>
             </div>
 
-            <span className="font-mono text-xs uppercase tracking-wider text-primary font-medium block mb-1">
+            <span className="font-mono text-xs uppercase tracking-wider text-chart-1 font-medium block mb-1">
               {activeModalSanctuary.type}
             </span>
-            <h2 className="font-serif text-2xl sm:text-3xl text-foreground font-medium mb-3">
+            <h2 className="font-serif text-2xl sm:text-3xl text-white font-medium mb-3">
               {activeModalSanctuary.title}
             </h2>
-            <p className="font-sans text-xs sm:text-sm text-muted-foreground leading-relaxed mb-6">
+            <p className="font-sans text-xs sm:text-sm text-white/70 leading-relaxed mb-6">
               {activeModalSanctuary.fullStory}
             </p>
 
-            <div className="mb-6 pt-4 border-t border-border">
-              <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground block mb-2.5">
+            <div className="mb-6 pt-4 border-t border-white/10">
+              <span className="font-mono text-xs uppercase tracking-widest text-white/50 block mb-2.5">
                 Signature Amenities & Clearance
               </span>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 font-sans text-xs text-foreground">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 font-sans text-xs text-white/80">
                 {activeModalSanctuary.amenities.map((amenity) => (
                   <div key={amenity} className="flex items-center gap-2">
-                    <ShieldCheck className="h-3.5 w-3.5 text-primary shrink-0" />
+                    <ShieldCheck className="h-3.5 w-3.5 text-chart-1 shrink-0" />
                     <span>{amenity}</span>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-3 pt-4 border-t border-border">
+            <div className="flex items-center justify-end gap-3 pt-4 border-t border-white/10">
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => setActiveModalSanctuary(null)}
-                className="rounded-full font-mono text-xs px-5 border-border cursor-pointer"
+                className="rounded-full font-mono text-xs px-5 border-white/20 bg-white/5 hover:bg-white/10 text-white cursor-pointer"
               >
                 Close
               </Button>
               <Link href={`/designer?sanctuary=${activeModalSanctuary.id}`}>
                 <Button
-                  variant="default"
                   size="sm"
-                  className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90 font-sans text-xs px-6 cursor-pointer"
+                  className="rounded-full bg-chart-1 text-[#0D2E37] hover:bg-white font-sans text-xs font-semibold px-6 cursor-pointer"
                 >
-                  Plan with DIA in Designer Studio
+                  Plan with DIA in Studio
                   <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
                 </Button>
               </Link>
@@ -399,4 +394,3 @@ export function SanctuariesSection({ isReducedMotion }: SanctuariesSectionProps)
     </section>
   );
 }
-

@@ -6,7 +6,6 @@ import Link from "next/link";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { ArrowRight, Mic, Sparkles, Compass, Lock, X, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { UNSPLASH_ASSETS } from "@/lib/unsplash";
 
 interface HeroProps {
   isReducedMotion: boolean;
@@ -22,16 +21,19 @@ const QUICK_INSPIRATIONS = [
 export function Hero({ isReducedMotion }: HeroProps) {
   const [promptInput, setPromptInput] = useState("");
   const [isVoiceGateOpen, setIsVoiceGateOpen] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
+  const containerRef = useRef<HTMLElement>(null);
 
   // Parallax physics with container-clipped boundary
   const { scrollYProgress } = useScroll({
-    target: sectionRef,
+    target: containerRef,
     offset: ["start start", "end start"],
   });
 
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "16%"]);
-  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "-6%"]);
+  // Layered Parallax Depths (Vita Travels signature 3-plane effect)
+  const skyY = useTransform(scrollYProgress, [0, 1], ["0%", "6%"]);
+  const mountainsY = useTransform(scrollYProgress, [0, 1], ["0%", "14%"]);
+  const textY = useTransform(scrollYProgress, [0, 1], ["0%", "-8%"]);
+  const foregroundY = useTransform(scrollYProgress, [0, 1], ["0%", "24%"]);
 
   const handleTriggerPrototype = (customPrompt?: string) => {
     const activePrompt = customPrompt || promptInput.trim();
@@ -63,65 +65,101 @@ export function Hero({ isReducedMotion }: HeroProps) {
 
   return (
     <section
-      ref={sectionRef}
-      className="relative min-h-[96vh] w-full flex items-center justify-center overflow-hidden bg-background text-foreground"
+      ref={containerRef}
+      className="relative min-h-[100vh] lg:min-h-[105vh] w-full overflow-hidden bg-[#091b20] text-white flex flex-col justify-between"
       aria-label="TripSpree Hero Section"
     >
-      {/* 100vw Full-Bleed Parallax Background (Lake Pichola at Dawn, Udaipur) */}
+      {/* Vita Architectural Corner Cross Markers */}
+      <div className="absolute top-24 left-6 z-30 text-white/30 font-mono text-sm select-none pointer-events-none">+</div>
+      <div className="absolute top-24 right-6 z-30 text-white/30 font-mono text-sm select-none pointer-events-none">+</div>
+
+      {/* LAYER 0: Sky Base Image */}
       <motion.div
-        style={{ y: isReducedMotion ? "0%" : backgroundY }}
-        className="absolute inset-0 z-0 h-[120%] -top-[10%] w-full"
+        style={{ y: isReducedMotion ? "0%" : skyY }}
+        className="absolute inset-0 z-0 h-[115%] -top-[5%] w-full pointer-events-none select-none"
       >
         <Image
-          src={UNSPLASH_ASSETS.heroFullBleed.url}
-          alt={UNSPLASH_ASSETS.heroFullBleed.alt}
+          src="/images/hero/bg-sky.webp"
+          alt="Expansive atmospheric sky"
           fill
           priority
           sizes="100vw"
-          className="object-cover object-center"
+          className="object-cover object-top"
         />
-        {/* Cinematic Vignette & Readability Gradients */}
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/65 to-black/55" />
-        <div className="absolute inset-0 bg-[#060606]/35 backdrop-blur-[1px]" />
+        <div className="absolute inset-0 bg-[#091b20]/25 mix-blend-multiply" />
       </motion.div>
 
-      {/* Atmospheric Full-Bleed Foreground Content */}
+      {/* LAYER 1: Mountain Cutout (Midground) */}
       <motion.div
-        style={{ y: isReducedMotion ? "0%" : contentY }}
-        className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-16 flex flex-col justify-between min-h-[88vh]"
+        style={{ y: isReducedMotion ? "0%" : mountainsY }}
+        className="absolute inset-x-0 top-[12%] sm:top-[8%] md:top-[6%] z-[1] h-[75%] sm:h-[80%] w-full pointer-events-none select-none"
       >
-        {/* Top Eyebrow & Brand Positioning */}
-        <div className="max-w-3xl">
-          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-white/20 bg-background/60 backdrop-blur-md mb-6 shadow-sm">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
-            </span>
-            <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-foreground font-semibold">
-              India&apos;s 1st Autonomous AI Travel Platform
-            </span>
-          </div>
+        <div className="relative h-full w-full max-w-7xl mx-auto">
+          <Image
+            src="/images/hero/bg-mountains.png"
+            alt="Snowcapped mountain ridges"
+            fill
+            priority
+            sizes="100vw"
+            className="object-contain sm:object-cover object-center"
+          />
+        </div>
+      </motion.div>
 
-          {/* Monumental Editorial Typography */}
-          <h1 className="font-serif text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-tight text-white uppercase leading-[0.9] mb-6 drop-shadow-sm">
-            TRAVEL <br />
-            <span className="font-serif italic font-normal tracking-normal lowercase text-primary">
-              is an
-            </span>{" "}
-            <br />
-            AWAKENING
-          </h1>
-
-          <p className="font-sans text-sm sm:text-base md:text-lg text-white/90 leading-relaxed max-w-2xl drop-shadow-sm font-light">
-            Where human intuition meets autonomous travel intelligence. Speak or type with{" "}
-            <strong className="text-white font-medium">DIA</strong> to orchestrate unhurried journeys of stillness, rare access, and architectural wonder across India and the globe.
-          </p>
+      {/* LAYER 2: Monumental Typography (Sits BEHIND the foreground plains cutout) */}
+      <motion.div
+        style={{ y: isReducedMotion ? "0%" : textY }}
+        className="relative z-[2] w-full max-w-7xl mx-auto px-6 sm:px-10 pt-28 sm:pt-32 md:pt-36 flex flex-col items-center text-center pointer-events-none select-none"
+      >
+        {/* Subtle Eyebrow Badge */}
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-white/20 bg-[#091b20]/60 backdrop-blur-md mb-4 shadow-sm">
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-chart-1 opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-chart-1" />
+          </span>
+          <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.2em] text-white font-semibold">
+            India&apos;s 1st Autonomous AI Travel Platform
+          </span>
         </div>
 
-        {/* Integrated Concierge Chatbox & Telemetry Bar */}
-        <div className="mt-10 w-full max-w-3xl">
-          <div className="rounded-2xl border border-white/20 bg-card/85 backdrop-blur-xl p-3 sm:p-4 shadow-2xl text-foreground">
-            {/* Input Row */}
+        {/* Vita Style Monumental 3-Line Headline */}
+        <h1 className="font-sans font-extrabold uppercase tracking-[-0.04em] text-white text-5xl sm:text-7xl md:text-8xl lg:text-[9.5rem] leading-[0.88] drop-shadow-lg">
+          <span className="block">TRAVEL</span>
+          <span className="block font-serif italic lowercase font-normal text-chart-1 tracking-tight text-4xl sm:text-6xl md:text-7xl lg:text-[8rem] -my-1 sm:-my-3">
+            is an
+          </span>
+          <span className="block">AWAKENING</span>
+        </h1>
+      </motion.div>
+
+      {/* LAYER 3: Foreground Plains Cutout (Yurts, horse, golden hills - sits in FRONT of typography) */}
+      <motion.div
+        style={{ y: isReducedMotion ? "0%" : foregroundY }}
+        className="absolute inset-x-0 bottom-0 z-[3] h-[45%] sm:h-[52%] md:h-[60%] w-full pointer-events-none select-none"
+      >
+        <Image
+          src="/images/hero/bg-foreground.png"
+          alt="Foreground landscape plains with nomadic yurts and grazing horse"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-bottom"
+        />
+        {/* Subtle Dark Vignette at the extreme bottom edge to transition into next section */}
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#091b20] via-[#091b20]/70 to-transparent" />
+      </motion.div>
+
+      {/* LAYER 4: Interactive Front Surface (Chatbox, Subtitle, Telemetry, and CTAs) */}
+      <div className="relative z-[10] w-full max-w-5xl mx-auto px-4 sm:px-6 pb-12 sm:pb-16 flex flex-col items-center text-center">
+        {/* Editorial Subtitle */}
+        <p className="font-sans text-xs sm:text-sm md:text-base text-white/90 max-w-2xl mx-auto leading-relaxed mb-6 font-light drop-shadow-md">
+          Where human intuition meets autonomous travel intelligence. Speak or type with{" "}
+          <strong className="text-white font-semibold">DIA</strong> to orchestrate unhurried journeys of stillness, rare access, and architectural wonder across India and the globe.
+        </p>
+
+        {/* Integrated Concierge Chatbox & Inquiries */}
+        <div className="w-full max-w-2xl">
+          <div className="rounded-2xl border border-white/20 bg-[#091b20]/90 backdrop-blur-xl p-3 sm:p-4 shadow-2xl text-white">
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -134,35 +172,35 @@ export function Hero({ isReducedMotion }: HeroProps) {
                   type="text"
                   value={promptInput}
                   onChange={(e) => setPromptInput(e.target.value)}
-                  placeholder="Where is your mind drifting? (e.g., 5 days in Udaipur palaces...)"
-                  className="w-full rounded-xl bg-background/80 border border-border px-4 py-3 sm:py-3.5 text-xs sm:text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary transition-all font-sans"
+                  placeholder="Where is your mind drifting? (e.g. 5 days in Udaipur palaces...)"
+                  className="w-full rounded-xl bg-white/10 border border-white/15 px-4 py-3 sm:py-3.5 text-xs sm:text-sm text-white placeholder:text-white/50 focus:outline-none focus:ring-1 focus:ring-chart-1 transition-all font-sans"
                 />
               </div>
 
-              {/* Mic Icon Button -> Triggers Voice Gate Modal */}
+              {/* Mic Button -> Voice Gate Modal */}
               <button
                 type="button"
                 onClick={() => setIsVoiceGateOpen(true)}
                 title="Voice Call with DIA (Member Feature)"
-                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-border bg-muted/80 text-muted-foreground hover:text-primary hover:border-primary/50 transition-all cursor-pointer"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/20 bg-white/10 text-white/80 hover:text-chart-1 hover:border-chart-1/50 transition-all cursor-pointer"
               >
                 <Mic className="h-4 w-4" />
               </button>
 
-              {/* Send / Consult Button */}
+              {/* Consult Button with Vita Pill Style */}
               <Button
                 type="submit"
                 size="default"
-                className="h-11 rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 px-4 sm:px-5 text-xs sm:text-sm font-sans font-medium flex items-center gap-1.5 shadow-md cursor-pointer"
+                className="h-11 rounded-xl bg-chart-1 text-[#0D2E37] hover:bg-white px-4 sm:px-5 text-xs sm:text-sm font-sans font-semibold flex items-center gap-1.5 shadow-md cursor-pointer transition-colors"
               >
                 <span>Consult DIA</span>
                 <ArrowRight className="h-3.5 w-3.5" />
               </Button>
             </form>
 
-            {/* Quick Inspiration Pills */}
-            <div className="mt-3.5 pt-3 border-t border-border/50 flex items-center gap-2 flex-wrap">
-              <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground mr-1">
+            {/* Quick Inspirations */}
+            <div className="mt-3.5 pt-3 border-t border-white/10 flex items-center gap-2 flex-wrap justify-center sm:justify-start">
+              <span className="font-mono text-[10px] uppercase tracking-wider text-white/50 mr-1">
                 Quick Inquiries:
               </span>
               {QUICK_INSPIRATIONS.map((item) => (
@@ -173,7 +211,7 @@ export function Hero({ isReducedMotion }: HeroProps) {
                     setPromptInput(item.prompt);
                     handleTriggerPrototype(item.prompt);
                   }}
-                  className="rounded-lg border border-border/70 bg-background/60 hover:bg-primary/10 hover:border-primary/40 px-2.5 py-1 text-[11px] font-sans text-muted-foreground hover:text-foreground transition-all cursor-pointer"
+                  className="rounded-lg border border-white/15 bg-white/5 hover:bg-chart-1/20 hover:border-chart-1/40 px-2.5 py-1 text-[11px] font-sans text-white/80 hover:text-white transition-all cursor-pointer"
                 >
                   {item.label}
                 </button>
@@ -182,64 +220,63 @@ export function Hero({ isReducedMotion }: HeroProps) {
           </div>
 
           {/* Micro Telemetry Stats */}
-          <div className="mt-4 flex flex-wrap items-center gap-4 sm:gap-8 text-[11px] font-mono text-white/80">
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-[11px] font-mono text-white/70">
             <span className="flex items-center gap-1.5">
-              <Sparkles className="h-3 w-3 text-primary" />
+              <Sparkles className="h-3 w-3 text-chart-1" />
               Autonomous DIA 2.0 Engine
             </span>
             <span className="hidden sm:inline opacity-40">•</span>
             <span className="flex items-center gap-1.5">
               <Compass className="h-3 w-3 text-chart-1" />
-              60+ Verified Sanctuaries (India & Global)
+              60+ Verified Sanctuaries
             </span>
             <span className="hidden sm:inline opacity-40">•</span>
             <span className="flex items-center gap-1.5">
-              <CheckCircle2 className="h-3 w-3 text-chart-2" />
+              <CheckCircle2 className="h-3 w-3 text-chart-1" />
               100% Specialist-Vetted Logistics
             </span>
           </div>
         </div>
-      </motion.div>
+      </div>
 
-      {/* Voice Gate In-Hero Dialog Modal */}
+      {/* Voice Gate Dialog Modal */}
       <AnimatePresence>
         {isVoiceGateOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md">
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 10 }}
-              className="relative w-full max-w-md rounded-2xl border border-border bg-card p-6 shadow-2xl text-foreground"
+              className="relative w-full max-w-md rounded-2xl border border-white/15 bg-[#091b20] p-6 shadow-2xl text-white"
             >
-              {/* Close Button */}
               <button
                 type="button"
                 onClick={() => setIsVoiceGateOpen(false)}
-                className="absolute top-4 right-4 p-1 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer"
+                className="absolute top-4 right-4 p-1 rounded-lg text-white/60 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
               >
                 <X className="h-4 w-4" />
               </button>
 
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary mb-4 border border-primary/20">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-chart-1/10 text-chart-1 mb-4 border border-chart-1/20">
                 <Mic className="h-6 w-6" />
               </div>
 
-              <div className="flex items-center gap-2 text-primary font-mono text-[10px] uppercase tracking-widest mb-1.5 font-semibold">
+              <div className="flex items-center gap-2 text-chart-1 font-mono text-[10px] uppercase tracking-widest mb-1.5 font-semibold">
                 <Lock className="h-3 w-3" />
                 <span>Member-Only In-App Call</span>
               </div>
 
-              <h2 className="font-serif text-xl font-medium tracking-tight text-foreground mb-2">
+              <h2 className="font-serif text-xl font-medium tracking-tight text-white mb-2">
                 Live Voice Consultation with DIA
               </h2>
 
-              <p className="font-sans text-xs text-muted-foreground leading-relaxed mb-6">
+              <p className="font-sans text-xs text-white/70 leading-relaxed mb-6">
                 In order to access live, low-latency in-app voice calls with DIA (powered by our conversational audio engine), please sign in with your complimentary member passkey or email.
               </p>
 
               <div className="flex flex-col gap-2.5">
                 <Link href="/designer" onClick={() => setIsVoiceGateOpen(false)}>
-                  <Button className="w-full rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 font-sans text-xs font-medium cursor-pointer">
+                  <Button className="w-full rounded-xl bg-chart-1 text-[#0D2E37] hover:bg-white font-sans text-xs font-semibold cursor-pointer">
                     Sign In to Unlock Voice Call
                     <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
                   </Button>
@@ -251,7 +288,7 @@ export function Hero({ isReducedMotion }: HeroProps) {
                     setIsVoiceGateOpen(false);
                     handleTriggerPrototype("Plan an unhurried 5-day retreat in Udaipur");
                   }}
-                  className="w-full rounded-xl border-border bg-background hover:bg-muted text-xs font-sans cursor-pointer"
+                  className="w-full rounded-xl border-white/20 bg-white/5 hover:bg-white/10 text-xs font-sans text-white cursor-pointer"
                 >
                   Try Interactive Text Prototype Below
                 </Button>
