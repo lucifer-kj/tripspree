@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { AppSidebar } from "@/components/app/app-sidebar";
+import { AppNav } from "@/components/app/app-nav";
 import { Button } from "@/components/ui/button";
 import { useTripSpreeStore } from "@/lib/store";
 import {
@@ -33,14 +33,14 @@ export default function ProvenanceTrailPage() {
   };
 
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-muted/30 font-sans text-foreground">
-      {/* App Navigation Sidebar */}
-      <AppSidebar activeTab="account" />
+    <div className="min-h-screen bg-[#0c0717] text-white selection:bg-[#8247ff]/30 flex flex-col font-sans">
+      {/* Global Top Navigation Bar */}
+      <AppNav />
 
       {/* Main Provenance Trail Canvas */}
-      <main className="flex-1 flex flex-col overflow-y-auto">
+      <main className="flex-1 flex flex-col">
         {/* Top App Bar */}
-        <header className="h-16 shrink-0 border-b border-border bg-card/80 backdrop-blur-xs px-6 flex items-center justify-between">
+        <header className="h-16 shrink-0 border-b border-white/10 bg-[#130c24]/90 backdrop-blur-md px-4 sm:px-8 lg:px-12 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
               PROVENANCE TRAIL / ARCHIVED KEEPSAKE
