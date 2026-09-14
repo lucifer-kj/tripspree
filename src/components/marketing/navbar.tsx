@@ -31,21 +31,28 @@ export function Navbar({ isReducedMotion, onToggleReducedMotion }: NavbarProps =
       }`}
     >
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 md:px-12">
-        {/* Official TripSpree Logo & Brand Name */}
-        <Link href="/" className="flex items-center gap-3 group">
-          <div className="relative h-10 w-10 flex items-center justify-center shrink-0">
+        {/* Official TripSpree Brand Lockup */}
+        <Link href="/" className="flex items-center gap-2.5 group" aria-label="TripSpree Home">
+          <div className="relative h-8 w-6 flex items-center justify-center shrink-0">
             <Image
-              src="/images/brand/logo.png"
-              alt="TripSpree Official Logo"
-              width={40}
-              height={40}
-              className="object-contain"
+              src="/images/brand/logo-mark.png"
+              alt="TripSpree Monogram"
+              width={24}
+              height={36}
+              className="object-contain transition-transform duration-300 group-hover:scale-105"
               priority
             />
           </div>
-          <span className="font-serif text-xl font-bold tracking-tight text-white group-hover:text-primary transition-colors">
-            TripSpree
-          </span>
+          <div className="relative h-5 w-28 flex items-center">
+            <Image
+              src="/images/brand/logo-wordmark-white.png"
+              alt="TripSpree"
+              width={112}
+              height={28}
+              className="object-contain object-left"
+              priority
+            />
+          </div>
         </Link>
 
         {/* Desktop Navigation Links with Vita "+" markers */}

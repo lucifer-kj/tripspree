@@ -49,13 +49,13 @@ export function Preloader({ onComplete, isReducedMotion = false }: PreloaderProp
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/15 bg-white/5 backdrop-blur-sm p-2"
+            className="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/15 bg-white/5 backdrop-blur-sm p-3"
           >
             <Image
-              src="/images/brand/logo.png"
-              alt="TripSpree Logo"
-              width={48}
-              height={48}
+              src="/images/brand/logo-mark.png"
+              alt="TripSpree Monogram"
+              width={34}
+              height={50}
               className="object-contain"
               priority
             />
@@ -65,13 +65,20 @@ export function Preloader({ onComplete, isReducedMotion = false }: PreloaderProp
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-            className="text-center"
+            className="flex flex-col items-center text-center"
           >
-            <h1 className="font-serif text-xl tracking-[0.2em] uppercase text-white font-light">
-              TripSpree
-            </h1>
-            <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-[#a0a0a0] mt-1.5">
-              Bespoke Travel
+            <div className="relative h-6 w-32 flex items-center justify-center mb-1">
+              <Image
+                src="/images/brand/logo-wordmark-white.png"
+                alt="TripSpree"
+                width={128}
+                height={32}
+                className="object-contain"
+                priority
+              />
+            </div>
+            <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-[#a0a0a0] mt-1">
+              Bespoke Travel Atelier
             </p>
           </motion.div>
         </div>

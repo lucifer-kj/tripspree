@@ -21,11 +21,11 @@ export function Footer() {
 
         {/* Centered Official Brand Monogram & Statement on the Illustration */}
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 z-10">
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#0c0717]/80 border border-white/20 backdrop-blur-md mb-4 shadow-xl p-2">
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#0c0717]/80 border border-white/20 backdrop-blur-md mb-4 shadow-xl p-2.5">
             <Image
-              src="/images/brand/logo.png"
-              alt="TripSpree Logo Monogram"
-              width={48}
+              src="/images/brand/logo-mark.png"
+              alt="TripSpree Monogram"
+              width={32}
               height={48}
               className="object-contain"
             />
@@ -45,18 +45,24 @@ export function Footer() {
           {/* Col 1: Brand & Concierge Desk */}
           <div className="col-span-2 space-y-4">
             <div className="flex items-center gap-2.5">
-              <div className="relative h-8 w-8 shrink-0">
+              <div className="relative h-7 w-5 shrink-0 flex items-center justify-center">
                 <Image
-                  src="/images/brand/logo.png"
-                  alt="TripSpree Logo"
-                  width={32}
-                  height={32}
+                  src="/images/brand/logo-mark.png"
+                  alt="TripSpree Monogram"
+                  width={20}
+                  height={30}
                   className="object-contain"
                 />
               </div>
-              <span className="font-serif text-lg font-bold text-white tracking-tight">
-                TripSpree
-              </span>
+              <div className="relative h-5 w-28 flex items-center">
+                <Image
+                  src="/images/brand/logo-wordmark-white.png"
+                  alt="TripSpree"
+                  width={112}
+                  height={28}
+                  className="object-contain object-left"
+                />
+              </div>
             </div>
             <p className="text-white/60 leading-relaxed font-light max-w-sm">
               India&apos;s first autonomous travel intelligence platform. Architecting unhurried journeys of stillness, rare access, and architectural pedigree.
