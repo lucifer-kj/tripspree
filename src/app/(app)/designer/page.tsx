@@ -8,6 +8,8 @@ import { ItineraryDayCard, ItineraryDay } from "@/components/app/itinerary-day-c
 import { SwapDrawer, SwapAlternative } from "@/components/app/swap-drawer";
 import { ConciergePanel } from "@/components/app/concierge-panel";
 import { Button } from "@/components/ui/button";
+import { InCallOverlay } from "@/components/app/in-call-overlay";
+import { ItineraryDiffCard } from "@/components/app/itinerary-diff-card";
 import { useTripSpreeStore } from "@/lib/store";
 import { AuthGate } from "@/components/app/auth-gate";
 import {
@@ -23,7 +25,18 @@ import {
 } from "lucide-react";
 
 export default function TripDesignerPage() {
-  const { currentTrip, swapActivity, reorderDays } = useTripSpreeStore();
+  const {
+    currentTrip,
+    swapActivity,
+    reorderDays,
+    isCallActive,
+    setCallActive,
+    activeDiffs,
+    dismissDiff,
+    acceptPendingSuggestion,
+    dismissPendingSuggestion,
+    stagePendingSuggestion,
+  } = useTripSpreeStore();
   const [swapTargetDayId, setSwapTargetDayId] = useState<string | null>(null);
   const [isSwapDrawerOpen, setIsSwapDrawerOpen] = useState(false);
   const [shareToast, setShareToast] = useState(false);
@@ -55,6 +68,13 @@ export default function TripDesignerPage() {
     confidenceTier: d.confidenceTier,
     transitCode: `JL-00${d.dayNumber} / PRV-TRANSFER`,
     curatorNote: d.curatorNote,
+    verifiedInspectionNote:
+      d.sanctuaryName === 'Amanemu'
+        ? 'Spriha stayed here in March — absolute quietude above Ago Bay.'
+        : d.sanctuaryName === 'Sowaka Ryokan'
+        ? 'Spriha inspected in March — private courtyard silence steps from Yasaka.'
+        : undefined,
+    pendingSuggestion: d.pendingSuggestion,
     schedule: [
       {
         time: d.morningActivity.time,
@@ -76,6 +96,22 @@ export default function TripDesignerPage() {
       },
     ],
   }));
+
+  const handleEaseBack = (dayId: string) => {
+    stagePendingSuggestion(dayId, {
+      slotKey: 'afternoonActivity',
+      suggestedActivity: {
+        time: '14:30 JST',
+        title: 'Private Garden Tea & Cedar Soaking Recovery',
+        location: 'Sanctuary Private Pavilion',
+        notes: 'Calm restoration requested in-context. Replaces active afternoon transit.',
+        confidenceTier: 'Verified',
+      },
+      rationale: 'You requested to ease back this day. We staged an unhurried afternoon in the private garden pavilion.',
+      trigger: 'pace',
+      status: 'pending',
+    });
+  };
 
   const activeStoreDay = currentTrip.days.find((d) => d.id === swapTargetDayId);
   const activeDisplayDay = displayDays.find((d) => d.id === swapTargetDayId) || null;
@@ -221,6 +257,11 @@ export default function TripDesignerPage() {
             </div>
           </div>
 
+          {/* Active Itinerary Diffs per UX §2 */}
+          {activeDiffs.map((diff) => (
+            <ItineraryDiffCard key={diff.id} diff={diff} onDismiss={dismissDiff} />
+          ))}
+
           {/* 50/50 Dashboard Matrix: Hero Sanctuary Card + 4-Card Telemetry Matrix */}
           <section
             aria-label="Trip Overview Dashboard"
@@ -341,6 +382,9 @@ export default function TripDesignerPage() {
                     onSwapClick={handleOpenSwap}
                     onMoveUp={handleMoveUp}
                     onMoveDown={handleMoveDown}
+                    onAcceptSuggestion={acceptPendingSuggestion}
+                    onDismissSuggestion={dismissPendingSuggestion}
+                    onEaseBackClick={handleEaseBack}
                   />
                 ))}
 
@@ -373,6 +417,19 @@ export default function TripDesignerPage() {
             setIsSwapDrawerOpen(false);
             setSwapTargetDayId(null);
           }}
+        />
+
+        {/* Live In-Call Dimming Overlay (UX §2) */}
+        <InCallOverlay
+          callStatus={isCallActive ? "active" : "idle"}
+          isMuted={false}
+          isSpeaking={true}
+          duration={22}
+          activeTranscript="Elena Vance: 'Good evening Julian. I am reviewing your day in Kyoto — would you like to swap the afternoon for a private tea ceremony?'"
+          onEndCall={() => setCallActive(false)}
+          onToggleMute={() => {}}
+          curatorName="Elena Vance"
+          sanctuary={currentTrip.realm}
         />
       </div>
     </AuthGate>

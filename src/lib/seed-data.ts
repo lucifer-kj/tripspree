@@ -1,4 +1,4 @@
-﻿import { Sanctuary, Trip, TasteProfile } from './types';
+import { Sanctuary, Trip, TasteProfile } from './types';
 import { UNSPLASH_ASSETS } from './unsplash';
 
 export const SEED_SANCTUARIES: Sanctuary[] = [
@@ -14,6 +14,8 @@ export const SEED_SANCTUARIES: Sanctuary[] = [
     amenities: ['Private Thermal Onsen', 'Kerry Hill Architecture', 'Ago Bay View', 'Kaiseki Dining'],
     confidenceTier: 'Verified',
     roomType: 'Mori Suite (99 sqm)',
+    verifiedInspectionNote: 'Spriha stayed here in March — absolute quietude above Ago Bay.',
+    verifiedBy: 'Spriha & Curation Team',
   },
   {
     id: 'benesse-house',
@@ -27,6 +29,8 @@ export const SEED_SANCTUARIES: Sanctuary[] = [
     amenities: ['Tadao Ando Design', 'Private Monorail', '24h Museum Access', 'Sea Terrace'],
     confidenceTier: 'Team-Vetted',
     roomType: 'Oval Room 402',
+    verifiedInspectionNote: 'Team-vetted for overnight gallery solitude on Naoshima.',
+    verifiedBy: 'TripSpree Curation Team',
   },
   {
     id: 'sowaka',
@@ -40,6 +44,8 @@ export const SEED_SANCTUARIES: Sanctuary[] = [
     amenities: ['Hinoki Wood Tubs', 'Moss Courtyards', 'Michelin-starred La Bombance', 'Private Tea Lounge'],
     confidenceTier: 'Verified',
     roomType: 'Sukiya Courtyard Suite',
+    verifiedInspectionNote: 'Spriha inspected in March — private courtyard silence steps from Yasaka.',
+    verifiedBy: 'TripSpree Curation Team',
   },
   {
     id: 'hoshinoya-kyoto',
@@ -53,6 +59,8 @@ export const SEED_SANCTUARIES: Sanctuary[] = [
     amenities: ['Private Riverboat Access', 'Water Terrace', 'Woodblock Printing Studio', 'Tea Pavilion'],
     confidenceTier: 'Verified',
     roomType: 'Yamanobe Riverside Room',
+    verifiedInspectionNote: 'Wooden boat access verified by curation team in Autumn.',
+    verifiedBy: 'TripSpree Curation Team',
   },
 ];
 
@@ -287,6 +295,7 @@ export const SEED_TASTE_PROFILE: TasteProfile = {
   preferredRealms: ['Kyoto', 'Naoshima', 'Ise-Shima'],
   archetypeTitle: 'The Contemplative Minimalist',
   archetypeDescription: 'You seek journeys devoid of spectacle — drawn instead to raw cedar, meditative gardens, water courtyards, and hyper-intimate culinary mastery.',
+  writtenPortrait: 'You tend to linger — slow mornings, private courtyards, and uninterrupted daylight.',
   matchedSanctuaries: ['amanemu', 'benesse-house', 'sowaka'],
   createdAt: Date.now(),
 };

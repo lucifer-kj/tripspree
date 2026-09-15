@@ -5,6 +5,8 @@ import { AppNav } from "@/components/app/app-nav";
 import { ConfidenceChip } from "@/components/app/confidence-chip";
 import { EveningCheckinCard } from "@/components/app/evening-checkin-card";
 import { TodayVoiceBar } from "@/components/app/today-voice-bar";
+import { InCallOverlay } from "@/components/app/in-call-overlay";
+import { ItineraryDiffCard } from "@/components/app/itinerary-diff-card";
 import { Button } from "@/components/ui/button";
 import { useTripSpreeStore } from "@/lib/store";
 import { AuthGate } from "@/components/app/auth-gate";
@@ -14,12 +16,32 @@ import {
   CheckCircle2,
   Wifi,
   Radio,
+  Sparkles,
+  AlertTriangle,
+  PhoneCall,
+  X,
 } from "lucide-react";
 
 export default function TodayViewPage() {
-  const { currentTrip, isDriverStandingBy, toggleDriverStandingBy, setLiveSync } = useTripSpreeStore();
+  const {
+    currentTrip,
+    isDriverStandingBy,
+    toggleDriverStandingBy,
+    setLiveSync,
+    isCallActive,
+    setCallActive,
+    activeInvitation,
+    setActiveInvitation,
+    activeDiffs,
+    dismissDiff,
+    acceptPendingSuggestion,
+    dismissPendingSuggestion,
+  } = useTripSpreeStore();
   const [localTime, setLocalTime] = useState("16:42:00");
   const [isOnline, setIsOnline] = useState(true);
+  const [isMuted, setIsMuted] = useState(false);
+  const [callDuration] = useState(14);
+  const [showEmergencyModal, setShowEmergencyModal] = useState(false);
 
   // Active day is Day 2 of current journey
   const activeDay = currentTrip.days.find((d) => d.dayNumber === 2) || currentTrip.days[0];
@@ -109,6 +131,95 @@ export default function TodayViewPage() {
 
         {/* Calm, Utilitarian Content Container (Deliberately Sparse & Focused) */}
         <div className="mx-auto w-full max-w-3xl flex-1 px-4 sm:px-6 py-8 md:py-12 space-y-8">
+          {/* Active Itinerary Diffs per UX §2 */}
+          {activeDiffs.map((diff) => (
+            <ItineraryDiffCard key={diff.id} diff={diff} onDismiss={dismissDiff} />
+          ))}
+
+          {/* Contextual Voice Invitation Banner per UX §2 & §4 */}
+          {activeInvitation && (
+            <div className="rounded-2xl border border-amber-400/30 bg-amber-400/10 p-5 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4 animate-fade-in">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2 text-amber-300 font-mono text-[10px] uppercase tracking-widest font-semibold">
+                  <Sparkles className="h-3 w-3" />
+                  <span>Quiet Concierge Invitation</span>
+                </div>
+                <h4 className="font-serif text-lg text-foreground font-medium">
+                  {activeInvitation.prompt}
+                </h4>
+                <p className="font-sans text-xs text-foreground/80 leading-relaxed max-w-xl">
+                  {activeInvitation.context}
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2.5 shrink-0">
+                <Button
+                  type="button"
+                  size="sm"
+                  onClick={() => setCallActive(true)}
+                  className="rounded-full bg-amber-300 hover:bg-amber-200 text-black font-mono text-xs tracking-wider uppercase h-8 px-4 cursor-pointer"
+                >
+                  <Radio className="h-3 w-3 mr-1.5 animate-pulse" />
+                  Talk it through
+                </Button>
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => setActiveInvitation(null)}
+                  className="rounded-full text-muted-foreground hover:text-foreground text-xs font-mono tracking-wider uppercase h-8 px-3 cursor-pointer"
+                >
+                  Dismiss
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {/* Staged Suggestion Banner on Active Day per UX §4 */}
+          {activeDay.pendingSuggestion && activeDay.pendingSuggestion.status === "pending" && (
+            <div className="rounded-2xl border border-amber-400/40 bg-[#160f26] p-6 shadow-md space-y-4 animate-fade-in">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-amber-300 font-semibold">
+                  <Sparkles className="h-3.5 w-3.5" />
+                  <span>Staged Adaptation (Pending Review)</span>
+                </div>
+                <span className="font-mono text-[10px] uppercase text-muted-foreground">Requires Your Approval</span>
+              </div>
+
+              <blockquote className="font-serif italic text-sm text-foreground/90 leading-relaxed border-l-2 border-amber-400/40 pl-3">
+                &ldquo;{activeDay.pendingSuggestion.rationale}&rdquo;
+              </blockquote>
+
+              <div className="rounded-xl border border-white/10 bg-black/20 p-4 text-xs font-sans space-y-1">
+                <span className="font-mono text-[10px] uppercase text-muted-foreground block">Proposed Activity:</span>
+                <p className="text-foreground font-semibold text-sm">{activeDay.pendingSuggestion.suggestedActivity.title}</p>
+                <p className="text-muted-foreground">
+                  {activeDay.pendingSuggestion.suggestedActivity.time} • {activeDay.pendingSuggestion.suggestedActivity.location}
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3 pt-1">
+                <Button
+                  type="button"
+                  size="sm"
+                  onClick={() => acceptPendingSuggestion(activeDay.id)}
+                  className="rounded-full bg-amber-300 hover:bg-amber-200 text-black font-mono text-xs font-semibold tracking-wider uppercase h-8 px-4 cursor-pointer"
+                >
+                  Accept Suggestion
+                </Button>
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => dismissPendingSuggestion(activeDay.id)}
+                  className="rounded-full text-muted-foreground hover:text-foreground font-mono text-xs tracking-wider uppercase h-8 px-3 cursor-pointer"
+                >
+                  Keep Original
+                </Button>
+              </div>
+            </div>
+          )}
+
           {/* 1. Location & Atmospheric Status (One Primary View) */}
           <div className="rounded-2xl border border-border bg-card p-6 md:p-8 shadow-xs">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-border">
@@ -258,7 +369,95 @@ export default function TodayViewPage() {
 
           {/* 5. Evening Check-In Card (Unmissable, Non-Blocking, One-Tap Reflection) */}
           <EveningCheckinCard />
+
+          {/* Permanent Calm Emergency / Human Escalation Path (UX §4) */}
+          <div className="pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-muted-foreground">
+            <div className="flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-chart-1" />
+              <span>Curator Elena Vance & Spriha team on standby</span>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setShowEmergencyModal(true)}
+              className="flex items-center gap-1.5 text-stone-400 hover:text-foreground transition-colors cursor-pointer py-1.5 px-3 rounded-full border border-white/10 hover:border-white/20 bg-white/5"
+            >
+              <AlertTriangle className="h-3 w-3 text-chart-3" />
+              <span>Something is wrong — request manager callback</span>
+            </button>
+          </div>
         </div>
+
+        {/* Live In-Call Dimming Overlay (UX §2) */}
+        <InCallOverlay
+          callStatus={isCallActive ? "active" : "idle"}
+          isMuted={isMuted}
+          isSpeaking={true}
+          duration={callDuration}
+          activeTranscript="Elena Vance: 'Good evening. I have staged a lighter courtyard tea session for Day 3 so you can rest after today's travel.'"
+          onEndCall={() => setCallActive(false)}
+          onToggleMute={() => setIsMuted(!isMuted)}
+          curatorName="Elena Vance"
+          sanctuary={activeDay.sanctuaryName}
+        />
+
+        {/* Emergency / Human Manager Callback Modal */}
+        {showEmergencyModal && (
+          <div
+            role="dialog"
+            aria-modal="true"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md animate-fade-in"
+          >
+            <div className="w-full max-w-md rounded-2xl border border-white/15 bg-[#140d22] p-6 shadow-2xl space-y-4 text-foreground">
+              <div className="flex items-center justify-between border-b border-white/10 pb-3">
+                <div className="flex items-center gap-2 text-chart-3">
+                  <PhoneCall className="h-4 w-4" />
+                  <span className="font-mono text-xs uppercase tracking-wider font-semibold">
+                    Spriha & Senior Curator Escalation
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowEmergencyModal(false)}
+                  className="text-muted-foreground hover:text-white p-1"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+
+              <div className="space-y-2">
+                <p className="font-serif text-base font-medium">
+                  We are notifying Elena Vance&apos;s team directly.
+                </p>
+                <p className="font-sans text-xs text-muted-foreground leading-relaxed">
+                  For immediate logistics, medical assistance, or private driver dispatch, a human team member will contact your registered phone number within 15 minutes.
+                </p>
+              </div>
+
+              <div className="rounded-xl bg-white/5 border border-white/10 p-3 text-xs font-mono space-y-1">
+                <div className="flex justify-between text-muted-foreground">
+                  <span>Current Hotel:</span>
+                  <span className="text-foreground">{activeDay.sanctuaryName}</span>
+                </div>
+                <div className="flex justify-between text-muted-foreground">
+                  <span>Assigned Driver:</span>
+                  <span className="text-foreground">{currentTrip.driverName || "Mr. Tanaka"}</span>
+                </div>
+              </div>
+
+              <Button
+                type="button"
+                onClick={() => {
+                  setShowEmergencyModal(false);
+                  alert("Emergency alert dispatched to Spriha's curation team. Stand by for callback.");
+                }}
+                className="w-full rounded-full bg-chart-1 hover:bg-chart-1/90 text-background font-mono text-xs tracking-wider uppercase h-10"
+              >
+                Confirm Human Callback
+              </Button>
+            </div>
+          </div>
+        )}
       </main>
     </div>
   </AuthGate>

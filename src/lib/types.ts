@@ -12,6 +12,8 @@ export interface Sanctuary {
   amenities: string[];
   confidenceTier: ConfidenceTier;
   roomType: string;
+  verifiedInspectionNote?: string;
+  verifiedBy?: string;
 }
 
 export interface ActivitySlot {
@@ -32,6 +34,14 @@ export interface ItineraryAlternative {
   curatorEndorsement: string;
 }
 
+export interface PendingSuggestion {
+  slotKey: 'morningActivity' | 'afternoonActivity' | 'eveningActivity';
+  suggestedActivity: ActivitySlot;
+  rationale: string;
+  trigger: 'fatigue' | 'weather' | 'pace';
+  status: 'pending' | 'accepted' | 'dismissed';
+}
+
 export interface ItineraryDay {
   id: string;
   dayNumber: number;
@@ -45,6 +55,7 @@ export interface ItineraryDay {
   curatorNote: string;
   confidenceTier: ConfidenceTier;
   alternatives: ItineraryAlternative[];
+  pendingSuggestion?: PendingSuggestion;
 }
 
 export interface Trip {
@@ -64,6 +75,13 @@ export interface Trip {
   days: ItineraryDay[];
 }
 
+export interface DirectPreferences {
+  noEarlyTransfers: boolean; // Avoid transfers before 10:00 AM
+  preferPrivateDining: boolean; // Counter / in-suite dining
+  requireThermalBath: boolean; // Onsen or soaking tub mandatory
+  minimalPhysicalStops: boolean; // Max 2 stops per day
+}
+
 export interface TasteProfile {
   id: string;
   pace: 'unhurried' | 'balanced' | 'immersive';
@@ -73,6 +91,7 @@ export interface TasteProfile {
   preferredRealms: string[];
   archetypeTitle: string;
   archetypeDescription: string;
+  writtenPortrait?: string; // Editorial 2-sentence portrait per UX §3
   matchedSanctuaries: string[];
   createdAt: number;
 }
@@ -86,6 +105,7 @@ export interface CheckInRecord {
   notes?: string;
   timestamp: number;
   adjustmentsApplied: boolean;
+  stagedSuggestion?: PendingSuggestion;
 }
 
 export interface PatronUser {
@@ -96,6 +116,18 @@ export interface PatronUser {
   avatarInitials: string;
   memberSince: string;
   assignedCurator: string;
+  preferences?: DirectPreferences;
+}
+
+export interface ItineraryDiff {
+  id: string;
+  dayNumber: number;
+  timeSlot: 'morning' | 'afternoon' | 'evening';
+  previousTitle: string;
+  newTitle: string;
+  location: string;
+  rationale: string;
+  timestamp: number;
 }
 
 export interface JournalBookmark {

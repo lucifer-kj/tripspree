@@ -62,10 +62,10 @@ export function EveningCheckinCard() {
             </div>
             <div>
               <p className="font-sans text-sm font-semibold text-foreground">
-                Recorded for tomorrow: &ldquo;{pacingOptions.find((p) => p.id === selectedPacing)?.label}&rdquo;
+                Recorded: &ldquo;{pacingOptions.find((p) => p.id === selectedPacing)?.label}&rdquo;
               </p>
               <p className="font-mono text-[11px] text-muted-foreground mt-0.5">
-                Agent Elena Vance notified • Adjustments applied
+                Elena Vance has staged a restorative cadence for your review below.
               </p>
             </div>
           </div>

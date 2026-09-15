@@ -2,7 +2,7 @@ import Groq from 'groq-sdk';
 import type { RetrievedKnowledge, SessionState } from './types.js';
 
 const GROQ_API_KEY = process.env.GROQ_API_KEY || '';
-const GROQ_MODEL = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile';
+const GROQ_MODEL = process.env.GROQ_MODEL || 'llama-3.1-8b-instant';
 
 let groqClient: Groq | null = null;
 if (GROQ_API_KEY) {

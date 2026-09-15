@@ -3,12 +3,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Bell, ChevronDown } from "lucide-react";
-
+import { ChevronDown, Radio } from "lucide-react";
 import { motion } from "framer-motion";
+import { useTripSpreeStore } from "@/lib/store";
 
 export function AppNav() {
   const pathname = usePathname();
+  const { setCallActive } = useTripSpreeStore();
 
   const navLinks = [
     { label: "Dashboard", href: "/designer" },
@@ -47,6 +48,7 @@ export function AppNav() {
           </Link>
 
           {/* Clean Top Navigation Links with Apple-style Fluid Spring Indicator */}
+          {/* Clean Top Navigation Links with Apple-style Fluid Spring Indicator */}
           <nav className="hidden md:flex items-center gap-1 lg:gap-2 text-xs sm:text-sm font-sans relative">
             {navLinks.map((item, idx) => {
               const isActive =
@@ -76,17 +78,25 @@ export function AppNav() {
           </nav>
         </div>
 
-        {/* Right: Notifications & User Profile Avatar */}
+        {/* Center/Right: Connected Journey Marker & Actions */}
         <div className="flex items-center gap-3 sm:gap-4">
-          {/* Notification Icon Pill */}
+          {/* Connected Journey Marker (UX §5) */}
+          <div className="hidden lg:flex items-center gap-2 border border-white/10 bg-white/5 px-3 py-1 rounded-full text-xs font-mono">
+            <span className="h-1.5 w-1.5 rounded-full bg-chart-1 animate-pulse" />
+            <span className="text-white/90">Day 2 of 4</span>
+            <span className="text-white/40">•</span>
+            <span className="text-white/60">Kyoto & Ago Bay</span>
+          </div>
+
+          {/* Talk It Through Quiet Entry Point (UX §2) */}
           <button
             type="button"
-            className="relative flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white/80 hover:text-white hover:bg-white/10 active:scale-90 transition-all duration-100 cursor-pointer"
-            title="Notifications"
-            aria-label="Notifications"
+            onClick={() => setCallActive(true)}
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-amber-400/30 bg-amber-400/10 hover:bg-amber-400/20 text-amber-200 text-xs font-mono tracking-wider transition-all duration-150 active:scale-95 cursor-pointer"
+            title="Spoken consultation with Quiet Concierge"
           >
-            <Bell className="h-4 w-4" />
-            <span className="absolute top-2.5 right-2.5 h-2 w-2 rounded-full bg-[#f97316]" />
+            <Radio className="h-3.5 w-3.5 text-amber-300 animate-pulse" />
+            <span>Talk it through</span>
           </button>
 
           {/* User Profile Avatar with Dropdown Indicator */}
@@ -95,7 +105,7 @@ export function AppNav() {
             className="flex items-center gap-2 pl-1 pr-2 py-1 rounded-full border border-white/15 bg-white/5 hover:bg-white/10 active:scale-95 transition-all duration-100 cursor-pointer group"
           >
             <div className="relative h-8 w-8 rounded-full overflow-hidden border border-white/20 bg-[#130c24] flex items-center justify-center">
-              <span className="font-serif text-xs font-semibold text-[#a855f7]">TS</span>
+              <span className="font-serif text-xs font-semibold text-primary">TS</span>
             </div>
             <ChevronDown className="h-3.5 w-3.5 text-white/50 group-hover:text-white transition-colors hidden sm:block" />
           </Link>

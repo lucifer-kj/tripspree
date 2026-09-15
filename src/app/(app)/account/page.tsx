@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { AppNav } from "@/components/app/app-nav";
 import { Button } from "@/components/ui/button";
 import { useTripSpreeStore } from "@/lib/store";
@@ -19,7 +20,7 @@ import {
 } from "lucide-react";
 
 export default function AccountPage() {
-  const { currentTrip, tasteProfile, resetToDefaults, logout, currentUser } = useTripSpreeStore();
+  const { currentTrip, tasteProfile, resetToDefaults, logout, currentUser, updatePreferences } = useTripSpreeStore();
   const [themeMode, setThemeMode] = useState<"dark" | "light" | "system">("dark");
   const [motionOverride, setMotionOverride] = useState(false);
   const [resetNotice, setResetNotice] = useState(false);
@@ -116,9 +117,19 @@ export default function AccountPage() {
                     {tasteProfile.archetypeTitle}
                   </h3>
                 </div>
-                <p className="font-sans text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-2xl mb-4">
+                <p className="font-sans text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-2xl mb-3">
                   {tasteProfile.archetypeDescription}
                 </p>
+
+                {/* Editorial Written Portrait per UX §3 */}
+                <blockquote className="rounded-xl border border-amber-400/30 bg-amber-400/5 p-4 my-3 border-l-4 border-l-amber-400">
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-amber-300 font-semibold block mb-1">
+                    Evolving Travel Portrait
+                  </span>
+                  <p className="font-serif italic text-sm sm:text-base text-foreground/90 leading-relaxed">
+                    &ldquo;{tasteProfile.writtenPortrait || "You tend to linger — slow mornings, private courtyards, and uninterrupted daylight."}&rdquo;
+                  </p>
+                </blockquote>
 
                 <div className="flex flex-wrap gap-4 font-mono text-xs text-muted-foreground pt-3 border-t border-primary/15">
                   <span>Pacing: <strong className="text-foreground font-semibold">{tasteProfile.pace.toUpperCase()}</strong></span>
@@ -126,6 +137,72 @@ export default function AccountPage() {
                   <span>Stillness Index: <strong className="text-primary font-semibold">{tasteProfile.stillnessIndex}/10</strong></span>
                   <span>•</span>
                   <span>Purity: <strong className="text-foreground font-semibold">{tasteProfile.architecturalPurity}/10</strong></span>
+                </div>
+
+                {/* Direct Preference Controls per UX §3 */}
+                <div className="pt-5 mt-4 border-t border-white/10 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground font-medium">
+                      Direct Cadence Rules
+                    </span>
+                    <span className="font-mono text-[10px] text-stone-400">
+                      Explicit Preferences (Overrides Inferred Tone)
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <label className="flex items-center justify-between p-3.5 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition-colors cursor-pointer">
+                      <div className="space-y-0.5">
+                        <span className="font-sans text-xs font-medium text-foreground block">No early transfers</span>
+                        <span className="font-mono text-[10px] text-muted-foreground">Never schedule transit before 10:00 AM</span>
+                      </div>
+                      <input
+                        type="checkbox"
+                        checked={currentUser?.preferences?.noEarlyTransfers ?? true}
+                        onChange={(e) => updatePreferences({ noEarlyTransfers: e.target.checked })}
+                        className="h-4 w-4 rounded accent-amber-300"
+                      />
+                    </label>
+
+                    <label className="flex items-center justify-between p-3.5 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition-colors cursor-pointer">
+                      <div className="space-y-0.5">
+                        <span className="font-sans text-xs font-medium text-foreground block">Private dining focus</span>
+                        <span className="font-mono text-[10px] text-muted-foreground">Counter dining under 8 seats or in-suite</span>
+                      </div>
+                      <input
+                        type="checkbox"
+                        checked={currentUser?.preferences?.preferPrivateDining ?? true}
+                        onChange={(e) => updatePreferences({ preferPrivateDining: e.target.checked })}
+                        className="h-4 w-4 rounded accent-amber-300"
+                      />
+                    </label>
+
+                    <label className="flex items-center justify-between p-3.5 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition-colors cursor-pointer">
+                      <div className="space-y-0.5">
+                        <span className="font-sans text-xs font-medium text-foreground block">Require thermal soaking</span>
+                        <span className="font-mono text-[10px] text-muted-foreground">Onsen or deep cedar soaking tub mandatory</span>
+                      </div>
+                      <input
+                        type="checkbox"
+                        checked={currentUser?.preferences?.requireThermalBath ?? true}
+                        onChange={(e) => updatePreferences({ requireThermalBath: e.target.checked })}
+                        className="h-4 w-4 rounded accent-amber-300"
+                      />
+                    </label>
+
+                    <label className="flex items-center justify-between p-3.5 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition-colors cursor-pointer">
+                      <div className="space-y-0.5">
+                        <span className="font-sans text-xs font-medium text-foreground block">Restrained daily pacing</span>
+                        <span className="font-mono text-[10px] text-muted-foreground">Cap schedule to max 2 stops per day</span>
+                      </div>
+                      <input
+                        type="checkbox"
+                        checked={currentUser?.preferences?.minimalPhysicalStops ?? false}
+                        onChange={(e) => updatePreferences({ minimalPhysicalStops: e.target.checked })}
+                        className="h-4 w-4 rounded accent-amber-300"
+                      />
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
@@ -142,67 +219,92 @@ export default function AccountPage() {
               </p>
             </div>
 
-            <div className="space-y-3">
-              {/* Active Journey */}
-              <div className="p-5 rounded-xl border border-primary/40 bg-primary/5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2">
-                    <span className="rounded-full bg-chart-1 text-background px-2 py-0.5 font-mono text-[10px] font-semibold uppercase">
-                      Active
-                    </span>
-                    <span className="font-mono text-xs text-muted-foreground">
-                      OCTOBER 14 – 18, 2026
+            {/* Browsable Journey Shelf per UX §5 */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              {/* Active Journey Card with Cover Image */}
+              <div className="group relative overflow-hidden rounded-2xl border border-stone-800 bg-[#140d22] flex flex-col justify-between">
+                <div className="relative h-44 w-full overflow-hidden">
+                  <Image
+                    src="https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=800&q=80"
+                    alt={currentTrip.title}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#140d22] via-[#140d22]/40 to-transparent" />
+                  <div className="absolute top-3 left-3">
+                    <span className="rounded-full bg-chart-1 text-background px-2.5 py-0.5 font-mono text-[10px] font-semibold uppercase shadow-xs">
+                      Active Journey
                     </span>
                   </div>
+                </div>
+
+                <div className="p-5 space-y-2">
+                  <span className="font-mono text-xs text-muted-foreground block">
+                    OCTOBER 14 – 18, 2026 • 4 DAYS
+                  </span>
                   <h3 className="font-serif text-lg text-foreground font-medium">
                     {currentTrip.title}
                   </h3>
-                  <p className="font-sans text-xs text-muted-foreground">
-                    Kyoto • Naoshima • Ago Bay ({currentTrip.days.length} Days)
+                  <p className="font-sans text-xs text-muted-foreground leading-relaxed">
+                    Kyoto • Naoshima • Ago Bay
                   </p>
-                </div>
 
-                <Link href="/designer">
-                  <Button
-                    variant="default"
-                    size="sm"
-                    className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90 text-xs font-sans px-5 cursor-pointer"
-                  >
-                    Open Designer
-                    <ChevronRight className="ml-1.5 h-3.5 w-3.5" />
-                  </Button>
-                </Link>
+                  <div className="pt-3">
+                    <Link href="/designer">
+                      <Button
+                        variant="default"
+                        size="sm"
+                        className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90 text-xs font-sans px-5 cursor-pointer"
+                      >
+                        Open Designer
+                        <ChevronRight className="ml-1.5 h-3.5 w-3.5" />
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
               </div>
 
-              {/* Completed Journey */}
-              <div className="p-5 rounded-xl border border-border bg-muted/20 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2">
-                    <span className="rounded-full bg-muted text-muted-foreground px-2 py-0.5 font-mono text-[10px] font-semibold uppercase border border-border">
-                      Completed
-                    </span>
-                    <span className="font-mono text-xs text-muted-foreground">
-                      APRIL 02 – 08, 2025
+              {/* Past Journey Card with Cover Image */}
+              <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-[#120a1f] flex flex-col justify-between">
+                <div className="relative h-44 w-full overflow-hidden">
+                  <Image
+                    src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=800&q=80"
+                    alt="Spring Sakura & Naoshima Architecture"
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#120a1f] via-[#120a1f]/40 to-transparent" />
+                  <div className="absolute top-3 left-3">
+                    <span className="rounded-full bg-white/15 text-white/90 px-2.5 py-0.5 font-mono text-[10px] font-semibold uppercase backdrop-blur-md">
+                      Archived Keepsake
                     </span>
                   </div>
+                </div>
+
+                <div className="p-5 space-y-2">
+                  <span className="font-mono text-xs text-muted-foreground block">
+                    APRIL 02 – 08, 2025 • 7 DAYS
+                  </span>
                   <h3 className="font-serif text-lg text-foreground font-medium">
                     Spring Sakura & Naoshima Architecture
                   </h3>
-                  <p className="font-sans text-xs text-muted-foreground">
-                    Seto Inland Sea & Mount Koya (7 Days)
+                  <p className="font-sans text-xs text-muted-foreground leading-relaxed">
+                    Seto Inland Sea & Mount Koya
                   </p>
-                </div>
 
-                <Link href={`/provenance/${currentTrip.id}`}>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="rounded-full border-border text-foreground hover:bg-muted text-xs font-mono px-5 cursor-pointer"
-                  >
-                    View Provenance Keepsake
-                    <ChevronRight className="ml-1.5 h-3.5 w-3.5" />
-                  </Button>
-                </Link>
+                  <div className="pt-3">
+                    <Link href={`/provenance/${currentTrip.id}`}>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="rounded-full border-white/15 text-foreground hover:bg-white/10 text-xs font-mono px-5 cursor-pointer"
+                      >
+                        View Provenance Keepsake
+                        <ChevronRight className="ml-1.5 h-3.5 w-3.5" />
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
