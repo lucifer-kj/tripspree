@@ -2,7 +2,8 @@
 > **Document Status**: APPROVED & ACTIVE  
 > **Last Updated**: September 2026  
 > **Product Name**: TripSpree featuring DIA (Digital Intelligence Agent)  
-> **Positioning**: India's First Autonomous AI Travel Platform (Domestic & Global Luxury)
+> **Positioning**: India's First Autonomous AI Travel Platform (Domestic & Global Luxury)  
+> **Scope Notice**: **Frontend Infrastructure & Scopes are Finalized & Live (`docs/frontend-infrastructure-and-scope.md`). Backend Architecture is Under Evaluation & NOT Finalized Yet.**
 
 ---
 
