@@ -1,4 +1,4 @@
-import Groq from 'groq-sdk';
+import { Groq } from 'groq-sdk';
 import type { RetrievedKnowledge, SessionState } from './types.js';
 
 const GROQ_API_KEY = process.env.GROQ_API_KEY || '';
