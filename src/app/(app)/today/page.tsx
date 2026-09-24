@@ -1,465 +1,265 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { AppNav } from "@/components/app/app-nav";
-import { ConfidenceChip } from "@/components/app/confidence-chip";
-import { EveningCheckinCard } from "@/components/app/evening-checkin-card";
-import { TodayVoiceBar } from "@/components/app/today-voice-bar";
+import { AppHeader } from "@/components/app/app-header";
+import { SolariBoard } from "@/components/app/solari-board";
 import { InCallOverlay } from "@/components/app/in-call-overlay";
-import { ItineraryDiffCard } from "@/components/app/itinerary-diff-card";
-import { Button } from "@/components/ui/button";
 import { useTripSpreeStore } from "@/lib/store";
-import { AuthGate } from "@/components/app/auth-gate";
-import {
-  MapPin,
-  Clock,
-  CheckCircle2,
-  Wifi,
-  Radio,
-  Sparkles,
-  AlertTriangle,
-  PhoneCall,
-  X,
-} from "lucide-react";
+import { Wifi, PhoneCall, CheckCircle2, Clock, MapPin, Sparkles } from "lucide-react";
 
-export default function TodayViewPage() {
+export default function TodayPage() {
   const {
-    currentTrip,
     isDriverStandingBy,
     toggleDriverStandingBy,
-    setLiveSync,
     isCallActive,
     setCallActive,
-    activeInvitation,
-    setActiveInvitation,
-    activeDiffs,
-    dismissDiff,
-    acceptPendingSuggestion,
-    dismissPendingSuggestion,
+    submitCheckIn,
   } = useTripSpreeStore();
+
   const [localTime, setLocalTime] = useState("16:42:00");
-  const [isOnline, setIsOnline] = useState(true);
-  const [isMuted, setIsMuted] = useState(false);
-  const [callDuration] = useState(14);
-  const [showEmergencyModal, setShowEmergencyModal] = useState(false);
+  const [selectedMood, setSelectedMood] = useState<string | null>("peaceful");
+  const [isCheckInSubmitted, setIsCheckInSubmitted] = useState(false);
 
-  // Active day is Day 2 of current journey
-  const activeDay = currentTrip.days.find((d) => d.dayNumber === 2) || currentTrip.days[0];
-
-  // Live Tokyo Standard Time clock engine
+  // Live Tokyo Standard Time clock
   useEffect(() => {
-    const updateTime = () => {
+    const update = () => {
       try {
-        const formatted = new Intl.DateTimeFormat("en-US", {
+        const fmt = new Intl.DateTimeFormat("en-US", {
           timeZone: "Asia/Tokyo",
           hour: "2-digit",
           minute: "2-digit",
           second: "2-digit",
           hour12: false,
         }).format(new Date());
-        setLocalTime(formatted);
+        setLocalTime(fmt);
       } catch {
-        // Fallback for environments without timezone support
         const d = new Date();
         setLocalTime(`${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`);
       }
     };
-
-    updateTime();
-    const interval = setInterval(updateTime, 1000);
+    update();
+    const interval = setInterval(update, 1000);
     return () => clearInterval(interval);
   }, []);
 
-  // Honest network online/offline listener (per UI/UX spec §4.5)
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const onOnline = () => {
-      setIsOnline(true);
-      setLiveSync(true);
-    };
-    const onOffline = () => {
-      setIsOnline(false);
-      setLiveSync(false);
-    };
-
-    window.addEventListener("online", onOnline);
-    window.addEventListener("offline", onOffline);
-    return () => {
-      window.removeEventListener("online", onOnline);
-      window.removeEventListener("offline", onOffline);
-    };
-  }, [setLiveSync]);
+  const handleMoodSelect = (mood: "exceptional" | "peaceful" | "fatigued" | "adjust") => {
+    setSelectedMood(mood);
+    submitCheckIn({
+      dayNumber: 2,
+      sanctuary: "Sowaka Ryokan",
+      mood: mood === "adjust" ? "fatigued" : mood,
+      notes: "Logged via Sapphire OS Today View.",
+    });
+    setIsCheckInSubmitted(true);
+    setTimeout(() => setIsCheckInSubmitted(false), 3000);
+  };
 
   return (
-    <AuthGate
-      fallbackTitle="Today View Studio"
-      fallbackDescription="Live sanctuary agenda, private chauffeur dispatch, and travel director briefings require member authentication."
-    >
-      <div className="min-h-screen bg-[#0c0717] text-white selection:bg-[#8247ff]/30 flex flex-col font-sans">
-        {/* Global Top Navigation Bar */}
-        <AppNav />
+    <div className="min-h-screen bg-[#080c18] text-[#f8fafc] flex flex-col font-sans selection:bg-[#38bdf8]/30">
+      {/* Unified Command Header */}
+      <AppHeader
+        activeTab="Today"
+        telemetryText="LOCAL TIME: 16:42 JST · WEATHER: 18°C QUIET DRIZZLE · CHAUFFEUR: STANDING BY AT MAIN GATE · SYNC: LIVE"
+      />
 
-        {/* Main Today Screen Canvas */}
-        <main className="flex-1 flex flex-col">
-          {/* Top Status Bar with Honest Offline/Cache Indicator */}
-          <header className="h-16 shrink-0 border-b border-white/10 bg-[#130c24]/90 backdrop-blur-md px-4 sm:px-8 lg:px-12 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <span className="font-mono text-xs uppercase tracking-widest text-foreground font-semibold">
-              TODAY
-            </span>
-            <span className="h-3.5 w-px bg-border" />
-            <span className="font-mono text-xs text-muted-foreground">
-              {activeDay.date}
-            </span>
-          </div>
-
-          {/* Honest PWA Cache / Live Indicator (per UI/UX spec §4.5) */}
-          <div className="flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1 font-mono text-[11px] text-muted-foreground">
-            <span
-              className={`h-2 w-2 rounded-full ${
-                isOnline ? "bg-chart-1 animate-pulse" : "bg-warning-fill"
-              }`}
-            />
-            <span className="text-foreground font-medium">
-              {isOnline ? "Live Sync Active" : "Offline Mode"}
-            </span>
-            <span className="text-muted-foreground/60">•</span>
-            <span>{isOnline ? "Encrypted WebSocket" : "Cached Offline (Local Store)"}</span>
-          </div>
-        </header>
-
-        {/* Calm, Utilitarian Content Container (Deliberately Sparse & Focused) */}
-        <div className="mx-auto w-full max-w-3xl flex-1 px-4 sm:px-6 py-8 md:py-12 space-y-8">
-          {/* Active Itinerary Diffs per UX §2 */}
-          {activeDiffs.map((diff) => (
-            <ItineraryDiffCard key={diff.id} diff={diff} onDismiss={dismissDiff} />
-          ))}
-
-          {/* Contextual Voice Invitation Banner per UX §2 & §4 */}
-          {activeInvitation && (
-            <div className="rounded-2xl border border-amber-400/30 bg-amber-400/10 p-5 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4 animate-fade-in">
-              <div className="space-y-1">
-                <div className="flex items-center gap-2 text-amber-300 font-mono text-[10px] uppercase tracking-widest font-semibold">
-                  <Sparkles className="h-3 w-3" />
-                  <span>Quiet Concierge Invitation</span>
-                </div>
-                <h4 className="font-serif text-lg text-foreground font-medium">
-                  {activeInvitation.prompt}
-                </h4>
-                <p className="font-sans text-xs text-foreground/80 leading-relaxed max-w-xl">
-                  {activeInvitation.context}
-                </p>
-              </div>
-
-              <div className="flex items-center gap-2.5 shrink-0">
-                <Button
-                  type="button"
-                  size="sm"
-                  onClick={() => setCallActive(true)}
-                  className="rounded-full bg-amber-300 hover:bg-amber-200 text-black font-mono text-xs tracking-wider uppercase h-8 px-4 cursor-pointer"
-                >
-                  <Radio className="h-3 w-3 mr-1.5 animate-pulse" />
-                  Talk it through
-                </Button>
-                <Button
-                  type="button"
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => setActiveInvitation(null)}
-                  className="rounded-full text-muted-foreground hover:text-foreground text-xs font-mono tracking-wider uppercase h-8 px-3 cursor-pointer"
-                >
-                  Dismiss
-                </Button>
-              </div>
-            </div>
-          )}
-
-          {/* Staged Suggestion Banner on Active Day per UX §4 */}
-          {activeDay.pendingSuggestion && activeDay.pendingSuggestion.status === "pending" && (
-            <div className="rounded-2xl border border-amber-400/40 bg-[#160f26] p-6 shadow-md space-y-4 animate-fade-in">
+      <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-8 lg:px-12 py-8 space-y-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+          {/* Left Column (Span 7 / 60% Width): Active Operational Agenda */}
+          <div className="lg:col-span-7 flex flex-col gap-6">
+            {/* "What's Next" Dominant Focal Card */}
+            <div className="rounded-3xl border-2 border-[#38bdf8]/40 bg-[#0f172a] p-6 sm:p-8 shadow-2xl space-y-5 select-none">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-amber-300 font-semibold">
-                  <Sparkles className="h-3.5 w-3.5" />
-                  <span>Staged Adaptation (Pending Review)</span>
-                </div>
-                <span className="font-mono text-[10px] uppercase text-muted-foreground">Requires Your Approval</span>
-              </div>
-
-              <blockquote className="font-serif italic text-sm text-foreground/90 leading-relaxed border-l-2 border-amber-400/40 pl-3">
-                &ldquo;{activeDay.pendingSuggestion.rationale}&rdquo;
-              </blockquote>
-
-              <div className="rounded-xl border border-white/10 bg-black/20 p-4 text-xs font-sans space-y-1">
-                <span className="font-mono text-[10px] uppercase text-muted-foreground block">Proposed Activity:</span>
-                <p className="text-foreground font-semibold text-sm">{activeDay.pendingSuggestion.suggestedActivity.title}</p>
-                <p className="text-muted-foreground">
-                  {activeDay.pendingSuggestion.suggestedActivity.time} • {activeDay.pendingSuggestion.suggestedActivity.location}
-                </p>
-              </div>
-
-              <div className="flex items-center gap-3 pt-1">
-                <Button
-                  type="button"
-                  size="sm"
-                  onClick={() => acceptPendingSuggestion(activeDay.id)}
-                  className="rounded-full bg-amber-300 hover:bg-amber-200 text-black font-mono text-xs font-semibold tracking-wider uppercase h-8 px-4 cursor-pointer"
-                >
-                  Accept Suggestion
-                </Button>
-                <Button
-                  type="button"
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => dismissPendingSuggestion(activeDay.id)}
-                  className="rounded-full text-muted-foreground hover:text-foreground font-mono text-xs tracking-wider uppercase h-8 px-3 cursor-pointer"
-                >
-                  Keep Original
-                </Button>
-              </div>
-            </div>
-          )}
-
-          {/* 1. Location & Atmospheric Status (One Primary View) */}
-          <div className="rounded-2xl border border-border bg-card p-6 md:p-8 shadow-xs">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-border">
-              <div>
-                <span className="font-mono text-xs text-primary tracking-widest uppercase block mb-1.5 font-medium">
-                  Current Sanctuary • Day 0{activeDay.dayNumber} of 0{currentTrip.days.length}
-                </span>
-                <h1 className="font-serif text-2xl sm:text-4xl text-foreground font-medium tracking-tight">
-                  {activeDay.sanctuaryName}
-                </h1>
-                <div className="flex items-center gap-2 text-muted-foreground font-mono text-xs sm:text-sm mt-2">
-                  <MapPin className="h-4 w-4 text-primary shrink-0" />
-                  <span>{activeDay.destination}</span>
-                </div>
-              </div>
-
-              {/* Local Time & Atmosphere */}
-              <div className="rounded-xl border border-border/80 bg-muted/40 p-4 font-mono text-xs sm:text-right shrink-0">
-                <div className="text-xs text-muted-foreground uppercase tracking-wide">
-                  Local Time
-                </div>
-                <div className="text-xl sm:text-2xl font-semibold text-foreground tracking-tight my-0.5">
-                  {localTime} <span className="text-xs text-muted-foreground font-normal">JST</span>
-                </div>
-                <div className="text-xs text-muted-foreground">
-                  18°C • Quiet Autumn Drizzle
-                </div>
-              </div>
-            </div>
-
-            {/* Quick Sanctuary Amenities for Today */}
-            <div className="pt-4 flex flex-wrap items-center justify-between gap-4 text-xs font-mono text-muted-foreground">
-              <span className="flex items-center gap-1.5">
-                <Wifi className="h-3.5 w-3.5 text-primary" />
-                SANCTUARY WI-FI: HOSHINOYA_PRIVATE
-              </span>
-              <span className="flex items-center gap-1.5">
-                <Radio className="h-3.5 w-3.5 text-primary" />
-                AGENT EXT: #01
-              </span>
-            </div>
-          </div>
-
-          {/* 2. "What's Next" Focal Card (Highest Information Priority) */}
-          <div className="rounded-2xl border-2 border-primary/30 bg-card p-6 md:p-8 shadow-sm transition-all duration-200">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-2">
-                <span className="flex h-2.5 w-2.5 rounded-full bg-primary animate-ping" />
-                <span className="font-mono text-xs tracking-widest uppercase text-primary font-semibold">
-                  What&apos;s Next
-                </span>
-              </div>
-
-              <ConfidenceChip tier={activeDay.afternoonActivity.confidenceTier || "Verified"} size="sm" />
-            </div>
-
-            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-4">
-              <div>
-                <div className="flex items-center gap-2 font-mono text-sm sm:text-base text-foreground font-medium mb-1.5">
-                  <Clock className="h-4 w-4 text-primary" />
-                  <span>{activeDay.afternoonActivity.time}</span>
-                </div>
-
-                <h2 className="font-sans text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-                  {activeDay.afternoonActivity.title}
-                </h2>
-              </div>
-            </div>
-
-            {/* Rationale & Operational Note */}
-            <div className="rounded-xl bg-primary/5 border border-primary/15 p-4 mb-6">
-              <p className="font-sans text-xs sm:text-sm text-foreground/90 leading-relaxed">
-                <span className="font-mono text-xs uppercase tracking-wider text-primary font-semibold mr-2">
-                  Director&apos;s Note:
-                </span>
-                {activeDay.afternoonActivity.notes || activeDay.curatorNote}
-              </p>
-            </div>
-
-            {/* Primary Action Button (Min 44x44px touch target) */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-              <Button
-                type="button"
-                variant="default"
-                onClick={toggleDriverStandingBy}
-                className={`min-h-[48px] rounded-xl px-6 font-sans text-sm font-medium transition-all cursor-pointer ${
-                  isDriverStandingBy
-                    ? "bg-chart-1 text-background hover:bg-chart-1/90"
-                    : "bg-primary text-primary-foreground hover:bg-primary/90"
-                }`}
-              >
-                <CheckCircle2 className="mr-2 h-4 w-4" />
-                {isDriverStandingBy
-                  ? "Driver Notified • Standing By"
-                  : "Ready for Driver Transfer"}
-              </Button>
-
-              <div className="flex items-center justify-center text-xs font-mono text-muted-foreground px-3 min-h-[44px]">
-                <span>Driver: {currentTrip.driverName || "Mr. Tanaka"} ({currentTrip.driverCar || "Black Alphard #408"})</span>
-              </div>
-            </div>
-          </div>
-
-          {/* 3. Later Tonight (Upcoming Schedule Preview) */}
-          <div className="rounded-2xl border border-border bg-card p-6 shadow-xs">
-            <h3 className="font-mono text-xs tracking-widest uppercase text-muted-foreground mb-4">
-              Later Tonight
-            </h3>
-
-            <div className="space-y-4">
-              <div className="flex items-start gap-4 pb-4 border-b border-border/60">
-                <div className="font-mono text-xs text-primary font-medium w-14 shrink-0 pt-0.5">
-                  {activeDay.eveningActivity.time}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="font-sans text-sm font-medium text-foreground">
-                    {activeDay.eveningActivity.title}
-                  </p>
-                  <p className="font-sans text-xs text-muted-foreground mt-0.5">
-                    {activeDay.eveningActivity.location} • {activeDay.eveningActivity.notes}
-                  </p>
-                </div>
-                <ConfidenceChip tier={activeDay.eveningActivity.confidenceTier || "Verified"} size="sm" />
-              </div>
-
-              <div className="flex items-start gap-4">
-                <div className="font-mono text-xs text-muted-foreground font-medium w-14 shrink-0 pt-0.5">
-                  22:00
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="font-sans text-sm font-medium text-foreground">
-                    Cedar Hinoki Tub Preparation
-                  </p>
-                  <p className="font-sans text-xs text-muted-foreground mt-0.5">
-                    Infused with seasonal yuzu and forest salts
-                  </p>
-                </div>
-                <span className="font-mono text-[10px] uppercase text-muted-foreground">
-                  In-Sanctuary
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* 4. Anchored Voice / Chat Consultation Bar ("Talk it through") */}
-          <TodayVoiceBar />
-
-          {/* 5. Evening Check-In Card (Unmissable, Non-Blocking, One-Tap Reflection) */}
-          <EveningCheckinCard />
-
-          {/* Permanent Calm Emergency / Human Escalation Path (UX §4) */}
-          <div className="pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-chart-1" />
-              <span>Curator Elena Vance & Spriha team on standby</span>
-            </div>
-
-            <button
-              type="button"
-              onClick={() => setShowEmergencyModal(true)}
-              className="flex items-center gap-1.5 text-stone-400 hover:text-foreground transition-colors cursor-pointer py-1.5 px-3 rounded-full border border-white/10 hover:border-white/20 bg-white/5"
-            >
-              <AlertTriangle className="h-3 w-3 text-chart-3" />
-              <span>Something is wrong — request manager callback</span>
-            </button>
-          </div>
-        </div>
-
-        {/* Live In-Call Dimming Overlay (UX §2) */}
-        <InCallOverlay
-          callStatus={isCallActive ? "active" : "idle"}
-          isMuted={isMuted}
-          isSpeaking={true}
-          duration={callDuration}
-          activeTranscript="Elena Vance: 'Good evening. I have staged a lighter courtyard tea session for Day 3 so you can rest after today's travel.'"
-          onEndCall={() => setCallActive(false)}
-          onToggleMute={() => setIsMuted(!isMuted)}
-          curatorName="Elena Vance"
-          sanctuary={activeDay.sanctuaryName}
-        />
-
-        {/* Emergency / Human Manager Callback Modal */}
-        {showEmergencyModal && (
-          <div
-            role="dialog"
-            aria-modal="true"
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md animate-fade-in"
-          >
-            <div className="w-full max-w-md rounded-2xl border border-white/15 bg-[#140d22] p-6 shadow-2xl space-y-4 text-foreground">
-              <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                <div className="flex items-center gap-2 text-chart-3">
-                  <PhoneCall className="h-4 w-4" />
-                  <span className="font-mono text-xs uppercase tracking-wider font-semibold">
-                    Spriha & Senior Curator Escalation
+                <div className="flex items-center gap-2">
+                  <span className="h-2.5 w-2.5 rounded-full bg-[#38bdf8] animate-ping" />
+                  <span className="font-mono text-xs uppercase tracking-widest text-[#38bdf8] font-bold">
+                    What&apos;s Next · Immediate Focus
                   </span>
                 </div>
+                <span className="rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-3 py-1 text-xs font-mono font-semibold">
+                  Verified Slot
+                </span>
+              </div>
+
+              <div>
+                <h2 className="font-sans text-3xl sm:text-4xl font-black text-white leading-tight uppercase tracking-tight">
+                  14:30 JST ARASHIYAMA BAMBOO WALK
+                </h2>
+                <p className="font-sans text-sm sm:text-base text-white/80 mt-2 leading-relaxed">
+                  Private monk-guided access through Tenryū-ji cloisters before evening gates close. Chauffeur Kenji stands by at Main Gate.
+                </p>
+              </div>
+
+              {/* Primary Action Button */}
+              <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                 <button
                   type="button"
-                  onClick={() => setShowEmergencyModal(false)}
-                  className="text-muted-foreground hover:text-white p-1"
+                  onClick={toggleDriverStandingBy}
+                  className={`min-h-[48px] rounded-xl px-6 font-sans text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-150 active:scale-97 cursor-pointer flex items-center justify-center gap-2 ${
+                    isDriverStandingBy
+                      ? "bg-emerald-500 text-[#080c18] shadow-[0_0_16px_rgba(16,185,129,0.4)]"
+                      : "bg-[#38bdf8] hover:bg-[#0284c7] text-[#080c18] shadow-[0_0_16px_rgba(56,189,248,0.4)]"
+                  }`}
                 >
-                  <X className="h-4 w-4" />
+                  <CheckCircle2 className="h-4 w-4" />
+                  <span>
+                    {isDriverStandingBy ? "CHAUFFEUR STANDING BY" : "NOTIFY CHAUFFEUR"}
+                  </span>
                 </button>
-              </div>
 
-              <div className="space-y-2">
-                <p className="font-serif text-base font-medium">
-                  We are notifying Elena Vance&apos;s team directly.
-                </p>
-                <p className="font-sans text-xs text-muted-foreground leading-relaxed">
-                  For immediate logistics, medical assistance, or private driver dispatch, a human team member will contact your registered phone number within 15 minutes.
-                </p>
-              </div>
-
-              <div className="rounded-xl bg-white/5 border border-white/10 p-3 text-xs font-mono space-y-1">
-                <div className="flex justify-between text-muted-foreground">
-                  <span>Current Hotel:</span>
-                  <span className="text-foreground">{activeDay.sanctuaryName}</span>
-                </div>
-                <div className="flex justify-between text-muted-foreground">
-                  <span>Assigned Driver:</span>
-                  <span className="text-foreground">{currentTrip.driverName || "Mr. Tanaka"}</span>
+                <div className="flex items-center text-xs font-mono text-[#94a3b8] px-2">
+                  <span>Driver Kenji (Black Century #408)</span>
                 </div>
               </div>
+            </div>
 
-              <Button
-                type="button"
-                onClick={() => {
-                  setShowEmergencyModal(false);
-                  alert("Emergency alert dispatched to Spriha's curation team. Stand by for callback.");
-                }}
-                className="w-full rounded-full bg-chart-1 hover:bg-chart-1/90 text-background font-mono text-xs tracking-wider uppercase h-10"
-              >
-                Confirm Human Callback
-              </Button>
+            {/* Later Tonight Schedule Card */}
+            <div className="rounded-3xl border border-[#1e293b] bg-[#0f172a] p-6 shadow-xl space-y-4 select-none">
+              <div className="flex items-center justify-between pb-3 border-b border-[#1e293b]">
+                <span className="font-mono text-xs uppercase tracking-wider text-[#94a3b8] font-bold">
+                  Later Tonight
+                </span>
+                <span className="font-mono text-xs text-[#38bdf8]">
+                  {localTime} JST
+                </span>
+              </div>
+
+              <div className="space-y-3">
+                <div className="flex items-start gap-4 rounded-2xl bg-[#162032] p-4 border border-[#1e293b]/60">
+                  <span className="font-mono text-sm font-black text-[#38bdf8] w-14 shrink-0 pt-0.5">
+                    19:30
+                  </span>
+                  <div>
+                    <h4 className="font-sans text-sm sm:text-base font-bold text-white">
+                      PRIVATE KAISEKI DINNER
+                    </h4>
+                    <p className="font-sans text-xs text-[#94a3b8] mt-0.5">
+                      Gion Matsuda • 12-course seasonal autumn tasting menu
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4 rounded-2xl bg-[#162032] p-4 border border-[#1e293b]/60">
+                  <span className="font-mono text-sm font-black text-white w-14 shrink-0 pt-0.5">
+                    21:30
+                  </span>
+                  <div>
+                    <h4 className="font-sans text-sm sm:text-base font-bold text-white">
+                      CEDAR ONSEN BATH PREPARATION
+                    </h4>
+                    <p className="font-sans text-xs text-[#94a3b8] mt-0.5">
+                      Private courtyard pavilion • Seasonal yuzu infusion
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        )}
+
+          {/* Right Column (Span 5 / 40% Width): Tactical Staging Cockpit */}
+          <div className="lg:col-span-5 flex flex-col gap-6">
+            {/* Card 1: Chauffeur Solari Board */}
+            <SolariBoard
+              time="15:10"
+              line1="KYOTO"
+              line2="KENJI"
+              badge="CHAUFFEUR TELEMETRY"
+            />
+
+            {/* Card 2: Sanctuary Credentials Card */}
+            <div className="rounded-3xl border border-[#1e293b] bg-[#0f172a] p-6 shadow-xl space-y-4 select-none">
+              <div className="flex items-center justify-between pb-3 border-b border-[#1e293b]">
+                <span className="font-mono text-xs uppercase tracking-wider text-[#94a3b8] font-bold">
+                  Sanctuary Telemetry
+                </span>
+                <span className="font-mono text-xs text-emerald-400">
+                  Active Stay
+                </span>
+              </div>
+
+              <div>
+                <h3 className="font-sans text-xl font-black text-white uppercase">
+                  SOWAKA RYOKAN · SUITE 04
+                </h3>
+                <span className="font-mono text-xs text-[#38bdf8] block mt-0.5">
+                  Yasaka Courtyard Residence
+                </span>
+              </div>
+
+              <div className="space-y-2 pt-1 font-mono text-xs text-white/80">
+                <div className="flex items-center justify-between rounded-xl bg-[#162032] px-3.5 py-2.5">
+                  <span className="flex items-center gap-2 text-[#94a3b8]">
+                    <Wifi className="h-3.5 w-3.5 text-[#38bdf8]" />
+                    Wi-Fi:
+                  </span>
+                  <span className="text-white font-semibold">SOWAKA_PRIVATE</span>
+                </div>
+                <div className="flex items-center justify-between rounded-xl bg-[#162032] px-3.5 py-2.5">
+                  <span className="flex items-center gap-2 text-[#94a3b8]">
+                    <PhoneCall className="h-3.5 w-3.5 text-[#38bdf8]" />
+                    Concierge Ext:
+                  </span>
+                  <span className="text-white font-semibold">#01 (24/7 Desk)</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Card 3: Arrival Feeling Check-In Card */}
+            <div className="rounded-3xl border border-[#1e293b] bg-[#0f172a] p-6 shadow-xl space-y-4 select-none">
+              <div className="flex items-center justify-between">
+                <div>
+                  <span className="font-mono text-[10px] uppercase text-[#94a3b8] block">
+                    Evening Reflection
+                  </span>
+                  <h4 className="font-sans text-lg font-black text-white mt-0.5">
+                    Arrival Feeling?
+                  </h4>
+                </div>
+                {isCheckInSubmitted && (
+                  <span className="font-mono text-xs text-emerald-400 animate-fade-in">
+                    ✓ Saved
+                  </span>
+                )}
+              </div>
+
+              {/* Mood Buttons */}
+              <div className="grid grid-cols-2 gap-2 pt-1">
+                {[
+                  { key: "exceptional", label: "Exceptional" },
+                  { key: "peaceful", label: "Peaceful" },
+                  { key: "fatigued", label: "Fatigued" },
+                  { key: "adjust", label: "Adjust" },
+                ].map((m) => (
+                  <button
+                    key={m.key}
+                    type="button"
+                    onClick={() => handleMoodSelect(m.key as any)}
+                    className={`py-2 px-3 rounded-xl font-mono text-xs font-semibold uppercase transition-all duration-100 cursor-pointer text-center ${
+                      selectedMood === m.key
+                        ? "bg-[#38bdf8] text-[#080c18] shadow-[0_0_12px_rgba(56,189,248,0.35)]"
+                        : "bg-[#162032] text-[#94a3b8] hover:text-white hover:bg-[#1f2d45]"
+                    }`}
+                  >
+                    {m.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
       </main>
+
+      {/* Live In-Call Dimming Overlay */}
+      <InCallOverlay
+        callStatus={isCallActive ? "active" : "idle"}
+        isMuted={false}
+        isSpeaking={true}
+        duration={14}
+        activeTranscript="Elena Vance: 'Good evening. I have confirmed your chauffeur Kenji at the main gate. Let me know when you wish to depart.'"
+        onEndCall={() => setCallActive(false)}
+        onToggleMute={() => {}}
+        curatorName="Elena Vance"
+        sanctuary="Sowaka Ryokan"
+      />
     </div>
-  </AuthGate>
   );
 }

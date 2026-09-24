@@ -48,53 +48,53 @@
 }
 
 .dark {
-  --card: #130c24;
-  --ring: #8247ff;
-  --input: #25183e;
-  --muted: #1c1236;
-  --accent: #241544;
-  --border: #25183e;
+  --card: #0f172a;
+  --ring: #38bdf8;
+  --input: #1e293b;
+  --muted: #162032;
+  --accent: #f59e0b;
+  --border: #1e293b;
   --radius: 0.575rem;
-  --chart-1: #a855f7;
-  --chart-2: #8247ff;
-  --chart-3: #f97316;
+  --chart-1: #10b981;
+  --chart-2: #38bdf8;
+  --chart-3: #f59e0b;
   --chart-4: #38bdf8;
-  --chart-5: #a78bfa;
-  --popover: #170e2d;
-  --primary: #8247ff;
-  --sidebar: #130c24;
+  --chart-5: #64748b;
+  --popover: #0b1120;
+  --primary: #38bdf8;
+  --sidebar: #0f172a;
   --spacing: 0.27rem;
   --font-mono: IBM Plex Mono, monospace;
   --font-sans: var(--font-montserrat), Montserrat, sans-serif;
-  --secondary: #1c1236;
-  --background: #0c0717;
+  --secondary: #162032;
+  --background: #080c18;
   --font-serif: Lora, serif;
-  --foreground: #f5f3ff;
+  --foreground: #f8fafc;
 
   /* WCAG AA contrast compliant destructive red */
   --destructive: #c93838;
 
   --shadow-blur: 3px;
   --shadow-color: #000000;
-  --sidebar-ring: #8247ff;
+  --sidebar-ring: #38bdf8;
   --shadow-spread: 0px;
   --letter-spacing: 0em;
   --shadow-opacity: 0.01;
-  --sidebar-accent: #25183e;
-  --sidebar-border: #25183e;
-  --card-foreground: #f5f3ff;
+  --sidebar-accent: #1e293b;
+  --sidebar-border: #1e293b;
+  --card-foreground: #f8fafc;
   --shadow-offset-x: 0;
   --shadow-offset-y: 1px;
-  --sidebar-primary: #8247ff;
-  --muted-foreground: #a78bfa;
-  --accent-foreground: #c084fc;
-  --popover-foreground: #f5f3ff;
-  --primary-foreground: #ffffff;
-  --sidebar-foreground: #f5f3ff;
-  --secondary-foreground: #f5f3ff;
+  --sidebar-primary: #38bdf8;
+  --muted-foreground: #94a3b8;
+  --accent-foreground: #080c18;
+  --popover-foreground: #f8fafc;
+  --primary-foreground: #080c18;
+  --sidebar-foreground: #f8fafc;
+  --secondary-foreground: #f8fafc;
   --destructive-foreground: #ffffff;
-  --sidebar-accent-foreground: #c790f4;
-  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent-foreground: #38bdf8;
+  --sidebar-primary-foreground: #080c18;
 }
 
 @theme inline {
